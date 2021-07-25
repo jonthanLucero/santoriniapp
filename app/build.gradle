@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "31.0.0"
+    defaultConfig {
+        applicationId "com.example.santoriniapp"
+        minSdkVersion 15
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Versions
+    def lifecycle_version = "1.1.1"
+    def support_library_version = "1.2.0"
+    def reactivex_library_version = "2.1.1"
+    //def butterknife_library_version = "10.2.3"
+    def picasso_library_version = "2.5.2" //= "2.71828";
+    def retrofit_library_version = "2.3.0" //= "2.8.2";
+
+    // Implementations
+    implementation "io.reactivex.rxjava2:rxjava:$reactivex_library_version"
+    implementation "io.reactivex:rxjava-math:1.0.0"
+    implementation "io.reactivex.rxjava2:rxandroid:$reactivex_library_version"
+    implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    implementation 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+    //implementation "com.jakewharton:butterknife:$butterknife_library_version"
+    //annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_library_version"
+    implementation "com.squareup.picasso:picasso:$picasso_library_version"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
+    implementation 'gun0912.ted:tedpermission:2.2.3'
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
+    //implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    implementation "androidx.appcompat:appcompat:$support_library_version"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.google.android.material:material:1.2.1'
+
+    // Retrofit (REST client)
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_library_version"
+    implementation 'com.google.code.gson:gson:2.8.2' // Avoid updating this version if possible.
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_library_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.5.0"
+
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.github.clans:fab:1.6.3'
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation "com.google.maps.android:android-maps-utils:0.4+"
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.firebase:firebase-client-android:2.5.0'
+    implementation 'com.google.firebase:firebase-core:16.0.5'
+    implementation "com.google.firebase:firebase-messaging:17.4.0"
+    implementation 'com.google.code.ksoap2-android:ksoap2-android:3.6.4'
+    implementation 'net.danlew:android.joda:2.10.3'
+    implementation 'com.github.asantibanez:Quota:8801636d29'
+    implementation 'com.github.asantibanez:lienzo:4c461166fa'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0' // Lifecycle dependencies
+
+    implementation group: 'com.github.barteksc', name: 'android-pdf-viewer', version: '2.6.0'
+    //For AndroidPDFViewer
+    implementation 'androidx.work:work-runtime:2.4.0' //Worker
+
+    //For Statistical Charts
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // For Unit Testing (NO DEVICE)
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest-library:1.3'
+    testImplementation "org.robolectric:robolectric:3.3.1"
+
+
+    // For Testing IN DEVICE
+    androidTestImplementation "androidx.annotation:annotation:1.1.0"
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    androidTestImplementation "androidx.test:rules:1.1.1"
+    // For JUnit Testing for Database
+    // Optional -- Hamcrest library
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    // Optional -- UItesting with Espresso
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
+
+    //Room Implementation
+    implementation 'android.arch.persistence.room:runtime:1.0.0'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0'
+
+
+}
