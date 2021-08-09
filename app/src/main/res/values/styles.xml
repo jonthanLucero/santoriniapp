@@ -1,11 +1,206 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="UrbanizationMaterialToolbarWithSubtitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?actionBarSize</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="navigationIcon">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="titleTextColor">@color/material_white_primary</item>
+        <item name="subtitleTextColor">@color/material_white_primary</item>
+        <item name="elevation">@dimen/dimens_4dp</item>
+    </style>
+
+    <style name="MSV_ImageButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:paddingLeft">@dimen/search_icon_padding</item>
+        <item name="android:paddingRight">@dimen/search_icon_padding</item>
+    </style>
+
+    <!-- Primary Buttons -->
+    <style name="Urbanization.PrimaryButton.Colored" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#0288D1</item>
+        <item name="backgroundTint">#0288D1</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:radius">2dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="Urbanization.FloatingActionButton.Orange" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fabSize">normal</item>
+        <item name="elevation">@dimen/fab_resting_elevation</item>
+        <item name="pressedTranslationZ">@dimen/fab_pressed_elevation</item>
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="tint">@color/material_white_primary</item>
+    </style>
+
+    <style name="UrbanizationMaterialListSecondaryText">
+        <item name="android:textSize">@dimen/dimens_13sp</item>
+        <item name="android:textColor">@color/material_black_secondary</item>
+    </style>
+
+    <style name="UrbanizationMaterialListHintText">
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+        <item name="android:textColor">@color/material_black_hint</item>
+    </style>
+
+    <style name="Urbanization.PrimaryButton.Colored.Dense" parent="Urbanization.PrimaryButton.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Urbanization.PrimaryButton.Borderless.Colored" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/material_primary_light_blue</item>
+    </style>
+
+    <style name="Urbanization.PrimaryButton.Borderless.Colored.GrayText" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/material_black_disabled</item>
+    </style>
+
+    <style name="Urbanization.PrimaryButton.Borderless.Dense" parent="Urbanization.PrimaryButton.Borderless.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Urbanization.PrimaryButton.NoBackgroundWithBorder" parent="Urbanization.PrimaryButton.Colored.Dense">
+        <item name="android:textColor">@color/material_primary_light_blue</item>
+        <item name="android:textColorPrimary">@color/material_primary_light_blue</item>
+        <item name="colorButtonNormal">#ffffff</item>
+        <item name="backgroundTint">#ffffff</item>
+    </style>
+
+    <style name="UrbanizationMaterialFormSideImageForOutlinedFields">
+        <item name="android:layout_width">25sp</item>
+        <item name="android:layout_height">25sp</item>
+        <item name="android:layout_marginEnd">15sp</item>
+        <item name="android:layout_marginRight">15sp</item>
+        <item name="android:layout_marginTop">@dimen/dimens_13sp</item>
+    </style>
+
+    <style name="UrbanizationDialogFragmentTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/material_black_primary</item>
+        <item name="android:padding">@dimen/dimens_16dp</item>
+    </style>
+
+    <style name="Urbanization.Material.Form.TextInputLayout.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/dimens_8dp</item>
+    </style>
+
+    <style name="Urbanization.Material.Form.TextInputEditText.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+    </style>
+
+    <style name="Urbanization.Material.Form.TextInputLayout.Filled" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/dimens_8dp</item>
+    </style>
+
+
+    <style name="Urbanization.Material.Form.NumberInput" parent="Urbanization.Material.Form.BaseInput">
+        <item name="android:inputType">number</item>
+    </style>
+
+    <style name="Inalambrik.Material.Form.DecimalInput" parent="Urbanization.Material.Form.BaseInput">
+        <item name="android:inputType">numberDecimal</item>
+    </style>
+
+    <style name="Urbanization.Material.Form.BaseInput" parent="Widget.Design.TextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:textColor">@color/material_black_primary_no_transparency</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/orange</item>
+        <item name="colorControlHighlight">@color/orange</item>
+    </style>
+
+    <!-- Primary Buttons -->
+    <style name="Jadblack.PrimaryButton.Colored" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#0288D1</item>
+        <item name="backgroundTint">#0288D1</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:radius">2dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButtonWithImage.Colored" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#0288D1</item>
+        <item name="backgroundTint">#0288D1</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:radius">2dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButton.Colored.Dense" parent="Jadblack.PrimaryButton.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButton.Borderless.Colored" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">#2196f3</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButton.Borderless.Dense" parent="Jadblack.PrimaryButton.Borderless.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+
+    <!-- Danger Buttons -->
+    <style name="Jadblack.DangerButton.Colored" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#D32F2F</item>
+        <item name="backgroundTint">#D32F2F</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:radius">2dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="Jadblack.DangerButton.Colored.Dense" parent="Jadblack.DangerButton.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Material Spinner -->
+    <style name="UrbanizationMaterialSpinnerLabelTextWhite">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+    </style>
+
+    <style name="Urbanization.Material.Form.Spinner.GrayBackground" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:spinnerMode">dialog</item>
+    </style>
+
+    <style name="UrbanizationMaterialListPrimaryText">
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:textColor">@color/material_black_primary</item>
     </style>
 
 </resources>

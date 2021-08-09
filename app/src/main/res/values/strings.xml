@@ -1,3 +1,54 @@
 <resources>
     <string name="app_name">SantoriniApp</string>
+    <color name="orange_soft">#F9BE7C</color>
+    <color name="orange_strong">#FF6F00</color>
+    <color name="green_strong">#004D40</color>
+    <color name="material_white_primary">#FFFFFFFF</color>
+
+    <string name="top_icon">TOP ICON</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Ingresar</string>
+    <string name="user">Usuario</string>
+    <string name="forgot_password">Olvidó la contraseña?</string>
+    <string name="santorini_title">Santorini App Urbanization</string>
+    <string name="or">O</string>
+    <string name="entering">Ingresando al sistema... \nPor favor espere</string>
+
+    <string name="an_error_has_ocurred_please_try_again">Ha ocurrido un error. Por favor intentar nuevamente.</string>
+
+    <!--Payment -->
+    <string name="ww_payment_title">Pagos Realizados</string>
+    <string name="action_search">Buscar</string>
+    <string name="payment_list_seach_no_results">No se han encontrado resultados.</string>
+    <string name="online_process_can_take_while">Si existe demora, es posible que se encuentre con acceso limitado a la red.</string>
+    <string name="add_payment">Nuevo Pago</string>
+    <string name="payment_list_search_hint">Buscar por Número de Pago, Estado ...</string>
+    <string name="downloading_last_payments_data">Descargando información de los pagos...</string>
+    <string name="searching_payments">Buscando Pagos...</string>
+
+    <string name="payment_date">Fecha de Pago</string>
+    <string name="payment_user_code">Código Usuario</string>
+    <string name="payment_user_name">Nombre Usuario</string>
+    <string name="payment_entered_label">Ingresado</string>
+    <string name="action_enter_values">Ingresar Valores</string>
+    <string name="action_view_values">Ver Valores</string>
+
+    <string name="delete">Eliminar</string>
+    <string name="save">Enviar</string>
+    <string name="print_receipt">Imprimir Recibo</string>
+    <string name="payment_field_attach_photo">Adjuntar Foto(s) (Opcional)</string>
+    <string name="urbanization_add_photo_gallery_add_photo_dialog_title">Tomar/Adjuntar Foto</string>
+    <string name="urbanization_add_photo_gallery_title_label">Título (Opcional)</string>
+    <string name="urbanization_add_photo_gallery_description_label">Descripción (Opcional)</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="empty_string"></string>
+    <string name="grant_permissions_description">Se requieren que se otorguen de ciertos permisos para poder adjuntar/tomar fotos.</string>
+    <string name="grant_permissions_from_settings_instructions">Para otorgar el permiso, haz click en \"Ir a Ajustes\" y otorgar permiso de \"Almacenamiento\" desde la opción \"Permisos\" (o \"Accesos\").</string>
+    <string name="grant_permissions">OTORGAR PERMISOS</string>
+    <string name="grant_permissions_go_config">IR A AJUSTES</string>
+    <string name="urbanization_add_photo_gallery_no_photos_available">No se han encontrado imágenes</string>
+    <string name="payment_spinner_time_label">Período</string>
+    <string name="no_records_found_press_to_register">No se encontraron datos. Presione el \"+\" para crear un nuevo registro.</string>
 </resources>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimens_4dp">4dp</dimen>
+    <dimen name="search_view_text_padding">65dp</dimen>
+    <dimen name="search_icon_padding">12dp</dimen>
+
+    <dimen name="text_size_12sp">12sp</dimen>
+    <dimen name="text_size_14sp">14sp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="text_size_20sp">20sp</dimen>
+    <dimen name="text_size_22sp">22sp</dimen>
+    <dimen name="dimens_16dp">16dp</dimen>
+    <dimen name="dimens_8dp">8dp</dimen>
+
+    <!-- Elevation values according to: https://material.io/guidelines/material-design/elevation-shadows.html#elevation-shadows-elevation-android -->
+    <dimen name="fab_pressed_elevation">12dp</dimen>
+    <dimen name="fab_resting_elevation">6dp</dimen>
+    <dimen name="card_view_resting_elevation">2dp</dimen>
+    <dimen name="app_bar_elevation">4dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="dimens_13sp">13sp</dimen>
+    <dimen name="dimens_0dp">0dp</dimen>
+</resources>

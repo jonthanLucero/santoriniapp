@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">@color/orange_soft</color>
+    <color name="colorPrimaryDark">@color/orange_strong</color>
+    <color name="colorAccent">@color/orange</color>
+    <color name="colorWhite">@color/material_white_primary</color>
+    <color name="search_layover_bg">#50000000</color>
+    <color name="material_black_secondary">#89000000</color>
+    <color name="list_line_separator">#BDBDBD</color>
+    <color name="material_black_hint">#60000000</color>
+
+    <color name="status_sent">#3D9C60</color>
+    <color name="orange">#FF6600</color>
+    <color name="material_primary_light_blue">#2196f3</color>
+    <color name="status_not_sent">#BE2A2A</color>
+    <color name="material_black_primary">#D9000000</color>
+    <color name="black">#000000</color>
+    <color name="material_white_secondary">#B2FFFFFF</color>
+    <color name="material_black_disabled">#60000000</color> <!-- %38 opacity -->
+    <color name="material_black_primary_no_transparency">#616161</color>
+    <color name="black_with_transparency">#89000000</color>
+    <color name="gray">#808080</color>
+    <color name="action_button_blue">#0288D1</color>
+    <color name="background_gray_for_leap_button">#eeeeee</color>
+    <color name="blue_button_material">#0288D1</color>
+    <color name="double_light_gray">#fafafa</color>
 </resources>
