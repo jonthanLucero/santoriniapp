@@ -3,21 +3,30 @@ package com.example.santoriniapp.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.santoriniapp.utils.DateConverter;
+import com.example.santoriniapp.utils.DateFunctions;
+import com.example.santoriniapp.utils.NumericFunctions;
 
+import java.io.Serializable;
 import java.util.Date;
 
-@Entity(tableName = "payment_table",primaryKeys = {"paymentdate"})
-public class Payment
+@Entity(tableName = "payment_table")
+public class Payment implements Serializable
 {
+
+    @PrimaryKey(autoGenerate = true)
+    private int _id;
+
     @NonNull
     private String userid;
     @NonNull
 
-    @TypeConverters(DateConverter.class)
-    private Date paymentdate;
+    @ColumnInfo(name = "paymentdate")
+    private Long paymentdate;
 
     @ColumnInfo(name = "paymentnumber")
     private int paymentnumber;
@@ -30,12 +39,11 @@ public class Payment
     @ColumnInfo(name = "paymentmemo")
     private String paymentmemo;
 
-    @TypeConverters(DateConverter.class)
     @ColumnInfo(name = "paymentmodifiedon")
-    private Date paymentmodifiedon;
+    private Long paymentmodifiedon;
 
-    public Payment(@NonNull String userid, @NonNull Date paymentdate, int paymentnumber, int paymentreceiptnumber,
-                   double paymentamount, String paymentstatus, String paymentmemo, Date paymentmodifiedon) {
+    public Payment(@NonNull String userid, @NonNull Long paymentdate, int paymentnumber, int paymentreceiptnumber,
+                   double paymentamount, String paymentstatus, String paymentmemo,Long paymentmodifiedon) {
         this.userid = userid;
         this.paymentdate = paymentdate;
         this.paymentnumber = paymentnumber;
@@ -46,13 +54,21 @@ public class Payment
         this.paymentmodifiedon = paymentmodifiedon;
     }
 
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
     @NonNull
     public String getUserid() {
         return userid;
     }
 
     @NonNull
-    public Date getPaymentdate() {
+    public Long getPaymentdate() {
         return paymentdate;
     }
 
@@ -76,7 +92,7 @@ public class Payment
         return paymentmemo;
     }
 
-    public Date getPaymentmodifiedon() {
+    public Long getPaymentmodifiedon() {
         return paymentmodifiedon;
     }
 }
