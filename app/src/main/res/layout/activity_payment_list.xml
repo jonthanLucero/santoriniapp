@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.santoriniapp.modules.payment.paymentlist.PaymentListViewModelResponse" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".modules.payment.paymentlist.PaymentListActivity"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            style="@style/UrbanizationMaterialToolbarWithSubtitle"
+            app:title="@string/ww_payment_title"
+            tools:title="Pagos Realizados"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/dimens_13sp"
+            android:paddingLeft="@dimen/dimens_13sp"
+            android:paddingBottom="@dimen/dimens_13sp"
+            android:orientation="vertical"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/customer_address_ship_label"
+                style="@style/UrbanizationMaterialSpinnerLabelTextWhite"
+                android:text="@string/payment_spinner_time_label"/>
+
+            <Spinner
+                android:id="@+id/sales_persona_time_spinner"
+                style="@style/Urbanization.Material.Form.Spinner.GrayBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                tools:listitem="@layout/payment_date_time_spinner_item" />
+
+
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".modules.payment.paymentlist.PaymentListActivity">
+
+            <androidx.recyclerview.widget.RecyclerView
+                app:visible="@{!viewModel.isLoading}"
+                android:id="@+id/payments_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:id="@+id/no_content_found"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="40dp"
+                android:gravity="center"
+                app:visible="@{viewModel.showNoContentFound()}"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_error_56dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/no_records_found_press_to_register"
+                    android:gravity="center"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/action_download_orders"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    style="@style/Urbanization.PrimaryButton.Borderless.Colored"
+                    android:text="ACTUALIZAR"
+                    />
+
+            </LinearLayout>
+
+            <!-- Loading Payments -->
+            <LinearLayout
+                android:id="@+id/loading_from_ws_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="40dp"
+                android:gravity="center"
+                app:visible="@{viewModel.isLoading}"
+                android:background="@color/default_background"
+                android:visibility="visible">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/downloading_last_payments_data"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/online_process_can_take_while"
+                    android:textSize="12sp"
+                    android:textColor="@color/material_black_hint"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Loading Customer Invoices -->
+            <LinearLayout
+                android:id="@+id/loading_orders_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="40dp"
+                android:gravity="center"
+                android:background="@color/default_background"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_payment_action"
+                style="@style/Urbanization.FloatingActionButton.Orange"
+                android:src="@drawable/fab_add_white"
+                android:contentDescription="@string/add_payment"
+                app:visible="@{viewModel.showAddPaymentButton()}"
+                tools:visibility="visible"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>
