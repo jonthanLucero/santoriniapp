@@ -4,13 +4,22 @@ package com.example.santoriniapp.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.santoriniapp.utils.DateConverter;
+import com.example.santoriniapp.utils.DateFunctions;
+import com.example.santoriniapp.utils.StringFunctions;
 
-@Entity(tableName = "login_table",primaryKeys = {"userid"})
-public class Login
+import java.io.Serializable;
+
+@Entity(tableName = "login_table")
+public class Login implements Serializable
 {
+
+    @PrimaryKey(autoGenerate = true)
+    private int _id;
+
     @NonNull
     private String userid;
 
@@ -29,15 +38,28 @@ public class Login
     @ColumnInfo(name = "usermodifiedon")
     private String usermodifiedon;
 
+    public Login()
+    {
+
+    }
+
     public Login(@NonNull String userid, String userlogin, String userpassword,
-                 String userstatus, String username, String usertaxpayerid, String usermodifiedon) {
+                 String userstatus, String username, String usertaxpayerid) {
         this.userid = userid;
         this.userlogin = userlogin;
         this.userpassword = userpassword;
         this.userstatus = userstatus;
         this.username = username;
         this.usertaxpayerid = usertaxpayerid;
-        this.usermodifiedon = usermodifiedon;
+        this.usermodifiedon = StringFunctions.toString(DateFunctions.today().getTime());
+    }
+
+    public int getId() {
+        return _id;
+    }
+
+    public void setId(int id) {
+        this._id = id;
     }
 
     @NonNull
@@ -67,5 +89,33 @@ public class Login
 
     public String getUsermodifiedon() {
         return usermodifiedon;
+    }
+
+    public void setUserid(@NonNull String userid) {
+        this.userid = userid;
+    }
+
+    public void setUserlogin(String userlogin) {
+        this.userlogin = userlogin;
+    }
+
+    public void setUserpassword(String userpassword) {
+        this.userpassword = userpassword;
+    }
+
+    public void setUserstatus(String userstatus) {
+        this.userstatus = userstatus;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setUsertaxpayerid(String usertaxpayerid) {
+        this.usertaxpayerid = usertaxpayerid;
+    }
+
+    public void setUsermodifiedon(String usermodifiedon) {
+        this.usermodifiedon = usermodifiedon;
     }
 }
