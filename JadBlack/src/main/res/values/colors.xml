@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="jadblack_white">#FFFFFF</color>
+	<color name="black">#000000</color>
+	<!--<color name="navy">#000080</color>-->
+	<color name="blue">#0000FF</color>
+	<color name="darkblue">#00008B</color>
+	<color name="darkgreen">#006400</color>
+	<color name="green">#008000</color>
+	<color name="darkorange">#EE7600</color>
+	<color name="orange">#FF6600</color>
+	<color name="darkred">#8B0000</color>
+	<color name="red">#FF0000</color>
+	<color name="gray">#808080</color>
+	<color name="yellow">#FFFF00</color>
+	<color name="light_gray">#cccccc</color>
+	<color name="double_light_gray">#fafafa</color>
+
+	<color name="default_days_container_background_color">#000000</color>
+	<color name="default_selected_day_background_color">#aaaaaa</color>
+
+	<color name="default_day_text_color">#ffffff</color>
+	<color name="default_selected_day_text_color">#111111</color>
+
+	<!-- White Text -->
+	<color name="material_white_primary">#FFFFFFFF</color> <!-- %87 opacity -->
+	<color name="material_white_secondary">#B2FFFFFF</color> <!-- %54 opacity -->
+	<color name="material_white_disabled">#4CFFFFFF</color> <!-- %38 opacity -->
+	<color name="material_white_icon">#4CFFFFFF</color> <!-- %38 opacity -->
+	<color name="material_white_hint">#4CFFFFFF</color> <!-- %38 opacity -->
+
+	<color name="material_white_primary_no_transparency">#FFFFFFFF</color>
+	<color name="material_white_secondary_no_transparency">#fafafa</color>
+	<color name="material_white_hint_no_transparency">#f5f5f5</color>
+
+	!-- Black Material -->
+	<color name="material_black_primary">#D9000000</color> <!-- %87 opacity -->
+	<color name="material_black_secondary">#89000000</color> <!-- %54 opacity -->
+	<color name="material_black_disabled">#60000000</color> <!-- %38 opacity -->
+	<color name="material_black_icon">#60000000</color> <!-- %38 opacity -->
+	<color name="material_black_hint">#60000000</color> <!-- %38 opacity -->
+
+	<color name="material_black_form_input_title">#8f000000</color> <!-- %56 opacity material_black_form_input_title -->
+	<color name="material_black_form_input_text">#de000000</color>
+
+	<color name="material_black_primary_no_transparency">#616161</color>
+	<color name="material_black_secondary_no_transparency">#757575</color>
+	<color name="material_black_hint_no_transparency">#9e9e9e</color>
+
+	<color name="black_with_transparency">#89000000</color>
+
+	<color name="action_button_blue">#0288D1</color>
+</resources>

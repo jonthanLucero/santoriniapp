@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Primary Buttons -->
+    <style name="Jadblack.PrimaryButton.Colored" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#0288D1</item>
+        <item name="backgroundTint">#0288D1</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:radius">2dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButtonWithImage.Colored" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#0288D1</item>
+        <item name="backgroundTint">#0288D1</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:radius">2dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButton.Colored.Dense" parent="Jadblack.PrimaryButton.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButton.Borderless.Colored" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">#2196f3</item>
+    </style>
+
+    <style name="Jadblack.PrimaryButton.Borderless.Dense" parent="Jadblack.PrimaryButton.Borderless.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+
+    <!-- Danger Buttons -->
+    <style name="Jadblack.DangerButton.Colored" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#D32F2F</item>
+        <item name="backgroundTint">#D32F2F</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:radius">2dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="Jadblack.DangerButton.Colored.Dense" parent="Jadblack.DangerButton.Colored">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+</resources>

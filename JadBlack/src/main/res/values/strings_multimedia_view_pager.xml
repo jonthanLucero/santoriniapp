@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_downloading_file">Error al descargar Archivo</string>
+ 	<string name="retry">Reintentar</string>  
+ 	
+ 	<string name="zoom">Zoom</string>
+ 	<string name="show_information">Ver Información</string>
+ 	<string name="show_description">Ver Descripción</string>
+ 	<string name="close">Cerrar</string>
+ 	
+ 	<string name="play_video">Reproducir Video</string>
+ 	
+ 	<string name="view_file">Ver Archivo</string>
+</resources>

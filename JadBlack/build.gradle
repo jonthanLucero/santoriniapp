@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // Versions
+    def support_library_version     = "1.2.0"
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.appcompat:appcompat:$support_library_version"
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.github.clans:fab:1.6.3'
+    implementation 'com.github.asantibanez:Quota:8801636d29'
+    implementation 'com.github.asantibanez:lienzo:4c461166fa'
+    implementation 'net.danlew:android.joda:2.10.3'
+    implementation group: 'com.koushikdutta.ion', name: 'ion', version: '2.1.6'
+
+
+    implementation files('../customLibs/ZSDK_ANDROID_API.jar')
+    implementation files('../customLibs/ZSDK_API2.jar')
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'gun0912.ted:tedpermission:2.2.3'
+
+}

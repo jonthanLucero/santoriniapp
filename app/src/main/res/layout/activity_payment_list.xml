@@ -17,11 +17,10 @@
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
             style="@style/UrbanizationMaterialToolbarWithSubtitle"
             app:title="@string/ww_payment_title"
-            tools:title="Pagos Realizados"/>
+            app:subtitle="@{viewModel.userNameDescription()}"
+            tools:subtitle="Jonathan de Los Palotes"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,10 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
                 tools:listitem="@layout/payment_date_time_spinner_item" />
-
-
-
-
         </LinearLayout>
 
         <FrameLayout

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <Button
+    	android:id="@+id/pressToSign"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:text="@string/press_to_sign"
+    	android:gravity="center_vertical|center_horizontal" 
+    	android:visibility="visible"
+	/>
+        
+    <TextView
+        android:id="@+id/pressSignatureToSignAgain"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:textAppearance="?android:attr/textAppearanceMedium"
+    	android:text="@string/press_signature_to_sign"
+    	android:gravity="center_vertical|center_horizontal"
+    	android:visibility="gone"
+        />
+        
+    <ImageView 
+        android:id="@+id/signatureViewer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/empty_string"
+        android:visibility="gone"
+	/>
+   
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+	<string name="app_name">JadBlack Library</string>
+	<string name="code_scanner_empty_message"> - Presione SCAN para iniciar escaneo - </string>	
+	<string name="action_scan">Scan</string>
+    <string name="grant_permissions">OTORGAR PERMISOS</string>
+    <string name="grant_permissions_description">Se requieren que se otorguen de ciertos permisos para poder adjuntar/tomar fotos.</string>
+    <string name="grant_permissions_from_settings_instructions">Para otorgar el permiso, haz click en \"Ir a Ajustes\" y otorgar permiso de \"Almacenamiento\" desde la opción \"Permisos\" (o \"Accesos\").</string>
+    <string name="grant_permissions_go_config">IR A AJUSTES</string>
+</resources>

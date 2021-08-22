@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="press_signature_to_sign">Presione la imagen para reintentar</string>
+    <string name="press_to_sign">Presione para Firmar</string>
+    <string name="empty_string"></string>   
+</resources>

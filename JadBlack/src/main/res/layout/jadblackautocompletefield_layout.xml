@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/jadblack_white"
+    android:id="@+id/wrapper">
+
+    <TextView
+        android:id="@+id/autoCompleteFieldLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Label..."
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:id="@+id/autoCompleteFieldWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:dropDownAnchor="@+id/autoCompleteFieldLabel" 
+            android:dropDownHeight="wrap_content" 
+            android:dropDownWidth="match_parent"
+            android:textColor="@color/black"
+            android:dropDownVerticalOffset="30dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/selectedValueWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/selectedValueSubWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/selectedValueLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Selected..."
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:id="@+id/selectedValueButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:padding="100dp"
+                android:alpha="0.4"
+                android:background="@drawable/ic_clear_black_24dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
