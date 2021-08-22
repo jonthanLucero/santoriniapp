@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/wrapper"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:background="#FFFFFF">
+
+
+    <LinearLayout
+        android:id="@+id/subwrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/picturePreviewWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/default_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:minHeight="200dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/picturePreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/empty_string"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                tools:src="@drawable/star"/>
+
+            <LinearLayout
+                android:id="@+id/delete_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="ELIMINAR"
+                android:background="@color/black_with_transparency"
+                android:padding="6dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="25sp"
+                    android:layout_height="25sp"
+                    android:src="@drawable/ic_trash_24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/material_white_primary"
+                    android:text="BORRAR"
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingRight="5dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/pictureDetailWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="2dp"
+                android:background="@color/black_with_transparency"
+                android:padding="10dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/pictureFileName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:text="Nombre: Sin Foto"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textColor="@color/material_white_primary" />
+
+                    <TextView
+                        android:id="@+id/pictureFileSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textSize="12sp"
+                        android:text="Tamaño: 0 KB"
+                        android:textColor="@color/material_white_primary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/zoom_picture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:text="AMPLIAR"
+                        >
+                        <ImageView
+                            android:layout_width="25sp"
+                            android:layout_height="25sp"
+                            android:src="@drawable/ic_material_zoom_white"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/image_loading_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:textSize="12sp"
+                android:text="Error al visualizar foto"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/attachOrTakePhotoSignContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/dashed_border_background"
+            android:gravity="center_vertical|center_horizontal"
+            android:minHeight="200dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                tools:visibility="gone"
+                android:id="@+id/take_or_attach_pics_container"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/cameraButton"
+                    style="@style/Jadblack.PrimaryButton.Colored.Dense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#0288D1"
+                    android:drawableLeft="@drawable/ic_material_camera_white"
+                    android:drawablePadding="4dp"
+                    android:text=" TOMAR"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="o"/>
+
+                <Button
+                    android:id="@+id/selectButton"
+                    style="@style/Jadblack.PrimaryButton.Colored.Dense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#0288D1"
+                    android:drawableLeft="@drawable/ic_material_attach_white"
+                    android:drawablePadding="4dp"
+                    android:text=" ADJUNTAR"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/grant_permissions_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="vertical"
+                tools:visibility="visible"
+                android:paddingTop="16px"
+                android:paddingBottom="16px">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:src="@drawable/camera"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="8dp"
+                            android:text="@string/grant_permissions_description"/>
+                        <TextView
+                            android:id="@+id/permission_special_instructions_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:layout_marginTop="8dp"
+                            android:paddingLeft="8dp"
+                            android:textSize="13sp"
+                            android:textColor="@color/gray"
+                            android:text="@string/grant_permissions_from_settings_instructions"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/action_button_grant_permission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/action_button_blue"
+                    android:paddingTop="8dp"
+                    android:textSize="14sp"
+                    android:text="@string/grant_permissions"/>
+                <TextView
+                    android:id="@+id/action_button_go_config"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/action_button_blue"
+                    android:paddingTop="8dp"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    android:text="@string/grant_permissions_go_config"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!--<LinearLayout
+            android:id="@+id/functionsWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/selectPictureWrapper"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/selectButton"
+                    style="@style/Jadblack.PrimaryButton.Colored.Dense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#0288D1"
+                    android:drawableLeft="@drawable/ic_material_attach_white"
+                    android:drawablePadding="4dp"
+                    android:text=" ADJUNTAR FOTO"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/takePictureWrapper"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="start">
+
+                <Button
+                    android:id="@+id/cameraButton"
+                    style="@style/Jadblack.PrimaryButton.Colored.Dense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#0288D1"
+                    android:drawableLeft="@drawable/ic_material_camera_white"
+                    android:drawablePadding="4dp"
+                    android:text=" TOMAR FOTO"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>-->
+    </LinearLayout>
+</LinearLayout>

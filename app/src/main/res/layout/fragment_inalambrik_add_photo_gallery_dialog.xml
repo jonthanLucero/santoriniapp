@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/inalambrik_add_photo_gallery_add_photo_dialog_title"
+                style="@style/InalambrikDialogFragmentTitle"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/list_line_separator"
+                />
+
+            <!-- Scroll view -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/scrollView6"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@android:color/white"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Title -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/material_black_secondary"/>
+
+                        <EditText
+                                android:id="@+id/photo_title_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/inalambrik_add_photo_gallery_title_label"
+                                android:textColorHint="@color/black_with_transparency"
+                                android:textColor="@color/black"
+                                tools:textColorHint="@color/black_with_transparency"
+                                />
+
+                        <!-- Description -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/material_black_secondary"/>
+
+                        <EditText
+                                android:id="@+id/photo_description_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/inalambrik_add_photo_gallery_description_label"
+                                android:textColorHint="@color/black_with_transparency"
+                                android:textColor="@color/black"
+                                tools:textColorHint="@color/black_with_transparency"
+                                />
+
+                        <!-- Attach/Take Control -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+                            <com.example.santoriniapp.utils.JadBlackCameraField
+                                android:id="@+id/photo_ctl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                            </com.example.santoriniapp.utils.JadBlackCameraField>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/list_line_separator"
+                />
+
+            <!-- Actions Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:gravity="end">
+                <Button
+                    android:id="@+id/cancel_photo_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/action_cancel"
+                    style="@style/Inalambrik.PrimaryButton.Borderless.Colored"/>
+                <Button
+                    android:id="@+id/add_photo_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/inalambrik_add_photo_gallery_add_photo"
+                    style="@style/Inalambrik.PrimaryButton.Borderless.Colored"
+                    android:layout_marginStart="@dimen/dimens_8dp"
+                    android:layout_marginLeft="@dimen/dimens_8dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
