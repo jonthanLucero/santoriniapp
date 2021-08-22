@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,14 +14,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.santoriniapp.R;
+import com.example.santoriniapp.dao.daoutils.DAOPaymentViewModel;
 import com.example.santoriniapp.databinding.ActivityPaymentListBinding;
+import com.example.santoriniapp.entity.Payment;
+import com.example.santoriniapp.modules.payment.paymentheader.PaymentActivity;
+import com.example.santoriniapp.utils.DateFunctions;
+import com.example.santoriniapp.utils.NumericFunctions;
+import com.example.santoriniapp.utils.PaymentUtils;
 import com.example.santoriniapp.utils.UrbanizationUtils;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
-
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Date;
 
 import rx.Subscriber;
 
@@ -42,6 +45,8 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
     ActivityPaymentListBinding mBinding;
     PaymentListAdapter mAdapter;
 
+    private DAOPaymentViewModel mPaymentViewModel;
+    private PaymentListActivity mPaymentListActivity;
 
     public static Intent launchIntent(Context context, String userId)
     {
@@ -71,8 +76,13 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
         // Getting paramenters.
         getParameters();
 
+        mPaymentListActivity = this;
+
+
         // Setting Toolbar.
         setSupportActionBar(mBinding.toolbar);
+
+
 
         mViewModel = ViewModelProviders.of(this).get(PaymentListViewModel.class);
 
@@ -83,15 +93,20 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
         mBinding.paymentsRecyclerView.setAdapter(mAdapter);
 
         // Set "Create Payment Action".
+
         mBinding.addPaymentAction.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
+                mPaymentViewModel = ViewModelProviders.of(mPaymentListActivity).get(DAOPaymentViewModel.class);
+                Payment payment = PaymentUtils.getNewPayment(mUserId);
+                mPaymentViewModel.insertPayment(payment);
+                startActivity(PaymentActivity.launchIntent(PaymentListActivity.this,mUserId,DateFunctions.toDate(payment.getPaymentdate()),"INSERT"));
             }
         });
 
         String requestCodeThisMonth= UrbanizationUtils.getTodayMonthRequestCode();
-        mViewModel.getCurrentPaymentListInformation(requestCodeThisMonth)
+        mViewModel.getCurrentPaymentListInformation(mUserId,requestCodeThisMonth)
                 .observe(this, new Observer<PaymentListViewModelResponse>() {
                     @Override
                     public void onChanged(@Nullable PaymentListViewModelResponse response) {
@@ -106,6 +121,8 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
                         mBinding.setViewModel(response);
 
                         setupPaymentDatePickerSpinner(response.paymentListSpinnerList,response.currentTimeSpinnerPosition);
+
+                        //mBinding.toolbar.setSubtitle(response.userName);
 
                         // Set the Item List.
                         mAdapter.setItemList(response.paymentList);
@@ -125,6 +142,7 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
                 });
 
     }
+
 
     private void setupPaymentDatePickerSpinner(ArrayList<PaymentDateRowSpinnerItem> paymentDateSpinnerList, int selectedPosition) {
         int resourceID = R.layout.payment_date_time_spinner_item;
@@ -179,11 +197,20 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
 
     private void reload() {
         if (mViewModel==null)return;
-        mViewModel.reloadPanels(mViewModel.getSelectedPositionItemRequestCode());
+        mViewModel.reloadPanels(mUserId,mViewModel.getSelectedPositionItemRequestCode());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mViewModel == null)return;
+        if(!firstLoad)
+            mViewModel.reloadPanels(mUserId,mViewModel.getSelectedPositionItemRequestCode());
+        firstLoad = false;
     }
 
     @Override
     public void onPaymentItemClick(PaymentItem payment) {
-
+        startActivity(PaymentActivity.launchIntent(this,mUserId,payment.paymentDate,"UPDATE"));
     }
 }
