@@ -28,6 +28,12 @@ public class Payment implements Serializable
     @ColumnInfo(name = "paymentdate")
     private Long paymentdate;
 
+    @ColumnInfo(name = "paymentmonth")
+    private String paymentmonth;
+
+    @ColumnInfo(name = "paymenttypecode")
+    private String paymenttypecode;
+
     @ColumnInfo(name = "paymentnumber")
     private int paymentnumber;
     @ColumnInfo(name = "paymentreceiptnumber")
@@ -39,13 +45,16 @@ public class Payment implements Serializable
     @ColumnInfo(name = "paymentmemo")
     private String paymentmemo;
 
+
     @ColumnInfo(name = "paymentmodifiedon")
     private Long paymentmodifiedon;
 
-    public Payment(@NonNull String userid, @NonNull Long paymentdate, int paymentnumber, int paymentreceiptnumber,
+    public Payment(@NonNull String userid, @NonNull Long paymentdate,String paymentmonth,String paymenttypecode, int paymentnumber, int paymentreceiptnumber,
                    double paymentamount, String paymentstatus, String paymentmemo,Long paymentmodifiedon) {
         this.userid = userid;
         this.paymentdate = paymentdate;
+        this.paymentmonth = paymentmonth;
+        this.paymenttypecode = paymenttypecode;
         this.paymentnumber = paymentnumber;
         this.paymentreceiptnumber = paymentreceiptnumber;
         this.paymentamount = paymentamount;
@@ -70,6 +79,37 @@ public class Payment implements Serializable
     @NonNull
     public Long getPaymentdate() {
         return paymentdate;
+    }
+
+    public String getPaymentmonth() {
+        return paymentmonth;
+    }
+
+    public void setPaymentmonth(String paymentmonth) {
+        this.paymentmonth = paymentmonth;
+    }
+
+    public String getPaymenttypecode() {
+        return paymenttypecode;
+    }
+
+    public void setPaymenttypecode(String paymenttypecode) {
+        this.paymenttypecode = paymenttypecode;
+    }
+
+    public void setPaymentAmount(Double paymentAmount)
+    {
+        this.paymentamount = paymentAmount;
+    }
+
+    public void setPaymentmemo(String paymentmemo)
+    {
+        this.paymentmemo = paymentmemo;
+    }
+
+    public void setPaymentstatus(String paymentstatus)
+    {
+        this.paymentstatus = paymentstatus;
     }
 
     public int getPaymentnumber() {

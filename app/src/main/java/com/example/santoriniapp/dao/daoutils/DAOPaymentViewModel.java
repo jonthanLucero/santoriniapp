@@ -30,11 +30,6 @@ public class DAOPaymentViewModel extends AndroidViewModel {
 
     public LiveData<List<Payment>> getAllPayments() { return mAllPayments; }
 
-    public LiveData<Payment> getPayment(Date paymentDate)
-    {
-        return mRepository.getPayment(paymentDate);
-    }
-
     public List<Payment> getPaymentsByMonth(String month)
     {
         return mRepository.getAllPaymentByMonth(month);
@@ -55,39 +50,41 @@ public class DAOPaymentViewModel extends AndroidViewModel {
 
         //Enero
         date = DateConverter.StringToDateTime("01-01-2021 10:20:20");
+
+
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,1,1,100,"A","Comentario 1",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",1,1,100,"A","Comentario 1",dateNow));
 
         date = DateConverter.StringToDateTime("15-01-2021 10:20:20");
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,1,1,100,"A","Comentario 1",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",1,1,100,"A","Comentario 1",dateNow));
 
         //Febrero
         date = DateConverter.StringToDateTime("02-02-2021 10:20:20");
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,2,2,200,"P","Comentario 2",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",2,2,200,"P","Comentario 2",dateNow));
 
         date = DateConverter.StringToDateTime("16-02-2021 10:20:20");
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,3,3,300,"P","Comentario 3",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",3,3,300,"P","Comentario 3",dateNow));
 
         //Marzo
         date = DateConverter.StringToDateTime("03-03-2021 10:20:20");
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,3,3,300,"X","Comentario 3",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",3,3,300,"X","Comentario 3",dateNow));
 
         date = DateConverter.StringToDateTime("16-03-2021 10:20:20");
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,3,3,300,"X","Comentario 3",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",3,3,300,"X","Comentario 3",dateNow));
 
         //Agosto
         date = DateConverter.StringToDateTime("03-08-2021 10:20:20");
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,3,3,300,"X","Comentario 3",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",3,3,300,"X","Comentario 3",dateNow));
 
         date = DateConverter.StringToDateTime("16-08-2021 10:20:20");
         dateTime = date.getTime();
-        mRepository.insertPaymentToDB(new Payment("1",dateTime,3,3,300,"X","Comentario 3",dateNow));
+        mRepository.insertPaymentToDB(new Payment("1",dateTime,"1","1",3,3,300,"X","Comentario 3",dateNow));
 
     }
 }

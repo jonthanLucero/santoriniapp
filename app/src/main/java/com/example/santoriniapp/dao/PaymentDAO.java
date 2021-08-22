@@ -33,10 +33,13 @@ public interface PaymentDAO
 
     @TypeConverters(DateConverter.class)
     @Query("SELECT * FROM payment_table WHERE paymentdate =:PaymentDate")
-    LiveData<Payment> getPayment(Date PaymentDate);
+    Payment getPayment(Date PaymentDate);
 
     @Query("SELECT * FROM payment_table WHERE strftime('%m', paymentdate / 1000, 'unixepoch') =:month order by paymentdate desc")
     List<Payment> getPaymentsFromMonth(String month);
+
+    @Query("SELECT * FROM payment_table WHERE paymentmonth =:month order by paymentdate desc")
+    List<Payment> getPaymentsFromMonthCode(String month);
 
     @Update
     void updatePayment(Payment payment);

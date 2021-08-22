@@ -10,6 +10,8 @@
     <dimen name="text_size_18sp">18sp</dimen>
     <dimen name="text_size_20sp">20sp</dimen>
     <dimen name="text_size_22sp">22sp</dimen>
+    <dimen name="text_size_42sp">42sp</dimen>
+    <dimen name="text_size_62sp">62sp</dimen>
     <dimen name="dimens_16dp">16dp</dimen>
     <dimen name="dimens_8dp">8dp</dimen>
 

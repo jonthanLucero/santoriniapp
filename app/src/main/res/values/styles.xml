@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -8,14 +8,26 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="NoActionBarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/orange</item>
+        <item name="actionBarStyle">@style/AppActionBar</item>
+    </style>
+
     <style name="UrbanizationMaterialToolbarWithSubtitle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?actionBarSize</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="navigationIcon">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="titleTextColor">@color/material_white_primary</item>
         <item name="subtitleTextColor">@color/material_white_primary</item>
         <item name="elevation">@dimen/dimens_4dp</item>
+
     </style>
 
     <style name="MSV_ImageButton">
@@ -201,6 +213,36 @@
     <style name="UrbanizationMaterialListPrimaryText">
         <item name="android:textSize">@dimen/text_size_14sp</item>
         <item name="android:textColor">@color/material_black_primary</item>
+    </style>
+
+    <!-- Material Spinner -->
+    <style name="UrbanizationMaterialSpinnerLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/material_black_secondary</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+    </style>
+
+    <style name="Inalambrik.Material.Form.TextInputLayout.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/dimens_8dp</item>
+    </style>
+
+    <style name="InalambrikDialogFragmentTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/material_black_primary</item>
+        <item name="android:padding">@dimen/dimens_16dp</item>
+    </style>
+
+    <style name="Inalambrik.Material.Form.TextInputEditText.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+    </style>
+
+    <style name="Inalambrik.PrimaryButton.Borderless.Colored" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/material_primary_light_blue</item>
     </style>
 
 </resources>

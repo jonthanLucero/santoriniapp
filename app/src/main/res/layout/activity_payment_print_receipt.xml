@@ -1,9 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".modules.payment.PaymentPrintReceiptActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.santoriniapp.modules.payment.paymentprintreceipt.PaymentPrintReceiptViewModelReponse"/>
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        tools:context=".modules.payment.paymentprintreceipt.PaymentPrintReceiptActivity"
+        android:background="?attr/selectableItemBackground">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/UrbanizationMaterialToolbarWithSubtitle"
+            app:title="@string/payment_receipt_generated"
+            app:subtitle="@{viewModel.userName}"
+            tools:subtitle="Jonathan de Los Palotes"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- START - First Line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Recibo de Pago"
+                        android:textColor="@color/material_black_primary"
+                        android:textSize="@dimen/text_size_22sp"
+                        tools:text="Recibo de Pago"
+                        android:paddingBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="32dp"
+                        android:textColor="@color/status_sent"
+                        android:text="@{viewModel.paymentNumberString}"
+                        tools:text="# 120"
+                        tools:textColor="@color/status_sent"/>
+
+                </LinearLayout>
+                <!-- END - First Line -->
+
+                <!-- START - Second Line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Lugar y Fecha de Expedición"
+                        android:textSize="16sp"
+                        android:textColor="@color/material_black_secondary"
+                        tools:text="Lugar y Fecha de Expedición"/>
+                </LinearLayout>
+                <!-- END - Second Line -->
+
+                <!-- START - Second Line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.paymentDateString}"
+                        android:textSize="18sp"
+                        android:textColor="@color/material_black_primary"
+                        tools:text="Gquil. 22-Agosto-2021 10:20:20" />
+                </LinearLayout>
+                <!-- END - Second Line -->
+
+                <!-- START - Second Line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Recibi de"
+                        android:textSize="16sp"
+                        android:textColor="@color/material_black_secondary"
+                        tools:text="Recibí de "/>
+                </LinearLayout>
+                <!-- END - Second Line -->
+
+                <!-- START - fifth Line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="18sp"
+                        android:text="@{viewModel.userName}"
+                        android:textColor="@color/material_black_primary"
+                        android:maxLines="3"
+                        android:ellipsize="start"
+                        tools:text="Jonathan Lucero"/>
+                </LinearLayout>
+                <!-- START - fifth Line -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="16sp"
+                        android:text="La Cantidad de $"
+                        android:textColor="@color/material_black_hint"
+                        android:maxLines="3"
+                        android:ellipsize="start"
+                        tools:text="La Cantidad de $"/>
+                </LinearLayout>
+                <!-- END - fifth Line -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="30sp"
+                        android:text="@{viewModel.paymentAmountString}"
+                        android:textColor="@color/material_black_primary"
+                        android:maxLines="3"
+                        android:ellipsize="start"
+                        tools:text="$ 120.34"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="16sp"
+                        android:text="Por Concepto de"
+                        android:textColor="@color/material_black_hint"
+                        android:maxLines="3"
+                        android:ellipsize="start"
+                        tools:text="Por Concepto de"/>
+                </LinearLayout>
+                <!-- END - fifth Line -->
+
+                <!-- START - fifth Line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textSize="18sp"
+                        android:text="@{viewModel.paymentCommentary}"
+                        android:textColor="@color/material_black_primary"
+                        android:maxLines="3"
+                        android:ellipsize="start"
+                        tools:text="Pago de Mes de Febrero con transferencia"/>
+                </LinearLayout>
+                <!-- START - fifth Line -->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/payment_receipt_sign"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:text="Firma"
+                    android:textColor="@color/material_black_primary"
+                    tools:text="Firma"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.25dp"
+            android:background="@color/list_line_separator"/>
+
+        <LinearLayout
+            android:id="@+id/no_content_found"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="40dp"
+            android:gravity="center">
+
+            <!-- Accept Container -->
+            <Button
+                android:id="@+id/action_accept_print"
+                style="@style/Urbanization.PrimaryButton.Colored.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Aceptar"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

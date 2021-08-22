@@ -40,9 +40,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{viewModel.paymentDateString()}"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:text="@{viewModel.paymentMonthToPay}"
                         android:textColor="@color/material_black_primary"
-                        tools:text="2021-Ago-08 12:15:12"
+                        tools:text="Febrero"
                         android:paddingBottom="2dp"/>
 
                     <TextView
@@ -66,10 +68,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{viewModel.itemCountText}"
-                        android:textSize="13sp"
+                        android:text="@{viewModel.paymentDateString()}"
+                        android:textSize="14sp"
                         android:textColor="@color/material_black_secondary"
-                        tools:text="#Ítems: 4"/>
+                        tools:text="Fecha Pago: 22-Ago-2021 10:20:20"/>
                     <TextView
                         android:id="@+id/payment_total"
                         android:layout_width="wrap_content"

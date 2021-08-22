@@ -2,17 +2,12 @@ package com.example.santoriniapp.repository;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.AsyncTask;
-
 import androidx.lifecycle.LiveData;
-
 import com.example.santoriniapp.dao.PaymentDAO;
 import com.example.santoriniapp.database.UrbanizationDatabase;
 import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,12 +42,17 @@ public class PaymentRepository
         new insertPaymentAsyncTask(mPaymentDAO).execute(payment);
     }
 
+    public void updatePaymentToDB(Payment payment)
+    {
+        new updatePaymentAsyncTask(mPaymentDAO).execute(payment);
+    }
+
     public void deletePaymentsFromDB()
     {
         new deleteAllPaymentsAsyncTask(mPaymentDAO).execute();
     }
 
-    public LiveData<Payment> getPayment(Date paymentDate)
+    public Payment getPayment(Date paymentDate)
     {
         return mPaymentDAO.getPayment(paymentDate);
     }
@@ -60,6 +60,11 @@ public class PaymentRepository
     public List<Payment> getAllPaymentByMonth(String month)
     {
         return mPaymentDAO.getPaymentsFromMonth(month);
+    }
+
+    public List<Payment> getAllPaymentByMonthCode(String monthCode)
+    {
+        return mPaymentDAO.getPaymentsFromMonthCode(monthCode);
     }
 
     private static class insertPaymentAsyncTask extends AsyncTask<Payment, Void, Void> {
@@ -73,6 +78,24 @@ public class PaymentRepository
         @Override
         protected Void doInBackground(final Payment... params) {
             mPaymentAsyncTaskDao.insertPayment(params[0]);
+            return null;
+        }
+    }
+
+    private static class updatePaymentAsyncTask extends AsyncTask<Payment,Void,Void>
+    {
+
+        private PaymentDAO mPaymentAsyncTaskDao;
+
+        updatePaymentAsyncTask(PaymentDAO dao)
+        {
+            mPaymentAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Payment... payments)
+        {
+            mPaymentAsyncTaskDao.updatePayment(payments[0]);
             return null;
         }
     }

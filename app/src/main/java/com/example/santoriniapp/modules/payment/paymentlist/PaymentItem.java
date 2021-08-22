@@ -2,11 +2,10 @@ package com.example.santoriniapp.modules.payment.paymentlist;
 
 import com.example.santoriniapp.utils.UrbanizationConstants;
 import com.example.santoriniapp.utils.UrbanizationUtils;
-import com.example.santoriniapp.utils.ViewModel;
 
 import java.util.Date;
 
-public class PaymentItem implements ViewModel
+public class PaymentItem
 {
 
     // Main Variables.
@@ -14,56 +13,26 @@ public class PaymentItem implements ViewModel
     public String paymentStatusText;
 
     public String paymentTotalText;
-    public String itemCountText;
+    public String paymentMonthToPay;
     public String quoteUpdateConvertToOrderStatus;
     public String orderItemQuoteCloseMotiveStatusText;
     public String paymentCommentary;
-    public Date orderDate;
+    public Date paymentDate;
 
-    // ------------------------------------
-    // Status
-    // ------------------------------------
-    public boolean orderQueuetNotSent;
-    public boolean orderQueuetSent;
-    public boolean orderQueuetSending;
-    public boolean orderQueuetPending;
-    public boolean orderQueuetExpirationDays;
-    public boolean orderQueuetNeutral;
-
-    public boolean showQuoteCloseMotiveContainer;
-
-    public boolean quotePendingToClose;
-    public boolean quoteAlreadyClosed;
-
-    public int orderItemQuoteCloseMotiveStatusColor;
 
     // Error Messages.
     public String errorMessage;
 
     public PaymentItem() {
+        paymentDate = new Date();
         paymentDateText = "";
         paymentStatusText = "";
         paymentTotalText = "";
-        itemCountText                       = "";
+        paymentMonthToPay = "";
         quoteUpdateConvertToOrderStatus     = "";
         this.errorMessage                   = "";
         orderItemQuoteCloseMotiveStatusText = "";
         this.paymentCommentary              = "";
-        this.orderDate                      = new Date(0);
-
-        orderQueuetNotSent                 = false;
-        orderQueuetSent                    = false;
-        orderQueuetSending                 = false;
-        orderQueuetPending                 = false;
-        orderQueuetExpirationDays          = false;
-        orderQueuetNeutral                 = false;
-        showQuoteCloseMotiveContainer      = false;
-
-        quotePendingToClose                = false;
-        quoteAlreadyClosed                 = false;
-
-        orderItemQuoteCloseMotiveStatusColor = 0;
-
 
     }
 
@@ -87,6 +56,9 @@ public class PaymentItem implements ViewModel
         if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_APPROVED))              //GREEN
             return UrbanizationUtils.getColor("#3D9C60");
 
+        if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_SENT))                  //ORANGE
+            return UrbanizationUtils.getColor("#FF6F00");
+
         return UrbanizationUtils.getColor("#2196f3");                                         //BLUE
     }
 
@@ -104,6 +76,9 @@ public class PaymentItem implements ViewModel
 
         if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_APPROVED))
             return "Aprobado";
+
+        if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_SENT))
+            return "Enviado";
 
         return "Pendiente";
     }

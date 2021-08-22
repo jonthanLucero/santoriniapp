@@ -12,18 +12,18 @@ public class PaymentListViewModelResponse
     public int currentTimeSpinnerPosition;
     public ArrayList<PaymentDateRowSpinnerItem> paymentListSpinnerList;
     public boolean isReload;
-    public boolean reloadFragmentActivitiesList;
     public String paymentDateRequestCode;
+    public String userName;
 
     public PaymentListViewModelResponse() {
         this.errorMessage   = "";
         this.isLoading      = false;
         this.paymentList = new ArrayList<>();
-        this.reloadFragmentActivitiesList = false;
         this.currentTimeSpinnerPosition = 0;
         this.paymentListSpinnerList=new ArrayList<>();
         this.isReload = false;
         this.paymentDateRequestCode = "";
+        this.userName = "";
     }
     //public String totalCustomer(){ return itemSummary.totalCustomerCount+""; }
 
@@ -34,6 +34,11 @@ public class PaymentListViewModelResponse
     }
     public boolean showContentFound(){
         return  (paymentList.size() >0)?true:false;
+    }
+
+    public String userNameDescription()
+    {
+        return userName;
     }
 
     /*

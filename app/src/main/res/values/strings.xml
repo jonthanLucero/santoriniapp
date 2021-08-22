@@ -18,7 +18,7 @@
     <string name="an_error_has_ocurred_please_try_again">Ha ocurrido un error. Por favor intentar nuevamente.</string>
 
     <!--Payment -->
-    <string name="ww_payment_title">Pagos Realizados</string>
+    <string name="ww_payment_title">Pagos</string>
     <string name="action_search">Buscar</string>
     <string name="payment_list_seach_no_results">No se han encontrado resultados.</string>
     <string name="online_process_can_take_while">Si existe demora, es posible que se encuentre con acceso limitado a la red.</string>
@@ -50,5 +50,20 @@
     <string name="urbanization_add_photo_gallery_no_photos_available">No se han encontrado imágenes</string>
     <string name="payment_spinner_time_label">Período</string>
     <string name="no_records_found_press_to_register">No se encontraron datos. Presione el \"+\" para crear un nuevo registro.</string>
+    <string name="payment_register_amount">Ingresar el monto a pagar.</string>
+    <string name="payment_register_month">Seleccione el mes a pagar</string>
+    <string name="payment_register_type">Seleccione el tipo de pago</string>
+    <string name="action_print_values">Imprimir Recibo</string>
+    <string name="payment_register_title">Registro Pago</string>
+    <string name="payment_register_amount_hint">$ 0.00 </string>
+    <string name="payment_register_commentary">Concepto</string>
+
+    <string name="inalambrik_add_photo_gallery_add_photo_dialog_title">Tomar/Adjuntar Foto</string>
+    <string name="inalambrik_add_photo_gallery_title_label">Título (Opcional)</string>
+    <string name="inalambrik_add_photo_gallery_description_label">Descripción (Opcional)</string>
+    <string name="inalambrik_add_photo_gallery_add_photo">Agregar</string>
+    <string name="payment_sending_information">Guardando y Enviando Pago...</string>
+    <string name="payment_sent_information">Pago Guardado y Enviado Correctamente</string>
+    <string name="payment_receipt_generated">Recibo Generado</string>
 </resources>
 

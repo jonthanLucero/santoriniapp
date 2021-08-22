@@ -1,16 +1,10 @@
 package com.example.santoriniapp.modules.payment.paymentlist;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.santoriniapp.modules.payment.PaymentHelper;
-
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
 import rx.schedulers.Schedulers;
@@ -20,19 +14,19 @@ public class PaymentListViewModel extends ViewModel
 
     private MutableLiveData<PaymentListViewModelResponse> mPanelResponse;
 
-    public LiveData<PaymentListViewModelResponse> getCurrentPaymentListInformation(String requestCode) {
+    public LiveData<PaymentListViewModelResponse> getCurrentPaymentListInformation(String userId,String requestCode) {
 
         // If the response is NULL, then load the INITIAL data...
         if (mPanelResponse == null)
         {
             mPanelResponse = new MutableLiveData<>();
-            loadPaymentListInformation(requestCode,-1);
+            loadPaymentListInformation(userId,requestCode,-1);
         }
 
         return mPanelResponse;
     }
 
-    private void loadPaymentListInformation(final String requestCode, final int selectedPositionSpinner){
+    private void loadPaymentListInformation(final String userId,final String requestCode, final int selectedPositionSpinner){
         final PaymentListViewModelResponse currentStatus = getCurrentPanelResponse();
 
         PaymentListViewModelResponse initialStatus = new PaymentListViewModelResponse();
@@ -47,7 +41,7 @@ public class PaymentListViewModel extends ViewModel
         Observable.defer(new Func0<Observable<PaymentListViewModelResponse>>() {
             @Override
             public Observable<PaymentListViewModelResponse> call()  {
-                return Observable.just(PaymentListViewModelHelper.getPaymentListHeaderAndDetail(requestCode,selectedPositionSpinner));
+                return Observable.just(PaymentListViewModelHelper.getPaymentListHeaderAndDetail(userId,requestCode,selectedPositionSpinner));
             }
         }).subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
                 .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
@@ -62,7 +56,6 @@ public class PaymentListViewModel extends ViewModel
                         response.errorMessage               = "Ha ocurrido un error. Por favor intentar nuevamente.";
                         response.isLoading = false; // Set the Loading Status
                         response.currentTimeSpinnerPosition = currentStatus.currentTimeSpinnerPosition;
-                        //response.salesPersonSummaryTimeCount = currentStatus.salesPersonSummaryTimeCount;
                         mPanelResponse.postValue(response); // This will trigger in the activity.
                     }
 
@@ -72,7 +65,6 @@ public class PaymentListViewModel extends ViewModel
                         response.isLoading = false; // Set the Loading Status
                         if(selectedPositionSpinner != - 1)
                             response.currentTimeSpinnerPosition = currentStatus.currentTimeSpinnerPosition;
-                        //response.salesPersonSummaryTimeCount = currentStatus.salesPersonSummaryTimeCount;
                         mPanelResponse.postValue(response);
 
 
@@ -121,8 +113,8 @@ public class PaymentListViewModel extends ViewModel
     }
 
     // Method to force the reload of the panel (and fragments).
-    public void reloadPanels(String requestCode){
-        loadPaymentListInformation(requestCode,getSelectedPositionSpinner());
+    public void reloadPanels(String userId,String requestCode){
+        loadPaymentListInformation(userId,requestCode,getSelectedPositionSpinner());
     }
 
 

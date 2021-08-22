@@ -3,10 +3,14 @@ package com.example.santoriniapp.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-@Entity(tableName = "paymenttype_table",primaryKeys = {"paymenttypecode"})
+@Entity(tableName = "paymenttype_table")
 public class PaymentType
 {
+    @PrimaryKey(autoGenerate = true)
+    private int _id;
+
     @NonNull
     @ColumnInfo(name = "paymenttypecode")
     private String paymenttypecode;
@@ -18,18 +22,28 @@ public class PaymentType
     private String paymenttypestatus;
 
     @ColumnInfo(name = "paymenttyperequiresphoto")
-    private String paymenttyperequiresphoto;
+    private boolean paymenttyperequiresphoto;
 
     @ColumnInfo(name = "paymenttypemodifiedon")
-    private String paymenttypemodifiedon;
+    private Long paymenttypemodifiedon;
 
     public PaymentType(@NonNull String paymenttypecode, String paymenttypedescription, String paymenttypestatus,
-                       String paymenttyperequiresphoto, String paymenttypemodifiedon) {
+                       boolean paymenttyperequiresphoto, long paymenttypemodifiedon) {
         this.paymenttypecode = paymenttypecode;
         this.paymenttypedescription = paymenttypedescription;
         this.paymenttypestatus = paymenttypestatus;
         this.paymenttyperequiresphoto = paymenttyperequiresphoto;
         this.paymenttypemodifiedon = paymenttypemodifiedon;
+    }
+
+    public int get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(int id)
+    {
+        this._id = id;
     }
 
     @NonNull
@@ -45,11 +59,11 @@ public class PaymentType
         return paymenttypestatus;
     }
 
-    public String getPaymenttyperequiresphoto() {
+    public boolean getPaymenttyperequiresphoto() {
         return paymenttyperequiresphoto;
     }
 
-    public String getPaymenttypemodifiedon() {
+    public Long getPaymenttypemodifiedon() {
         return paymenttypemodifiedon;
     }
 }
