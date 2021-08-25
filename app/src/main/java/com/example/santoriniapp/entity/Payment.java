@@ -63,6 +63,9 @@ public class Payment implements Serializable
         this.paymentmodifiedon = paymentmodifiedon;
     }
 
+    public Payment() {
+    }
+
     public int get_id() {
         return _id;
     }
@@ -74,6 +77,10 @@ public class Payment implements Serializable
     @NonNull
     public String getUserid() {
         return userid;
+    }
+
+    public void setUserid(@NonNull String userid) {
+        this.userid = userid;
     }
 
     @NonNull
@@ -110,6 +117,26 @@ public class Payment implements Serializable
     public void setPaymentstatus(String paymentstatus)
     {
         this.paymentstatus = paymentstatus;
+    }
+
+    public void setPaymentmodifiedon(Long paymentmodifiedon) {
+        this.paymentmodifiedon = paymentmodifiedon;
+    }
+
+    public void setPaymentdate(@NonNull Long paymentdate) {
+        this.paymentdate = paymentdate;
+    }
+
+    public void setPaymentnumber(int paymentnumber) {
+        this.paymentnumber = paymentnumber;
+    }
+
+    public void setPaymentreceiptnumber(int paymentreceiptnumber) {
+        this.paymentreceiptnumber = paymentreceiptnumber;
+    }
+
+    public void setPaymentamount(double paymentamount) {
+        this.paymentamount = paymentamount;
     }
 
     public int getPaymentnumber() {

@@ -67,6 +67,11 @@ public class PaymentRepository
         return mPaymentDAO.getPaymentsFromMonthCode(monthCode);
     }
 
+    public Double getAllPaymentTotalFromMonthCode(String monthCode)
+    {
+        return mPaymentDAO.getPaymentTotalFromMonthCode(monthCode);
+    }
+
     private static class insertPaymentAsyncTask extends AsyncTask<Payment, Void, Void> {
 
         private PaymentDAO mPaymentAsyncTaskDao;

@@ -65,5 +65,7 @@
     <string name="payment_sending_information">Guardando y Enviando Pago...</string>
     <string name="payment_sent_information">Pago Guardado y Enviado Correctamente</string>
     <string name="payment_receipt_generated">Recibo Generado</string>
+    <string name="payment_list_summary">Estado de Cuenta</string>
+    <string name="action_payment_pay">Pagar</string>
 </resources>
 

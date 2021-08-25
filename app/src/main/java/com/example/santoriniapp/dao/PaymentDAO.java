@@ -41,6 +41,10 @@ public interface PaymentDAO
     @Query("SELECT * FROM payment_table WHERE paymentmonth =:month order by paymentdate desc")
     List<Payment> getPaymentsFromMonthCode(String month);
 
+    @Query("SELECT ifnull(sum(paymentamount),0) FROM payment_table WHERE  paymentmonth =:month")
+    Double getPaymentTotalFromMonthCode(String month);
+
+
     @Update
     void updatePayment(Payment payment);
 
