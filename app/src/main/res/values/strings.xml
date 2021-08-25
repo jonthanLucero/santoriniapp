@@ -5,6 +5,8 @@
     <color name="green_strong">#004D40</color>
     <color name="material_white_primary">#FFFFFFFF</color>
 
+    <string name="welcome">Bienvenido</string>
+    <string name="dashboard_menu_text">Cargando Menu Principal...</string>
     <string name="top_icon">TOP ICON</string>
     <string name="email">Correo Electrónico</string>
     <string name="password">Contraseña</string>

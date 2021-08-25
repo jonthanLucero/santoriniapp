@@ -51,10 +51,12 @@
                         android:id="@+id/order_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@{viewModel.paymentStatusBackgroundColor()}"
+                        android:textColor="@color/material_white_primary"
+                        tools:background="@color/status_not_sent"
+                        android:background="@{viewModel.paymentStatusBackgroundColor()}"
                         android:text="@{viewModel.paymentStatusDescription()}"
                         tools:text="Aprobado"
-                        tools:textColor="@color/status_sent"/>
+                        tools:textColor="@color/material_white_primary"/>
 
                 </LinearLayout>
                 <!-- END - First Line -->

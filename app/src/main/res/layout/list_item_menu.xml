@@ -1,0 +1,43 @@
+<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_item_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="2dp"
+    android:layout_weight="1"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="2dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/main_menu_item_icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_person_black_24dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+
+            />
+
+        <TextView
+            android:id="@+id/main_menu_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pagos"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
