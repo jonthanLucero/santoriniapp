@@ -20,13 +20,11 @@ import com.example.santoriniapp.databinding.ActivityPaymentListBinding;
 import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.modules.payment.paymentheader.PaymentActivity;
 import com.example.santoriniapp.utils.DateFunctions;
-import com.example.santoriniapp.utils.NumericFunctions;
 import com.example.santoriniapp.utils.PaymentUtils;
+import com.example.santoriniapp.utils.UrbanizationConstants;
 import com.example.santoriniapp.utils.UrbanizationUtils;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
 import java.util.ArrayList;
-import java.util.Date;
-
 import rx.Subscriber;
 
 
@@ -55,6 +53,11 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
         parms.putString(USER_ID, userId);
         intent.putExtra(PARAMS, parms);
         return intent;
+    }
+
+    public static void launch(Context context, String userId) {
+        Intent intent = launchIntent(context, userId);
+        context.startActivity(intent);
     }
 
     private void getParameters() {
@@ -101,7 +104,8 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
                 mPaymentViewModel = ViewModelProviders.of(mPaymentListActivity).get(DAOPaymentViewModel.class);
                 Payment payment = PaymentUtils.getNewPayment(mUserId);
                 mPaymentViewModel.insertPayment(payment);
-                startActivity(PaymentActivity.launchIntent(PaymentListActivity.this,mUserId,DateFunctions.toDate(payment.getPaymentdate()),"INSERT"));
+                startActivity(PaymentActivity.launchIntent(PaymentListActivity.this,mUserId,
+                        DateFunctions.toDate(payment.getPaymentdate()), UrbanizationConstants.PAYMENT_MODE_INSERT,""));
             }
         });
 
@@ -121,8 +125,7 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
                         mBinding.setViewModel(response);
 
                         setupPaymentDatePickerSpinner(response.paymentListSpinnerList,response.currentTimeSpinnerPosition);
-
-                        //mBinding.toolbar.setSubtitle(response.userName);
+                        mBinding.toolbar.setSubtitle(response.userName);
 
                         // Set the Item List.
                         mAdapter.setItemList(response.paymentList);
@@ -211,6 +214,7 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
 
     @Override
     public void onPaymentItemClick(PaymentItem payment) {
-        startActivity(PaymentActivity.launchIntent(this,mUserId,payment.paymentDate,"UPDATE"));
+        startActivity(PaymentActivity.launchIntent(this,mUserId,payment.paymentDate,
+                UrbanizationConstants.PAYMENT_MODE_UPDATE,""));
     }
 }
