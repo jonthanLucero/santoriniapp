@@ -18,13 +18,13 @@ import com.example.santoriniapp.modules.news.NewsListActivity;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentListActivity;
 import com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryActivity;
 import com.example.santoriniapp.modules.socialclub.SocialClubActivity;
+import com.example.santoriniapp.utils.UrbanizationSessionUtils;
 
 import java.util.ArrayList;
 
 public class DashboardMenuActivityAdapter extends RecyclerView.Adapter<DashboardMenuActivityAdapter.ViewHolder>{
 
     private ArrayList<DashboardMenuItem> menu_items;
-    Context mContext;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public DashboardMenuActivityAdapter(ArrayList<DashboardMenuItem> menu_items) {
@@ -71,7 +71,7 @@ public class DashboardMenuActivityAdapter extends RecyclerView.Adapter<Dashboard
                 intent.putExtra("parms", menu_items.get_parms());
 
                 //TODO Set userID
-                String userId = "1";
+                String userId = UrbanizationSessionUtils.getLoggedUser(mContext);
 
                 //Specific to this class
 
@@ -104,7 +104,7 @@ public class DashboardMenuActivityAdapter extends RecyclerView.Adapter<Dashboard
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
+        // - get element from your dataset at this positionp
         // - replace the contents of the view with that element
 
         final DashboardMenuItem item = menu_items.get(position);

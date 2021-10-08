@@ -9,6 +9,12 @@ public class WSNames
     // NOTE: Add here all new ws urls for Retrofit.
     // ------------------------------------------------
 
-    // Login/Sync WS
+    // Login WS
     public static final String UserLoginWS                  = baseUrl + "UserLoginWS.php";
+
+    // Sync WS
+    public static final String SyncInformationWS            = baseUrl + "SyncInformationWS.php";
+
+    // Payment Send with photos WS
+    public static final String PaymentSendWS                  = baseUrl + "PaymentSendWS.php";
 }

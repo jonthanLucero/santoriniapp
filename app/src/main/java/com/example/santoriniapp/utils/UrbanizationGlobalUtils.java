@@ -20,6 +20,7 @@ public class UrbanizationGlobalUtils extends Application
     private String userid;
     private String userlogin;
     private String userpassword;
+    private int userRememberSession;
 
     public void onCreate()
     {
@@ -213,6 +214,22 @@ public class UrbanizationGlobalUtils extends Application
         SharedPreferences.Editor e = sp.edit();
         e.putString("userpassword", userpassword);
         e.apply();
+    }
+
+    public synchronized void setLoginSession(int value)
+    {
+        userRememberSession = value;
+        SharedPreferences sp = getSharedPreferences("UrbanizationGlobalUtils", MODE_PRIVATE);
+        SharedPreferences.Editor e = sp.edit();
+        e.putInt("remembersession", userRememberSession);
+        e.apply();
+    }
+
+    public synchronized int getLoginSession()
+    {
+        SharedPreferences sp = getSharedPreferences("UrbanizationGlobalUtils", MODE_PRIVATE);
+        userRememberSession = sp.getInt("remembersession", 0);
+        return userRememberSession;
     }
 
     public void loadState()

@@ -33,21 +33,28 @@ public class DashboardMenuActivityViewModel extends ViewModel
         if (mPanelResponse == null)
         {
             mPanelResponse = new MutableLiveData<>();
-            loadPanelData(userId);
+            getDashboardInformation(userId,false);
         }
 
         return mPanelResponse;
     }
 
     public void forceRefreshPanelData(String userId){
-        loadPanelData(userId);
+        getDashboardInformation(userId,false);
     }
 
-    public void loadPanelData(final String userId){
+    public void getDashboardInformation(final String userId,final boolean downloadWS){
 
         // Init Response (Initial Status show the Name and Imei always).
         DashboardMenuActivityViewModelResponse response = new DashboardMenuActivityViewModelResponse();
-        response.isLoading  = true;
+
+        response.isLoading = true;
+        if(downloadWS)
+        {
+            response.isDownloading = true;
+            response.isLoading  = false;
+        }
+
         mPanelResponse.postValue(response);
 
         // Aborting any previous search.
@@ -62,7 +69,7 @@ public class DashboardMenuActivityViewModel extends ViewModel
         this.panelDataSubscription = Observable.defer(new Func0<Observable<DashboardMenuActivityViewModelResponse>>() {
             @Override
             public Observable<DashboardMenuActivityViewModelResponse> call()  {
-                return Observable.just(DashboardMenuActivityViewModelHelper.loadPanelData(userId));
+                return Observable.just(DashboardMenuActivityViewModelHelper.getDashboardInformation(userId,downloadWS));
             }
         }).subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
                 .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
@@ -75,16 +82,24 @@ public class DashboardMenuActivityViewModel extends ViewModel
                     public void onError(Throwable e) {
                         DashboardMenuActivityViewModelResponse response = new DashboardMenuActivityViewModelResponse();
                         response.errorMessage               = "Ha ocurrido un error. Por favor intentar nuevamente.";
-
+                        response.isLoading = false;
+                        response.isDownloading = false;
                         mPanelResponse.postValue(response); // This will trigger in the activity.
                     }
 
                     @Override
                     public void onNext(DashboardMenuActivityViewModelResponse response) {
-                        mPanelResponse.postValue(response);
 
+                        response.isLoading = false;
+                        response.isDownloading = false;
+                        mPanelResponse.postValue(response);
                     }
                 });
+    }
+
+    public void syncInformation(String userId, boolean downloadWS)
+    {
+        getDashboardInformation(userId,downloadWS);
     }
 
     // -------------------------------------

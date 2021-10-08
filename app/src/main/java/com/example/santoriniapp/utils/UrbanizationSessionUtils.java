@@ -7,20 +7,23 @@ import android.util.Log;
 
 public class UrbanizationSessionUtils
 {
-    public final static String LOGGED_IN = "LOGGED_IN";
+    private final static String LOGGED_IN = "LOGGED_IN";
 
-    public static final String PASSWORD                     = "50c9b8b2tls="; // Encripted name for the field Password.
-    public static final String SANTORINI_LOGIN_ENCRIPT_KEY = "SANTORINI_LOGIN_ENCRIPT_KEY";
-    public final static String LOGGED_OFFLINE               = "LOGGED_OFFLINE";
+    private static final String PASSWORD                     = "50c9b8b2tls="; // Encripted name for the field Password.
+    private static final String SANTORINI_LOGIN_ENCRIPT_KEY = "SANTORINI_LOGIN_ENCRIPT_KEY";
+    private final static String LOGGED_OFFLINE               = "LOGGED_OFFLINE";
+    private final static String LOGGED_USER               = "LOGGED_USER";
+    private final static String LOGGED_LOGIN               = "LOGGED_LOGIN";
+    private final static String LOGGED_PASSWORD               = "LOGGED_PASSWORD";
 
-    static SharedPreferences getPreferences(Context context) {
+    private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public static void setLoggedIn(Context context, boolean isLoggedIn){
         if(context == null) return;
 
-        Log.d("UrbanizationSessionUtils","Session is being set to: " + isLoggedIn);
+        Log.d("UrbanizationSessionUtls","Session is being set to: " + isLoggedIn);
 
         SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.putBoolean(LOGGED_IN, isLoggedIn);
@@ -29,8 +32,56 @@ public class UrbanizationSessionUtils
 
     public static boolean isLoggedIn(Context context){
         boolean isLoggedIn = getPreferences(context).getBoolean(LOGGED_IN, false);
-        Log.d("UrbanizationSessionUtils","Session logged: " + isLoggedIn);
+        Log.d("UrbanizationSessionUtls","Session logged: " + isLoggedIn);
         return isLoggedIn;
+    }
+
+    public static void setLoggedUser(Context context, String user){
+        if(context == null) return;
+
+        Log.d("UrbanizationSessionUtls","Session is being set to: " + user);
+
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putString(LOGGED_USER, user);
+        editor.commit();
+    }
+
+    public static String getLoggedUser(Context context){
+        String user = getPreferences(context).getString(LOGGED_USER, "");
+        Log.d("UrbanizationSessionUtls","Session logged: " + user);
+        return user;
+    }
+
+    public static void setLoggedLogin(Context context, String login){
+        if(context == null) return;
+
+        Log.d("UrbanizationSessionUtls","Session is being set to: " + login);
+
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putString(LOGGED_LOGIN, login);
+        editor.commit();
+    }
+
+    public static String getLoggedLogin(Context context){
+        String login = getPreferences(context).getString(LOGGED_LOGIN, "");
+        Log.d("UrbanizationSessionUtls","Session logged: " + login);
+        return login;
+    }
+
+    public static void setLoggedPassword(Context context, String password){
+        if(context == null) return;
+
+        Log.d("UrbanizationSessionUtls","Session is being set to: " + password);
+
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putString(LOGGED_PASSWORD, password);
+        editor.commit();
+    }
+
+    public static String getLoggedPassword(Context context){
+        String password = getPreferences(context).getString(LOGGED_PASSWORD, "");
+        Log.d("UrbanizationSessionUtls","Session logged: " + password);
+        return password;
     }
 
     // -----------------------------------------------------------------------------
@@ -70,7 +121,7 @@ public class UrbanizationSessionUtils
 
     public static void setLoggedOffline(Context context, boolean isLoginOffline){
         if(context == null) return;
-        Log.d("UrbanizationSessionUtils","Session offline: " + isLoginOffline);
+        Log.d("UrbanizationSessionUtls","Session offline: " + isLoginOffline);
         SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.putBoolean(LOGGED_OFFLINE, isLoginOffline);
         editor.commit();
@@ -78,7 +129,7 @@ public class UrbanizationSessionUtils
 
     public static boolean isLoggedOffline(Context context){
         boolean isLoginOffline = getPreferences(context).getBoolean(LOGGED_OFFLINE, false);
-        Log.d("UrbanizationSessionUtils","Session offline: " + isLoginOffline);
+        Log.d("UrbanizationSessionUtls","Session offline: " + isLoginOffline);
         return isLoginOffline;
     }
 }
