@@ -5,6 +5,10 @@
     <color name="green_strong">#004D40</color>
     <color name="material_white_primary">#FFFFFFFF</color>
 
+    <color name="mainColor">#009688</color>
+    <color name="OptionalColor">#00897B</color>
+    <color name="AccentColor">#4DD0E1</color>
+
     <string name="welcome">Bienvenido</string>
     <string name="dashboard_menu_text">Cargando Menu Principal...</string>
     <string name="top_icon">TOP ICON</string>
@@ -16,7 +20,7 @@
     <string name="santorini_title">Santorini App Urbanization</string>
     <string name="or">O</string>
     <string name="entering">Ingresando al sistema... \nPor favor espere</string>
-
+    <string name="sync_information">Sincronizando información del sistema... \nPor favor espere</string>
     <string name="an_error_has_ocurred_please_try_again">Ha ocurrido un error. Por favor intentar nuevamente.</string>
 
     <!--Payment -->
@@ -51,7 +55,7 @@
     <string name="grant_permissions_go_config">IR A AJUSTES</string>
     <string name="urbanization_add_photo_gallery_no_photos_available">No se han encontrado imágenes</string>
     <string name="payment_spinner_time_label">Período</string>
-    <string name="no_records_found_press_to_register">No se encontraron datos. Presione el \"+\" para crear un nuevo registro.</string>
+    <string name="no_records_found_press_to_register">No se encontraron datos. Presione el \"+\" para crear un nuevo pago.</string>
     <string name="payment_register_amount">Ingresar el monto a pagar.</string>
     <string name="payment_register_month">Seleccione el mes a pagar</string>
     <string name="payment_register_type">Seleccione el tipo de pago</string>

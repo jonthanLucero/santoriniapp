@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/OptionalColor</item>
+        <item name="colorPrimaryDark">@color/mainColor</item>
+        <item name="colorAccent">@color/AccentColor</item>
     </style>
 
     <style name="AppActionBar" parent="Widget.AppCompat.ActionBar.Solid">
@@ -13,17 +13,16 @@
     </style>
 
     <style name="NoActionBarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/orange</item>
-        <item name="actionBarStyle">@style/AppActionBar</item>
+        <item name="colorPrimary">@color/OptionalColor</item>
+        <item name="colorPrimaryDark">@color/OptionalColor</item>
+        <item name="colorAccent">@color/AccentColor</item>
     </style>
 
     <style name="UrbanizationMaterialToolbarWithSubtitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="navigationIcon">@drawable/ic_arrow_back_white_24dp</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/OptionalColor</item>
         <item name="titleTextColor">@color/material_white_primary</item>
         <item name="subtitleTextColor">@color/material_white_primary</item>
         <item name="elevation">@dimen/dimens_4dp</item>
@@ -57,7 +56,7 @@
         <item name="elevation">@dimen/fab_resting_elevation</item>
         <item name="pressedTranslationZ">@dimen/fab_pressed_elevation</item>
         <item name="android:layout_margin">@dimen/fab_margin</item>
-        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="backgroundTint">@color/AccentColor</item>
         <item name="android:layout_gravity">bottom|end</item>
         <item name="tint">@color/material_white_primary</item>
     </style>
