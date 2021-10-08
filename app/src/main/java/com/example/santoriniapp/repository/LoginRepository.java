@@ -1,6 +1,7 @@
 package com.example.santoriniapp.repository;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -8,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import com.example.santoriniapp.dao.LoginDAO;
 import com.example.santoriniapp.database.UrbanizationDatabase;
 import com.example.santoriniapp.entity.Login;
+import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
 
 import java.util.List;
 
@@ -21,6 +23,13 @@ public class LoginRepository
         UrbanizationDatabase db = UrbanizationDatabase.getDatabase(application);
         mLoginDAO = db.loginDAO();
         mAllLogins = mLoginDAO.getAllLogins();
+    }
+
+    public LoginRepository()
+    {
+        Context context = UrbanizationGlobalUtils.getInstance();
+        UrbanizationDatabase db = UrbanizationDatabase.getDatabase(context);
+        mLoginDAO = db.loginDAO();
     }
 
     public LiveData<List<Login>> getAllLogins() {
@@ -39,6 +48,26 @@ public class LoginRepository
     public LiveData<Login> getLogin(String userId)
     {
         return mLoginDAO.getLogin(userId);
+    }
+
+    public String getLoginName(String userId)
+    {
+        return mLoginDAO.getUserName(userId);
+    }
+
+    public String getLoginTaxPayerId(String userId)
+    {
+        return mLoginDAO.getUserTaxPayerId(userId);
+    }
+
+    public String getUserLoginName()
+    {
+        return mLoginDAO.getLoginUserName();
+    }
+
+    public String getLoginUserTaxPayerId()
+    {
+        return mLoginDAO.getLoginUserTaxPayerId();
     }
 
     private static class insertLoginAsyncTask extends AsyncTask<Login, Void, Void> {

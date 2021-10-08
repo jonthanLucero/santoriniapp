@@ -34,6 +34,9 @@ public class Login implements Serializable
     @ColumnInfo(name = "usertaxpayerid")
     private String usertaxpayerid;
 
+    @ColumnInfo(name = "userphotourl")
+    private String userphotourl;
+
     @TypeConverters(DateConverter.class)
     @ColumnInfo(name = "usermodifiedon")
     private String usermodifiedon;
@@ -44,7 +47,7 @@ public class Login implements Serializable
     }
 
     public Login(@NonNull String userid, String userlogin, String userpassword,
-                 String userstatus, String username, String usertaxpayerid) {
+                 String userstatus, String username, String usertaxpayerid,String userphotourl) {
         this.userid = userid;
         this.userlogin = userlogin;
         this.userpassword = userpassword;
@@ -52,6 +55,7 @@ public class Login implements Serializable
         this.username = username;
         this.usertaxpayerid = usertaxpayerid;
         this.usermodifiedon = StringFunctions.toString(DateFunctions.today().getTime());
+        this.userphotourl = userphotourl;
     }
 
     public int getId() {
@@ -91,6 +95,8 @@ public class Login implements Serializable
         return usermodifiedon;
     }
 
+    public String getUserphotourl(){return userphotourl;}
+
     public void setUserid(@NonNull String userid) {
         this.userid = userid;
     }
@@ -118,4 +124,6 @@ public class Login implements Serializable
     public void setUsermodifiedon(String usermodifiedon) {
         this.usermodifiedon = usermodifiedon;
     }
+
+    public void setUserphotourl(String userphotourl){this.userphotourl = userphotourl;}
 }

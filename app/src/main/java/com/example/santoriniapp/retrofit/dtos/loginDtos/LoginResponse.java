@@ -25,11 +25,10 @@ public class LoginResponse
     @Expose
     private String ErrorMessage;
 
-    /*
-    @SerializedName("Payments")
+    @SerializedName("PaymentTypeList")
     @Expose
-    private String Payments;
-    */
+    private String PaymentTypeList;
+
 
     // ----------------------------------
     // Getters
@@ -56,7 +55,7 @@ public class LoginResponse
         return UserPhotoURL;
     }
 
-
+    public String getPaymentTypeList(){return PaymentTypeList;}
 
 
     // ----------------------------------
@@ -79,5 +78,7 @@ public class LoginResponse
     //public void setUserPhotoURL(String userPhotoURL) { UserPhotoURL = userPhotoURL; }
 
     public void setUserTaxPayerId(String userTaxPayerId) { UserTaxPayerId = userTaxPayerId; }
+
+    public void  setPaymentTypeList(String paymentTypeList){PaymentTypeList = paymentTypeList;}
 
 }

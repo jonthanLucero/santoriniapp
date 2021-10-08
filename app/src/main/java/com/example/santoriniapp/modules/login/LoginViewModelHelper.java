@@ -2,14 +2,15 @@ package com.example.santoriniapp.modules.login;
 
 import android.content.Context;
 
-import com.example.santoriniapp.entity.Login;
+import com.example.santoriniapp.entity.PaymentType;
 import com.example.santoriniapp.repository.LoginRepository;
+import com.example.santoriniapp.repository.PaymentTypeRepository;
 import com.example.santoriniapp.retrofit.ApiInterface;
 import com.example.santoriniapp.retrofit.ServiceGenerator;
 import com.example.santoriniapp.retrofit.dtos.loginDtos.LoginRequest;
 import com.example.santoriniapp.retrofit.dtos.loginDtos.LoginResponse;
-import com.example.santoriniapp.retrofit.dtos.loginDtos.PaymentDetailListSDT;
-import com.example.santoriniapp.retrofit.dtos.loginDtos.PaymentListSDT;
+import com.example.santoriniapp.retrofit.dtos.syncDtos.PaymentTypeListSDT;
+import com.example.santoriniapp.utils.DateFunctions;
 import com.example.santoriniapp.utils.UrbanizationConstants;
 import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
 import com.example.santoriniapp.utils.UrbanizationSessionUtils;
@@ -67,20 +68,10 @@ public class LoginViewModelHelper
                 return mResponse;
             }
 
-            //Set PaymentHeader List
-            /*
-            ArrayList<PaymentListSDT> paymentListSDT = (ArrayList<PaymentListSDT>)
-                    UrbanizationUtils.fromJson(wsResponse.getPayments(),new TypeToken<ArrayList<PaymentListSDT>>(){}.getType());
-            */
-
             String userId         = wsResponse.getUserId().trim();
             String userName       = wsResponse.getUserName().trim();
             String userTaxPayerId = wsResponse.getUserTaxPayerId().trim();
             String userPhotoURL   = wsResponse.getUserPhotoURL().trim();
-
-
-            //TODO Setting in DB
-
 
             //  --------------------------
             //  Setting login was correct
@@ -94,6 +85,28 @@ public class LoginViewModelHelper
 
             //Save User in DB
             loginRepository.insertLoginToDB(LoginUtils.loginToSave(userId,userLogin,passwordLogin,userName,userTaxPayerId,userPhotoURL));
+
+            //Set PaymentType List information
+            ArrayList<PaymentTypeListSDT> paymentTypeListCollectionSDT = (ArrayList<PaymentTypeListSDT>)
+                    UrbanizationUtils.fromJson(wsResponse.getPaymentTypeList(),new TypeToken<ArrayList<PaymentTypeListSDT>>(){}.getType());
+
+            //Delete paymenttype information
+            PaymentTypeRepository paymentTypeRepository = new PaymentTypeRepository();
+            paymentTypeRepository.deletePaymentTypessFromDB();
+
+            Long dateNow = DateFunctions.today().getTime();
+
+            //Save all paymentTypes
+            for(PaymentTypeListSDT paymentType : paymentTypeListCollectionSDT)
+            {
+                //Save paymenttype in db
+                paymentTypeRepository.insertPaymentTypeToDB(
+                        new PaymentType(paymentType.getPaymentTypeCode(),
+                                paymentType.getPaymentTypeName(),
+                                UrbanizationConstants.PAYMENTTYPESTATUS_ACTIVE,
+                                paymentType.getPaymentTypeRequiresPhoto() == 1,dateNow));
+            }
+
             return  mResponse;
 
 

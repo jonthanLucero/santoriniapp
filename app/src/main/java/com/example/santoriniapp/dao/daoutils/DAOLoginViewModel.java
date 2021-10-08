@@ -28,6 +28,11 @@ public class DAOLoginViewModel extends AndroidViewModel {
         return mRepository.getLogin(userId);
     }
 
+    public String getLoginName(String userId)
+    {
+        return mRepository.getLoginName(userId);
+    }
+
     public void insertLogin(Login login) { mRepository.insertLoginToDB(login); }
 
     public void insertDummyLogins()
@@ -36,8 +41,8 @@ public class DAOLoginViewModel extends AndroidViewModel {
         mRepository.deleteLoginsFromDB();
 
         //Insert record
-        mRepository.insertLoginToDB(new Login("1","jlucero","123","A","Jonathan Lucero","111"));
-        mRepository.insertLoginToDB(new Login("2","jlopez","123","A","Jose Lopez","222"));
-        mRepository.insertLoginToDB(new Login("3","jlana","123","A","Juan Lana ","333"));
+        mRepository.insertLoginToDB(new Login("1","jlucero","123","A","Jonathan Lucero","111",""));
+        mRepository.insertLoginToDB(new Login("2","jlopez","123","A","Jose Lopez","222",""));
+        mRepository.insertLoginToDB(new Login("3","jlana","123","A","Juan Lana ","333",""));
     }
 }
