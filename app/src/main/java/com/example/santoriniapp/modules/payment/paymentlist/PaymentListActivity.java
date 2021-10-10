@@ -171,7 +171,7 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
                 int selectedPosition = integer;
                 mViewModel.setSelectedPositionSpinner(selectedPosition);
                 if (mViewModel.isReload())
-                    reload();
+                    reload(false);
             }
         });
     }
@@ -190,17 +190,23 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
             onBackPressed();
             return true;
         }
-        if(itemId == R.id.refresh_payments_from_ws){
-            reload();
+        if(itemId == R.id.refresh_payments_from_ws)
+        {
+            reload(true);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void reload() {
-        if (mViewModel==null)return;
-        mViewModel.reloadPanels(mUserId,mViewModel.getSelectedPositionItemRequestCode());
+    private void reload(boolean downloadFromWS)
+    {
+        if(mViewModel == null) return;
+        if(mViewModel.isDownloadingFromWS()) {
+            Toast.makeText(this,"Por favor espere. Descarga en proceso...",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mViewModel.reloadPanels(mUserId,mViewModel.getSelectedPositionItemRequestCode(),downloadFromWS);
     }
 
     @Override
@@ -208,7 +214,7 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
         super.onResume();
         if(mViewModel == null)return;
         if(!firstLoad)
-            mViewModel.reloadPanels(mUserId,mViewModel.getSelectedPositionItemRequestCode());
+            mViewModel.reloadPanels(mUserId,mViewModel.getSelectedPositionItemRequestCode(),false);
         firstLoad = false;
     }
 

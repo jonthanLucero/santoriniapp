@@ -1,4 +1,4 @@
-package com.example.santoriniapp.retrofit.dtos.loginDtos;
+package com.example.santoriniapp.retrofit.dtos.paymentDtos;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,13 +9,21 @@ public class PaymentListSDT
     @Expose
     private String PaymentDate;
 
+    @SerializedName("PaymentMonth")
+    @Expose
+    private String PaymentMonth;
+
+    @SerializedName("PaymentTypeCode")
+    @Expose
+    private String PaymentTypeCode;
+
     @SerializedName("PaymentNumber")
     @Expose
     private Integer PaymentNumber;
 
     @SerializedName("PaymentReceiptNumber")
     @Expose
-    private long PaymentReceiptNumber;
+    private Integer PaymentReceiptNumber;
 
     @SerializedName("PaymentStatus")
     @Expose
@@ -35,6 +43,8 @@ public class PaymentListSDT
     public String getPaymentDate() {
         return PaymentDate;
     }
+    public String getPaymentMonth(){return PaymentMonth;}
+    public String getPaymentTypeCode(){return PaymentTypeCode;}
     public Integer getPaymentNumber(){ return PaymentNumber;}
     public String getPaymentStatus() {
         return PaymentStatus;
@@ -42,7 +52,7 @@ public class PaymentListSDT
     public Double getPaymentAmount() {
         return PaymentAmount;
     }
-    public long getPaymentReceiptNumber() {
+    public Integer getPaymentReceiptNumber() {
         return PaymentReceiptNumber;
     }
     public String getPaymentMemo() {
@@ -63,7 +73,7 @@ public class PaymentListSDT
         PaymentAmount = paymentAmount;
     }
 
-    public void setPaymentReceiptNumber(long paymentReceiptNumber) {
+    public void setPaymentReceiptNumber(int paymentReceiptNumber) {
         PaymentReceiptNumber = paymentReceiptNumber;
     }
     public void setPaymentMemo(String paymentMemo) {

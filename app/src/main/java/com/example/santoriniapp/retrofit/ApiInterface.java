@@ -4,6 +4,8 @@ import com.example.santoriniapp.retrofit.dtos.loginDtos.LoginRequest;
 import com.example.santoriniapp.retrofit.dtos.loginDtos.LoginResponse;
 import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentRequest;
 import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentResponse;
+import com.example.santoriniapp.retrofit.dtos.paymentListDtos.PaymentListRequest;
+import com.example.santoriniapp.retrofit.dtos.paymentListDtos.PaymentListResponse;
 import com.example.santoriniapp.retrofit.dtos.syncDtos.SyncInformationRequest;
 import com.example.santoriniapp.retrofit.dtos.syncDtos.SyncInformationResponse;
 import com.google.gson.JsonObject;
@@ -27,4 +29,7 @@ public interface ApiInterface
 
     @POST(WSNames.PaymentSendWS)
     Call<PaymentResponse> paymentSendWS(@Body PaymentRequest request);
+
+    @POST(WSNames.SyncPaymentInformationWS)
+    Call<PaymentListResponse> syncPaymentInformationWS(@Body PaymentListRequest request);
 }

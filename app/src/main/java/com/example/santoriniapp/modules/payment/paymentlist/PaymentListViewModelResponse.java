@@ -12,6 +12,7 @@ public class PaymentListViewModelResponse
     public int currentTimeSpinnerPosition;
     public ArrayList<PaymentDateRowSpinnerItem> paymentListSpinnerList;
     public boolean isReload;
+    public boolean isDownloadingFromWS;
     public String paymentDateRequestCode;
     public String userName;
 
@@ -24,6 +25,7 @@ public class PaymentListViewModelResponse
         this.isReload = false;
         this.paymentDateRequestCode = "";
         this.userName = "";
+        this.isDownloadingFromWS = false;
     }
     //public String totalCustomer(){ return itemSummary.totalCustomerCount+""; }
 

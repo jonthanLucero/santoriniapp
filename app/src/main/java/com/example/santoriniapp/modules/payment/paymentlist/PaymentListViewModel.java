@@ -20,13 +20,13 @@ public class PaymentListViewModel extends ViewModel
         if (mPanelResponse == null)
         {
             mPanelResponse = new MutableLiveData<>();
-            loadPaymentListInformation(userId,requestCode,-1);
+            loadPaymentListInformation(userId,requestCode,-1,false);
         }
 
         return mPanelResponse;
     }
 
-    private void loadPaymentListInformation(final String userId,final String requestCode, final int selectedPositionSpinner){
+    private void loadPaymentListInformation(final String userId,final String requestCode, final int selectedPositionSpinner, final boolean downloadFromWS){
         final PaymentListViewModelResponse currentStatus = getCurrentPanelResponse();
 
         PaymentListViewModelResponse initialStatus = new PaymentListViewModelResponse();
@@ -41,7 +41,7 @@ public class PaymentListViewModel extends ViewModel
         Observable.defer(new Func0<Observable<PaymentListViewModelResponse>>() {
             @Override
             public Observable<PaymentListViewModelResponse> call()  {
-                return Observable.just(PaymentListViewModelHelper.getPaymentListHeaderAndDetail(userId,requestCode,selectedPositionSpinner));
+                return Observable.just(PaymentListViewModelHelper.getPaymentListHeaderAndDetail(userId,requestCode,selectedPositionSpinner,downloadFromWS));
             }
         }).subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
                 .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
@@ -113,152 +113,18 @@ public class PaymentListViewModel extends ViewModel
     }
 
     // Method to force the reload of the panel (and fragments).
-    public void reloadPanels(String userId,String requestCode){
-        loadPaymentListInformation(userId,requestCode,getSelectedPositionSpinner());
+    public void reloadPanels(String userId,String requestCode,boolean downloadFromWS){
+        loadPaymentListInformation(userId,requestCode,getSelectedPositionSpinner(),downloadFromWS);
     }
 
-
-    /*
-    public static String TAG = "PaymentListViewModel";
-
-    private MutableLiveData<PaymentListViewModelResponse> mResponse;
-
-    private String mTextToSearch = "";
-
-    private Subscription searchSubscription;
-    private Subscription downloadSubscription;
-
-    // ----------------------------------------------------------------------------------
-    // Method called from Activity with OBSERVER (to detect changes).
-    // Returns the response to the Activity.
-    // ----------------------------------------------------------------------------------
-    public LiveData<PaymentListViewModelResponse> getPaymentPanelCurrentStatus(String customerCode) {
-
-        // If the response is NULL, then make the request...
-        if (mResponse == null)
-        {
-            mResponse       = new MutableLiveData<>();
-            mTextToSearch   = ""; // Be default empty string.
-            loadPaymentList(customerCode,mTextToSearch,false);
-        }
-
-        return mResponse;
-    }
-
-    // ----------------------------------------------------------------------------------
-    // Method called from Activity.
-    // Used to force Load of the list. Will be called when "Refresh" in the Activity is pressed.
-    // ----------------------------------------------------------------------------------
-    public void reloadList(String customerCode,boolean forceSearch, String newTextToSearch){
-        if(forceSearch || !mTextToSearch.equalsIgnoreCase(newTextToSearch)) {
-            mTextToSearch = newTextToSearch;
-            loadPaymentList(customerCode,mTextToSearch,false);
-        }
-    }
-
-    // ----------------------------------------------------------------------------------
-    // Method called from Activity.
-    // Loads from WS.
-    // ----------------------------------------------------------------------------------
-    public void loadFromWS(String customerCode){
-        mTextToSearch = "";
-        loadPaymentList(customerCode,mTextToSearch,true);
-    }
-
-    // ----------------------------------------------------------------------------------
-    // Method that load the response (Load List from DB)
-    // ----------------------------------------------------------------------------------
-    private void loadPaymentList(final String customerCode, final String textToSearch, final boolean loadFromWs) {
-
-        // Set Initial Status...
-        PaymentListViewModelResponse initialStatus = new PaymentListViewModelResponse();
-        initialStatus.isLoading             = true; // Set the Loading Status
-        //initialStatus.isDownloadingFromWS   = loadFromWs;
-        mResponse.postValue(initialStatus); // This will trigger the activity.
-
-        // Aborting any previous search.
-        if (this.searchSubscription != null && !this.searchSubscription.isUnsubscribed()) {
-            Log.d(TAG, "SearchSubscription has been forced stopped, to be restarted...");
-            this.searchSubscription.unsubscribe();
-        }
-
-        // Began to load the data.
-        this.searchSubscription = Observable.defer(
-                new Func0<Observable<PaymentListViewModelResponse>>() {
-                    @Override
-                    public Observable<PaymentListViewModelResponse> call() {
-                        return Observable.just(PaymentHelper.getPaymentList(customerCode,textToSearch,loadFromWs));
-                    }
-                })
-                .subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
-                .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
-                .subscribe(new Subscriber<PaymentListViewModelResponse>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        PaymentListViewModelResponse response = new PaymentListViewModelResponse();
-                        response.isLoading              = false;
-                        //response.isDownloadingFromWS    = false;
-                        response.errorMessage           = "Ha ocurrido un error. Por favor intentar nuevamente.";
-                        mResponse.postValue(response); // This will trigger the activity.
-                    }
-
-                    @Override
-                    public void onNext(PaymentListViewModelResponse response) {
-                        Log.i(TAG,"VIEWMODEL: loadOrderFollowUpList() ends FINE...");
-                        response.isLoading              = false;
-                        //response.isDownloadingFromWS    = false;
-                        mResponse.postValue(response); // This will trigger the activity.
-                    }
-                });
-    }
-    */
-
-
-    // ----------------------------------------------------------------
-    //  Getters
-    // ----------------------------------------------------------------
-
-    /*
     public boolean isDownloadingFromWS(){
+        if(mPanelResponse != null && mPanelResponse.getValue() != null)
+            return mPanelResponse.getValue().isDownloadingFromWS;
         return false;
-
-        if(mResponse != null && mResponse.getValue() != null)
-            return mResponse.getValue().isDownloadingFromWS;
-        return false;
-
-
     }
-
-    public String getTextToSearch(){
-        if(mTextToSearch != null)
-            return mTextToSearch;
-        return "";
-    }
-
-    // ----------------------------------------------------------------
-    //  Reset
-    // ----------------------------------------------------------------
-    public void resetErrorMessage(){
-        if(mResponse != null && mResponse.getValue() != null)
-            mResponse.getValue().errorMessage = "";
-    }
-
-    public void resetErrorMessageFromLoadingFromWS(){
-        if(mResponse != null && mResponse.getValue() != null)
-            mResponse.getValue().errorMessage="";// errorMessageFromLoadingFromWS = "";
-    }
-
-
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        Log.i(TAG,"VIEWMODEL: OnCleared is called...");
     }
-    */
 }

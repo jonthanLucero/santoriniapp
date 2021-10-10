@@ -29,7 +29,7 @@
             android:paddingLeft="@dimen/dimens_13sp"
             android:paddingBottom="@dimen/dimens_13sp"
             android:orientation="vertical"
-            android:background="@color/colorPrimary">
+            android:background="@color/OptionalColor">
 
             <TextView
                 android:id="@+id/customer_address_ship_label"

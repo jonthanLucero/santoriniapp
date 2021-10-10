@@ -16,5 +16,8 @@ public class WSNames
     public static final String SyncInformationWS            = baseUrl + "SyncInformationWS.php";
 
     // Payment Send with photos WS
-    public static final String PaymentSendWS                  = baseUrl + "PaymentSendWS.php";
+    public static final String PaymentSendWS                = baseUrl + "PaymentSendWS.php";
+
+    // Payment Sync Information
+    public static final String SyncPaymentInformationWS     = baseUrl + "PaymentSyncWS.php";
 }
