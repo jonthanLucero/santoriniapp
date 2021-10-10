@@ -112,6 +112,9 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
                         // Set the Binding.
                         mBinding.setViewModel(response);
 
+                        // Refresh the Menu Buttons.
+                        refreshMenuOptions();
+
                         // -----------------------------------------------------------------------
                         //  Payment SENT successfully.
                         // ----------------------------------------l-------------------------------
@@ -135,8 +138,6 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
                             showErrorDialog(response.errorMessage.trim());
                             mViewModel.resetErrorMessage();
                         }
-
-                        checkMenuOptions(response);
                     }
                 });
 
@@ -274,13 +275,26 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
         if(mSavePaymentAction == null)return;
         if(mDeletePaymentAction == null)return;
 
-        mSavePaymentAction.setVisible(true);
+        mSavePaymentAction.setVisible(false);
         mDeletePaymentAction.setVisible(false);
-        if(response.isPaymentSent || response.isSendingPayment || response.isDisplayMode)
-        {
-            mSavePaymentAction.setVisible(false);
+        if(response.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING)) {
+            mSavePaymentAction.setVisible(true);
             mDeletePaymentAction.setVisible(false);
         }
+    }
+
+    private void refreshMenuOptions() {
+        //Check if one action menu is available
+        if (mSavePaymentAction == null || mBinding == null || mViewModel == null)
+            return;
+
+        // Setting Menu Actions label.
+        PaymentActivityViewModelResponse currentResponse = mViewModel.getCurrentPanelResponse();
+        boolean showSavePaymentAction   = currentResponse.showSavePaymentAction();
+        boolean showDeletePaymentAction = currentResponse.showDeletePaymentAction();
+        mSavePaymentAction.setVisible(showSavePaymentAction);
+        mDeletePaymentAction.setVisible(showDeletePaymentAction);
+
     }
 
     private void setupPaymentTypePickerSpinner(final ArrayList<PaymentTypeItem> paymentTypeSpinnerList, int selectedPosition)

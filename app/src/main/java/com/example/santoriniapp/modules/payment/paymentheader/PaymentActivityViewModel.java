@@ -55,17 +55,11 @@ public class PaymentActivityViewModel extends ViewModel
                         response.paymentTimeSpinnerPosition = currentStatus.paymentTimeSpinnerPosition;
                         response.paymentTypeSpinnerPosition = currentStatus.paymentTypeSpinnerPosition;
                         mPanelResponse.postValue(response); // This will trigger in the activity.
-
-                        mPanelResponse.postValue(response); // This will trigger in the activity.
                     }
 
                     @Override
                     public void onNext(PaymentActivityViewModelResponse response) {
                         // Show the Loading Status in UI.
-
-                        //if(selectedPaymentTypePositionSpinner != -1)
-                        //    response.paymentTypeSpinnerPosition = currentStatus.paymentTypeSpinnerPosition;
-
                         mPanelResponse.postValue(response);
                     }
                 });

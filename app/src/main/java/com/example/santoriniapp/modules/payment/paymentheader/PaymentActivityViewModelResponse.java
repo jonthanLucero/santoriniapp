@@ -103,20 +103,11 @@ public class PaymentActivityViewModelResponse
         return this.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_APPROVED);
     }
 
-
-    public boolean showActionReceivedValues(){
-        return !(paymentIsSent());
-    }
-
-
-    public boolean showActionApplyValues(){
-        return showActionReceivedValues();
-    }
     public boolean showSavePaymentAction(){
-        return showActionReceivedValues();
+        return paymentIsPending();
     }
     public boolean showDeletePaymentAction(){
-        return showActionReceivedValues();
+        return false;
     }
 
 
