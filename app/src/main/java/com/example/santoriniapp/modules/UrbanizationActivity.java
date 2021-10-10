@@ -1,10 +1,12 @@
-package com.example.santoriniapp;
+package com.example.santoriniapp.modules;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.santoriniapp.R;
+
+public class UrbanizationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

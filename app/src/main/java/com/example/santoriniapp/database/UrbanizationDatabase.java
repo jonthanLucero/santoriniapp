@@ -11,10 +11,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.santoriniapp.dao.LoginDAO;
 import com.example.santoriniapp.dao.PaymentDAO;
 import com.example.santoriniapp.dao.PaymentDetailDAO;
+import com.example.santoriniapp.dao.PaymentPhotoDAO;
 import com.example.santoriniapp.dao.PaymentTypeDAO;
 import com.example.santoriniapp.entity.Login;
 import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.entity.PaymentDetail;
+import com.example.santoriniapp.entity.PaymentPhoto;
 import com.example.santoriniapp.entity.PaymentType;
 
 import java.util.concurrent.ExecutorService;
@@ -24,7 +26,9 @@ import java.util.concurrent.Executors;
         Login.class,
         Payment.class,
         PaymentDetail.class,
-        PaymentType.class
+        PaymentType.class,
+        PaymentPhoto.class
+
 }, version = 1, exportSchema = false)
 public abstract class UrbanizationDatabase extends RoomDatabase
 {
@@ -32,6 +36,7 @@ public abstract class UrbanizationDatabase extends RoomDatabase
     public abstract PaymentDAO paymentDAO ();
     public abstract PaymentDetailDAO paymentDetailDAO ();
     public abstract PaymentTypeDAO paymentTypeDAO ();
+    public abstract PaymentPhotoDAO paymentPhotoDAO();
 
     private static UrbanizationDatabase INSTANCE;
 
