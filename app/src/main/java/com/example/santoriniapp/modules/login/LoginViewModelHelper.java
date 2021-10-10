@@ -1,7 +1,7 @@
 package com.example.santoriniapp.modules.login;
 
 import android.content.Context;
-
+import android.util.Log;
 import com.example.santoriniapp.entity.PaymentType;
 import com.example.santoriniapp.repository.LoginRepository;
 import com.example.santoriniapp.repository.PaymentTypeRepository;
@@ -15,10 +15,9 @@ import com.example.santoriniapp.utils.UrbanizationConstants;
 import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
 import com.example.santoriniapp.utils.UrbanizationSessionUtils;
 import com.example.santoriniapp.utils.UrbanizationUtils;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 
 public class LoginViewModelHelper
@@ -40,7 +39,7 @@ public class LoginViewModelHelper
         LoginRequest request = new LoginRequest();
         request.setUserLogin(userLogin);
         request.setUserPassword(passwordLogin);
-
+        Log.d("LOG_TAG","REQUEST=>"+new Gson().toJson(request));
 
         try {
             //  -----------------------------------------------------------------------------------
@@ -63,6 +62,7 @@ public class LoginViewModelHelper
 
             // If server returned an error...
 
+
             if(!wsResponse.getErrorMessage().trim().isEmpty()) {
                 mResponse.errorMessage = wsResponse.getErrorMessage().trim();
                 return mResponse;
@@ -76,15 +76,20 @@ public class LoginViewModelHelper
             //  --------------------------
             //  Setting login was correct
             //  --------------------------
+
             mResponse.errorMessage = "";
             UrbanizationSessionUtils.setLoggedIn(context,true);
             UrbanizationSessionUtils.setLoggedUser(context,userId);
+            UrbanizationSessionUtils.setLoggedLogin(context,userLogin);
+            UrbanizationSessionUtils.setLoggedPassword(context,passwordLogin);
+
 
             //Delete login table then save the data
             loginRepository.deleteLoginsFromDB();
 
             //Save User in DB
             loginRepository.insertLoginToDB(LoginUtils.loginToSave(userId,userLogin,passwordLogin,userName,userTaxPayerId,userPhotoURL));
+
 
             //Set PaymentType List information
             ArrayList<PaymentTypeListSDT> paymentTypeListCollectionSDT = (ArrayList<PaymentTypeListSDT>)
@@ -114,29 +119,6 @@ public class LoginViewModelHelper
             e.printStackTrace();
             mResponse.errorMessage = "No se pudo contactar Servidor. Por favor intentar nuevamente.";
             return  mResponse;
-        }
-        finally {
-            if(userLogin.equalsIgnoreCase(UrbanizationConstants.DEBUG_USER) &&
-                passwordLogin.equalsIgnoreCase(UrbanizationConstants.DEBUG_PASSWORD))
-            {
-                mResponse.errorMessage = "";
-                //Delete login table then save the data
-                loginRepository.deleteLoginsFromDB();
-
-                String userId         = UrbanizationConstants.DEBUG_USER_ID;
-                String userName       = UrbanizationConstants.DEBUG_USER_NAME;
-                String userTaxPayerId = UrbanizationConstants.DEBUG_USER_TAXPAYERID;
-                String userPhotoURL   = UrbanizationConstants.DEBUG_USERPHOTOURL;
-
-                //Save User in DB
-                loginRepository.insertLoginToDB(LoginUtils.loginToSave(userId,userLogin,passwordLogin,userName,userTaxPayerId,userPhotoURL));
-                mResponse.errorMessage = "";
-
-                UrbanizationSessionUtils.setLoggedIn(context,true);
-                UrbanizationSessionUtils.setLoggedUser(context,userId);
-
-                return  mResponse;
-            }
         }
     }
 
