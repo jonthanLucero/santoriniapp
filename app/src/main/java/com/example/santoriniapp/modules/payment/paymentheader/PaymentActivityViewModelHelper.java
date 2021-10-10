@@ -120,8 +120,6 @@ public class PaymentActivityViewModelHelper
 
     public static PaymentActivityViewModelResponse sendPaymentToServer(Date payymentDate,PaymentActivityViewModelResponse currentResponse)
     {
-        PaymentActivityViewModelResponse response = new PaymentActivityViewModelResponse();
-
         // -----------------------------------------------------------
         // Convert what it is in the view to a prospect_class.
         // -----------------------------------------------------------
@@ -202,7 +200,6 @@ public class PaymentActivityViewModelHelper
             }
         }
 
-
         // Update Current Prospect Status in the ViewModel.
         currentResponse.paymentStatus = paymentToBeSaved.getPaymentstatus();
 
@@ -250,8 +247,8 @@ public class PaymentActivityViewModelHelper
                 return currentResponse;
             }
 
-            response.isPaymentSent = true;
-            response.monthCodeToBlock = paymentToBeSaved.getPaymentmonth();
+            currentResponse.isPaymentSent = true;
+            currentResponse.monthCodeToBlock = paymentToBeSaved.getPaymentmonth();
 
             int paymentNumber = wsResponse.getPaymentNumber();
             int paymentReceiptNumber = wsResponse.getPaymentReceiptNumber();
@@ -262,10 +259,13 @@ public class PaymentActivityViewModelHelper
             paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_SENT);
             paymentRepository.updatePaymentToDB(paymentToBeSaved);
 
-            response.paymentNumber = paymentNumber;
-            response.serverMessage = "Pago enviado correctamente.";
+            currentResponse.loadDataFromDB = true;
+            currentResponse.isDisplayMode = true;
+            currentResponse.paymentNumber = paymentNumber;
+            currentResponse.paymentStatus = UrbanizationConstants.PAYMENT_SENT;
+            currentResponse.serverMessage = "Pago enviado correctamente.";
 
-            return response;
+            return currentResponse;
 
         }catch (Exception e) {
             e.printStackTrace();

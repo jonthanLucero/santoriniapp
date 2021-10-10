@@ -1,7 +1,6 @@
 package com.example.santoriniapp.modules.payment.paymentheader;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.santoriniapp.R;
 import com.example.santoriniapp.databinding.ActivityPaymentBinding;
-import com.example.santoriniapp.modules.payment.paymentlist.PaymentDateRowArrayAdapterDropDown;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentDateRowSpinnerItem;
 import com.example.santoriniapp.modules.payment.paymentprintreceipt.PaymentPrintReceiptActivity;
 import com.example.santoriniapp.utils.DateFunctions;
@@ -60,8 +58,9 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
     PaymentActivityViewModel mViewModel;
     Context context;
 
-    UrbanizationProcessEndPopupMessageDialogFragment successDialogFragment;
-    String successDialogFragmentTag = "successDialog";
+    UrbanizationProcessEndPopupMessageDialogFragment processDialogFragment;
+
+    String processDialogFragmentTag = "processDialog";
 
     public static Intent launchIntent(Context context,String userId, Date paymentDate, String mode,String monthCode) {
         Intent intent = new Intent(context, PaymentActivity.class);
@@ -90,7 +89,7 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
         getParameters();
 
         if(savedInstanceState!=null)
-            successDialogFragment   = (UrbanizationProcessEndPopupMessageDialogFragment) getSupportFragmentManager().findFragmentByTag(successDialogFragmentTag);
+            processDialogFragment = (UrbanizationProcessEndPopupMessageDialogFragment) getSupportFragmentManager().findFragmentByTag(processDialogFragmentTag);
 
         // Set a Maximum of 5 photos.
         mBinding.addPhotoGalleryControl.initialize(this);
@@ -107,10 +106,8 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
                     public void onChanged(@Nullable PaymentActivityViewModelResponse response) {
 
                         // Managing response.
-                        if (response == null) {
-                            Toast.makeText(PaymentActivity.this, R.string.an_error_has_ocurred_please_try_again, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                        if (response == null)
+                            showErrorDialog(String.valueOf(R.string.an_error_has_ocurred_please_try_again));
 
                         // Set the Binding.
                         mBinding.setViewModel(response);
@@ -118,10 +115,8 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
                         // -----------------------------------------------------------------------
                         //  Payment SENT successfully.
                         // ----------------------------------------l-------------------------------
-                        if(response.isPaymentSent){
+                        if(response.isPaymentSent)
                             showSuccessDialog(response.paymentNumber, response.serverMessage);
-                            return;
-                        }
 
                         if(response.loadDataFromDB)
                         {
@@ -137,30 +132,13 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
 
                         // Show any error message.
                         if (!response.errorMessage.trim().isEmpty()) {
-                            Toast.makeText(PaymentActivity.this, response.errorMessage.trim(), Toast.LENGTH_SHORT).show();
+                            showErrorDialog(response.errorMessage.trim());
                             mViewModel.resetErrorMessage();
                         }
 
                         checkMenuOptions(response);
                     }
                 });
-
-
-        //Accept Payment
-        mBinding.actionAcceptPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        //Print Payment Receipt
-        mBinding.actionPrintPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(PaymentPrintReceiptActivity.launchIntent(context,mUserId,mPaymentDate));
-            }
-        });
 
         mBinding.actionPrintReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,25 +166,44 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
     }
 
     // -----------------------------------------------------------------------------------------------
-    //  Methods for the success Dialog.
+    //  Methods for  Dialog fragment.
     // -----------------------------------------------------------------------------------------------
     private void showSuccessDialog(int generatedNumber, String serverMessage){
         // If dialog is showing...
-        if (successDialogFragment != null
-                && successDialogFragment.getDialog() != null
-                && successDialogFragment.getDialog().isShowing()
-                && !successDialogFragment.isRemoving())
+        if (processDialogFragment != null
+                && processDialogFragment.getDialog() != null
+                && processDialogFragment.getDialog().isShowing()
+                && !processDialogFragment.isRemoving())
         {
             Log.i("DialogFragment","Success Dialog Fragment is been showing. Nothing to do...");
         }
         else
         {
-            successDialogFragment = UrbanizationProcessEndPopupMessageDialogFragment.newInstanceWithInfoMessage(R.drawable.ic_material_ok_green,
+            processDialogFragment = UrbanizationProcessEndPopupMessageDialogFragment.newInstanceWithInfoMessage(R.drawable.ic_material_ok_green,
                         "Pago #"+generatedNumber,serverMessage,
                         serverMessage);
-            successDialogFragment.show(getSupportFragmentManager(), successDialogFragmentTag);
+            processDialogFragment.show(getSupportFragmentManager(), processDialogFragmentTag);
         }
     }
+
+    private void showErrorDialog(String errorMessage)
+    {
+        // If dialog is showing...
+        if (processDialogFragment != null
+                && processDialogFragment.getDialog() != null
+                && processDialogFragment.getDialog().isShowing()
+                && !processDialogFragment.isRemoving())
+        {
+            Log.i("DialogFragment","Success Dialog Fragment is been showing. Nothing to do...");
+        }
+        else
+        {
+            processDialogFragment = UrbanizationProcessEndPopupMessageDialogFragment.newInstanceWithInfoMessage(R.drawable.ic_material_warning_yellow,
+                    "Mensaje de Error",errorMessage,"");
+            processDialogFragment.show(getSupportFragmentManager(), processDialogFragmentTag);
+        }
+    }
+
 
     private void setupPaymentDatePickerSpinner(final ArrayList<PaymentDateRowSpinnerItem> paymentDateSpinnerList, int selectedPosition)
     {
@@ -374,8 +371,8 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
     @Override
     public void onAcceptOrCancelClick() {
         //finish();
-        if(successDialogFragment == null)return;
-        successDialogFragment.dismiss();
+        if(processDialogFragment == null)return;
+        processDialogFragment.dismiss();
     }
 }
 

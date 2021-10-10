@@ -161,7 +161,7 @@ public class PaymentActivityViewModelResponse
 
     public boolean showPaymentRegisterContainer()
     {
-        return !isPaymentSent && !isSendingPayment;
+        return isPaymentSent || !isSendingPayment;
     }
 
     public String paymentNumberString()

@@ -32,6 +32,9 @@
     <string name="payment_list_search_hint">Buscar por Número de Pago, Estado ...</string>
     <string name="downloading_last_payments_data">Descargando información de los pagos...</string>
     <string name="searching_payments">Buscando Pagos...</string>
+    <string name="succesful_payment_send">Pago enviado correctamente</string>
+    <string name="action_accept">Aceptar</string>
+    <string name="payment_sent_successfully_to_server_title">Envío Exitoso</string>
 
     <string name="payment_date">Fecha de Pago</string>
     <string name="payment_user_code">Código Usuario</string>

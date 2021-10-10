@@ -15,7 +15,7 @@
         android:paddingRight="12dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/OptionalColor">
         <ImageView
             android:id="@+id/customer_address_is_located_flag"
             android:layout_width="24sp"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorWhite"
-                android:background="@color/colorPrimary"
+                android:background="@color/OptionalColor"
                 android:textSize="15sp"
                 tools:text="Mes Actual" />
         </LinearLayout>

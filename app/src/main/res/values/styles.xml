@@ -244,4 +244,27 @@
         <item name="android:textColor">@color/material_primary_light_blue</item>
     </style>
 
+    <!-- For Material Design Success Sign -->
+    <style name="UrbanizationMaterialMessageSuccessSign">
+        <item name="android:layout_width">55sp</item>
+        <item name="android:layout_height">55sp</item>
+    </style>
+
+    <style name="UrbanizationMaterialMessageSuccessSignTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_20sp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/material_black_primary</item>
+    </style>
+
+    <style name="UrbanizationMaterialMessageSuccessSignSubtitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/dimens_13sp</item>
+        <item name="android:textColor">@color/material_black_secondary</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

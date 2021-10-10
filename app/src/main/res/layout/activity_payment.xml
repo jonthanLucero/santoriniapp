@@ -74,7 +74,7 @@
                             <ImageView
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
-                                android:src="@drawable/ic_hour_black_24dp"/>
+                                app:src="@drawable/ic_hour_black_24dp"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -115,7 +115,7 @@
                             <ImageView
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
-                                android:src="@drawable/ic_payment_black_24dp"/>
+                                app:src="@drawable/ic_payment_black_24dp"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -179,7 +179,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="@dimen/dimens_16dp"
                                     style="@style/Urbanization.Material.Form.Spinner.GrayBackground"
-                                    android:clickable="@{!viewModel.isDisplayMode}"
+                                    android:clickable="@{viewModel.enableMonthCodeSpinner()}"
                                     tools:listitem="@layout/small_spinner_item"/>
 
                             </LinearLayout>
@@ -189,12 +189,12 @@
                         <LinearLayout
                             android:id="@+id/type_container"
                             android:layout_width="match_parent"
-                            android:layout_marginTop="10dp"
                             android:layout_height="wrap_content">
 
-                            <!-- Place Holder for Empty Images -->
-                            <LinearLayout
-                                style="@style/UrbanizationMaterialFormSideImageForOutlinedFields" />
+                            <ImageView
+                                style="@style/UrbanizationMaterialFormSideImageForOutlinedFields"
+                                android:src="@drawable/ic_material_for_form_boxes_gray"
+                                android:visibility="invisible"/>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -210,11 +210,10 @@
                                     android:id="@+id/paymenttype"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:clickable="@{!viewModel.isDisplayMode}"
-                                    android:layout_marginBottom="@dimen/dimens_8dp"
+                                    android:layout_marginBottom="@dimen/dimens_16dp"
                                     style="@style/Urbanization.Material.Form.Spinner.GrayBackground"
+                                    android:clickable="@{!viewModel.isDisplayMode}"
                                     tools:listitem="@layout/small_spinner_item"/>
-
 
                                 <TextView
                                     android:id="@+id/payment_commentary_label"
@@ -227,11 +226,12 @@
                                     android:enabled="@{!viewModel.isDisplayMode}"
                                     android:inputType="text"
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/text_size_12sp"
+                                    android:textSize="@dimen/text_size_16sp"
                                     tools:text="$ Este es un comentario pepa"/>
 
                             </LinearLayout>
                         </LinearLayout>
+
 
                         <!-- Print Receipt container -->
                         <LinearLayout
@@ -260,7 +260,7 @@
                         <!-- IMAGE: Attach/Take Photos -->
                         <ImageView
                             style="@style/UrbanizationMaterialFormSideImageForOutlinedFields"
-                            android:src="@drawable/ic_material_for_form_image_gray"
+                            app:src="@drawable/ic_material_for_form_image_gray"
                             android:layout_marginTop="@dimen/dimens_0dp"/>
 
 
@@ -301,7 +301,7 @@
                         style="@style/Urbanization.PrimaryButton.Colored.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:visible="@{viewModel.showPrintReceipt}"
+                        app:visible="@{viewModel.showPrintReceipt()}"
                         android:layout_marginTop="@dimen/dimens_16dp"
                         android:text="@string/action_print_values" />
                 </LinearLayout>
@@ -338,95 +338,6 @@
                     android:textSize="12sp"
                     android:textColor="@color/material_black_hint"
                     android:gravity="center"/>
-
-            </LinearLayout>
-
-            <!-- Saved and Sent Payment Container  -->
-            <LinearLayout
-                android:id="@+id/no_content_found"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="40dp"
-                android:gravity="center"
-                app:visible="@{viewModel.isPaymentSent}"
-                tools:visibility="gone">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/ic_material_ok_green"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="@dimen/text_size_20sp"
-                    tools:text="Pago # 100"
-                    android:text="@{viewModel.paymentNumberString()}"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/payment_sent_information"
-                    android:gravity="center"/>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/action_print_payment"
-                    android:layout_width="240dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    style="@style/Inalambrik.PrimaryButton.Borderless.Colored"
-                    android:text="Imprimir Recibo"
-                    tools:visibility="visible"
-                    android:visibility="visible" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/action_accept_payment"
-                    android:layout_width="240dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    style="@style/Inalambrik.PrimaryButton.Borderless.Colored"
-                    android:text="ACEPTAR"
-                    tools:visibility="visible"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-            <!-- Error Message Container -->
-            <LinearLayout
-                android:id="@+id/error_content_found"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="40dp"
-                android:gravity="center"
-                app:visible="@{viewModel.showOnErrorMessage()}"
-                tools:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_error_56dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    tools:text="Existio un error al enviar el pago"
-                    app:text="@{viewModel.errorMessage}"
-                    android:gravity="center"/>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/action_download_invoice"
-                    android:layout_width="240dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    style="@style/Inalambrik.PrimaryButton.Borderless.Colored"
-                    android:text="REINTENTAR"
-                    android:visibility="gone" />
 
             </LinearLayout>
 
