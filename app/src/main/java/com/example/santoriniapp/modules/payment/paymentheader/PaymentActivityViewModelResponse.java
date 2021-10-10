@@ -18,7 +18,6 @@ public class PaymentActivityViewModelResponse
     public String paymentDateMonthCode;
     public String paymentTypeCode;
     public double paymentAmount;
-    public boolean showPrintReceipt;
     public boolean enablePhotAddButton;
     public String paymentStatus;
     public int paymentNumber;
@@ -37,6 +36,8 @@ public class PaymentActivityViewModelResponse
     public String paymentCommentary;
     public boolean isPaymentSent;
     public String paymentSentNumber;
+    public String monthCodeToBlock;
+    public String serverMessage;
 
     //Status Color
     private int pendingColor   = UrbanizationUtils.getColor("#2196f3");
@@ -50,7 +51,6 @@ public class PaymentActivityViewModelResponse
         this.paymentDateMonthCode   = "";
         this.paymentTypeCode        = "";
         this.paymentAmount          = 0.0;
-        this.showPrintReceipt       = false;
         this.enablePhotAddButton    = false;
         this.paymentStatus          = "";
         this.paymentNumber          = 0;
@@ -67,6 +67,7 @@ public class PaymentActivityViewModelResponse
         this.loadDataFromDB         = false;
         this.paymentCommentary      = "";
         this.isPaymentSent          = false;
+        this.serverMessage          = "";
     }
 
     //Methods
@@ -166,5 +167,15 @@ public class PaymentActivityViewModelResponse
     public String paymentNumberString()
     {
         return "Pago :"+paymentNumber;
+    }
+
+    public boolean showPrintReceipt()
+    {
+        return paymentIsSent() || paymentIsApproved();
+    }
+
+    public boolean enableMonthCodeSpinner()
+    {
+        return !isDisplayMode && monthCodeToBlock.trim().isEmpty();
     }
 }

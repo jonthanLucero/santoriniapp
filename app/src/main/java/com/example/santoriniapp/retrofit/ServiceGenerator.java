@@ -27,17 +27,15 @@ public class ServiceGenerator
     public static final boolean IS_USING_PRIMARY_SERVERS_BY_DEFAULT = false; //pedidos.inalambrik.com.ec or 192.168.1.214 depending on the value
 
     public static <T> T createService(Class<T> serviceClass){
-        return setRetrofit(serviceClass,false,"");
+        return setRetrofit(serviceClass);
     }
 
-    private static <T> T setRetrofit(Class<T> serviceClass, boolean forceDomainChange, String forceDomainUrl){
+    private static <T> T setRetrofit(Class<T> serviceClass){
 
         // Getting previous Domain URL set on the retrofit previous instance.
         String previousRetrofitUrl = retrofit != null ? retrofit.baseUrl().url().toString().trim() : "NONE";
         if(!previousRetrofitUrl.isEmpty() && previousRetrofitUrl.endsWith("/")) previousRetrofitUrl = previousRetrofitUrl.substring(0,previousRetrofitUrl.length() - 1);
 
-        // This is true only when we are loading doamin from the WS.
-        if(forceDomainChange) BASE_API_URL = forceDomainUrl;
 
         if(retrofit == null
                 || !previousRetrofitUrl.trim().equalsIgnoreCase(BASE_API_URL)) {
@@ -49,8 +47,6 @@ public class ServiceGenerator
             final OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder()
                     .readTimeout(180, TimeUnit.SECONDS)
                     .connectTimeout(180, TimeUnit.SECONDS);
-                    /*.readTimeout(forceDomainChange ? 30 : 180, TimeUnit.SECONDS)
-                    .connectTimeout(forceDomainChange ? 30 : 180, TimeUnit.SECONDS);*/
 
             // ---------------------------------
             // If we are in LOCALHOST...

@@ -25,6 +25,8 @@ import com.example.santoriniapp.modules.payment.paymentprintreceipt.PaymentPrint
 import com.example.santoriniapp.utils.DateFunctions;
 import com.example.santoriniapp.utils.NumericFunctions;
 import com.example.santoriniapp.utils.StringFunctions;
+import com.example.santoriniapp.utils.UrbanizationConstants;
+import com.example.santoriniapp.utils.UrbanizationProcessEndPopupMessageDialogFragment;
 import com.example.santoriniapp.utils.UrbanizationUtils;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
 
@@ -36,12 +38,13 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
 
-public class PaymentActivity extends AppCompatActivity {
+public class PaymentActivity extends AppCompatActivity implements UrbanizationProcessEndPopupMessageDialogFragment.UrbanizationProcessEndPopupListener {
 
 
     public static final String LOG_TAG = PaymentActivity.class.getSimpleName();
     public static final String PAYMENT_DATE = "PAYMENT_DATE";
     public static final String USER_ID = "USER_ID";
+    public static final String MONTH_CODE = "MONTH_CODE";
     public static final String PAYMENT_MODE = "PAYMENT_MODE";
 
     ActivityPaymentBinding mBinding;
@@ -52,15 +55,20 @@ public class PaymentActivity extends AppCompatActivity {
     boolean firstLoad = false;
     Date mPaymentDate;
     String mUserId;
+    String mMonthCode;
     String mMode;
     PaymentActivityViewModel mViewModel;
     Context context;
 
-    public static Intent launchIntent(Context context,String userId, Date paymentDate,String mode) {
+    UrbanizationProcessEndPopupMessageDialogFragment successDialogFragment;
+    String successDialogFragmentTag = "successDialog";
+
+    public static Intent launchIntent(Context context,String userId, Date paymentDate, String mode,String monthCode) {
         Intent intent = new Intent(context, PaymentActivity.class);
         Bundle parms = new Bundle();
         parms.putString(USER_ID,userId);
         parms.putLong(PAYMENT_DATE, NumericFunctions.toLong(paymentDate));
+        parms.putString(MONTH_CODE,monthCode);
         parms.putString(PAYMENT_MODE,mode);
         intent.putExtra("parms", parms);
         return intent;
@@ -81,6 +89,9 @@ public class PaymentActivity extends AppCompatActivity {
 
         getParameters();
 
+        if(savedInstanceState!=null)
+            successDialogFragment   = (UrbanizationProcessEndPopupMessageDialogFragment) getSupportFragmentManager().findFragmentByTag(successDialogFragmentTag);
+
         // Set a Maximum of 5 photos.
         mBinding.addPhotoGalleryControl.initialize(this);
         mBinding.addPhotoGalleryControl.setMaxPhotosNum(5);
@@ -90,7 +101,7 @@ public class PaymentActivity extends AppCompatActivity {
         // --------------------------------------------------------------------------------------------------
         mViewModel = ViewModelProviders.of(this).get(PaymentActivityViewModel.class);
 
-        mViewModel.getCurrentPaymentInformation(mUserId,mMode,mPaymentDate)
+        mViewModel.getCurrentPaymentInformation(mUserId,mMode,mPaymentDate,mMonthCode)
                 .observe(this, new Observer<PaymentActivityViewModelResponse>() {
                     @Override
                     public void onChanged(@Nullable PaymentActivityViewModelResponse response) {
@@ -104,9 +115,17 @@ public class PaymentActivity extends AppCompatActivity {
                         // Set the Binding.
                         mBinding.setViewModel(response);
 
-                        if(response.loadDataFromDB && !response.isPaymentSent)
+                        // -----------------------------------------------------------------------
+                        //  Payment SENT successfully.
+                        // ----------------------------------------l-------------------------------
+                        if(response.isPaymentSent){
+                            showSuccessDialog(response.paymentNumber, response.serverMessage);
+                            return;
+                        }
+
+                        if(response.loadDataFromDB)
                         {
-                            if(!mMode.equalsIgnoreCase("INSERT"))
+                            if(!mMode.equalsIgnoreCase(UrbanizationConstants.PAYMENT_MODE_INSERT))
                                 mBinding.paymentAmountEditText.setText(StringFunctions.toString(response.paymentAmount));
 
                             mBinding.addPhotoGalleryControl.setDisplayMode(!response.isDisplayMode);
@@ -164,6 +183,29 @@ public class PaymentActivity extends AppCompatActivity {
             mUserId = data.getString(USER_ID);
         if(data.containsKey(PAYMENT_MODE))
             mMode = data.getString(PAYMENT_MODE);
+        if(data.containsKey(MONTH_CODE))
+            mMonthCode = data.getString(MONTH_CODE);
+    }
+
+    // -----------------------------------------------------------------------------------------------
+    //  Methods for the success Dialog.
+    // -----------------------------------------------------------------------------------------------
+    private void showSuccessDialog(int generatedNumber, String serverMessage){
+        // If dialog is showing...
+        if (successDialogFragment != null
+                && successDialogFragment.getDialog() != null
+                && successDialogFragment.getDialog().isShowing()
+                && !successDialogFragment.isRemoving())
+        {
+            Log.i("DialogFragment","Success Dialog Fragment is been showing. Nothing to do...");
+        }
+        else
+        {
+            successDialogFragment = UrbanizationProcessEndPopupMessageDialogFragment.newInstanceWithInfoMessage(R.drawable.ic_material_ok_green,
+                        "Pago #"+generatedNumber,serverMessage,
+                        serverMessage);
+            successDialogFragment.show(getSupportFragmentManager(), successDialogFragmentTag);
+        }
     }
 
     private void setupPaymentDatePickerSpinner(final ArrayList<PaymentDateRowSpinnerItem> paymentDateSpinnerList, int selectedPosition)
@@ -231,6 +273,10 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void checkMenuOptions(PaymentActivityViewModelResponse response)
     {
+        if(response == null)return;
+        if(mSavePaymentAction == null)return;
+        if(mDeletePaymentAction == null)return;
+
         mSavePaymentAction.setVisible(true);
         mDeletePaymentAction.setVisible(false);
         if(response.isPaymentSent || response.isSendingPayment || response.isDisplayMode)
@@ -238,10 +284,6 @@ public class PaymentActivity extends AppCompatActivity {
             mSavePaymentAction.setVisible(false);
             mDeletePaymentAction.setVisible(false);
         }
-
-        mBinding.actionPrintPayment.setVisibility(View.GONE);
-        if(response.paymentIsSent() || response.paymentIsApproved())
-            mBinding.actionPrintPayment.setVisibility(View.VISIBLE);
     }
 
     private void setupPaymentTypePickerSpinner(final ArrayList<PaymentTypeItem> paymentTypeSpinnerList, int selectedPosition)
@@ -283,11 +325,19 @@ public class PaymentActivity extends AppCompatActivity {
     private void sendPayment()
     {
         String paymentAmount = mBinding.paymentAmountEditText.getText().toString().trim();
+        double amount = 0;
+        try {
+            amount = Double.parseDouble(paymentAmount);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            amount = 0;
+        }
 
         //Validate that is registered value to pay
-        if(Double.parseDouble(paymentAmount) == 0)
+        if(amount == 0)
             UrbanizationUtils.showMessage(this,"Favor ingrese el monto a pagar");
-
         else
         {
             // Update Payment Fields.
@@ -314,6 +364,18 @@ public class PaymentActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (mBinding.addPhotoGalleryControl.getAddPhotoDialogFragment()!=null)
             mBinding.addPhotoGalleryControl.getAddPhotoDialogFragment().onActivityResult( requestCode,  resultCode,  data);
+    }
+
+    @Override
+    public void onExtraActionClick(int extraActionCode) {
+
+    }
+
+    @Override
+    public void onAcceptOrCancelClick() {
+        //finish();
+        if(successDialogFragment == null)return;
+        successDialogFragment.dismiss();
     }
 }
 

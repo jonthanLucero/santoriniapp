@@ -18,9 +18,9 @@ public class UrbanizationConstants
     public static String PAYMENT_APPROVED = "A";
     public static String PAYMENT_SENT = "S";
 
-    public static String PAYMENTTYPECODE_CASH = "E";
-    public static String PAYMENTTYPECODE_TRANSFERENCE = "T";
-    public static String PAYMENTTYPECODE_CHECK = "C";
+    public static String PAYMENTTYPECODE_CASH = "EFE";
+    public static String PAYMENTTYPECODE_TRANSFERENCE = "TRN";
+    public static String PAYMENTTYPECODE_CHECK = "CHK";
     public static String PAYMENTTYPESTATUS_ACTIVE = "A";
 
     public static double paymentMonthQuote = 30;

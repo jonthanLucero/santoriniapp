@@ -16,19 +16,21 @@ public class PaymentActivityViewModel extends ViewModel
 {
     private MutableLiveData<PaymentActivityViewModelResponse> mPanelResponse;
 
-    public LiveData<PaymentActivityViewModelResponse> getCurrentPaymentInformation(String userId,String mMode,Date paymentDate) {
+    public LiveData<PaymentActivityViewModelResponse> getCurrentPaymentInformation(String userId,String mMode,Date paymentDate,String monthCode) {
 
         // If the response is NULL, then load the INITIAL data...
         if (mPanelResponse == null)
         {
             mPanelResponse = new MutableLiveData<>();
-            loadPaymentInformation(userId,mMode,paymentDate,-1,-1);
+            loadPaymentInformation(userId,mMode,paymentDate,-1,-1,monthCode);
         }
 
         return mPanelResponse;
     }
 
-    private void loadPaymentInformation(final String userId,final String mMode,final Date mPaymentDate, final int selectedMonthPositionSpinner,final int selectedPaymentTypePositionSpinner){
+    private void loadPaymentInformation(final String userId,final String mMode,final Date mPaymentDate,
+                                        final int selectedMonthPositionSpinner,final int selectedPaymentTypePositionSpinner,
+                                        final String monthCode){
         final PaymentActivityViewModelResponse currentStatus = getCurrentPanelResponse();
 
         // -------------------------------------
@@ -37,7 +39,7 @@ public class PaymentActivityViewModel extends ViewModel
         Observable.defer(new Func0<Observable<PaymentActivityViewModelResponse>>() {
             @Override
             public Observable<PaymentActivityViewModelResponse> call()  {
-                return Observable.just(PaymentActivityViewModelHelper.getInitialLoadingStatus(userId,mMode,mPaymentDate, selectedMonthPositionSpinner,selectedPaymentTypePositionSpinner));
+                return Observable.just(PaymentActivityViewModelHelper.getInitialLoadingStatus(userId,mMode,mPaymentDate, selectedMonthPositionSpinner,selectedPaymentTypePositionSpinner,monthCode));
             }
         }).subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
                 .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
@@ -60,11 +62,9 @@ public class PaymentActivityViewModel extends ViewModel
                     @Override
                     public void onNext(PaymentActivityViewModelResponse response) {
                         // Show the Loading Status in UI.
-                        if(selectedMonthPositionSpinner != - 1)
-                            response.paymentTimeSpinnerPosition = currentStatus.paymentTimeSpinnerPosition;
 
-                        if(selectedPaymentTypePositionSpinner != -1)
-                            response.paymentTypeSpinnerPosition = currentStatus.paymentTypeSpinnerPosition;
+                        //if(selectedPaymentTypePositionSpinner != -1)
+                        //    response.paymentTypeSpinnerPosition = currentStatus.paymentTypeSpinnerPosition;
 
                         mPanelResponse.postValue(response);
                     }

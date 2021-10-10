@@ -1,23 +1,24 @@
 package com.example.santoriniapp.modules.payment.paymentheader;
 
 import android.content.Context;
-
-import androidx.core.app.NotificationCompatSideChannelService;
-
 import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.entity.PaymentPhoto;
-import com.example.santoriniapp.entity.PaymentType;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentDateRowSpinnerItem;
 import com.example.santoriniapp.repository.LoginRepository;
 import com.example.santoriniapp.repository.PaymentPhotoRepository;
 import com.example.santoriniapp.repository.PaymentRepository;
 import com.example.santoriniapp.repository.PaymentTypeRepository;
+import com.example.santoriniapp.retrofit.ApiInterface;
+import com.example.santoriniapp.retrofit.ServiceGenerator;
+import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentRequest;
+import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentResponse;
 import com.example.santoriniapp.utils.DateFunctions;
 import com.example.santoriniapp.utils.ImageFunctions;
 import com.example.santoriniapp.utils.NumericFunctions;
 import com.example.santoriniapp.utils.PaymentUtils;
 import com.example.santoriniapp.utils.UrbanizationConstants;
 import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
+import com.example.santoriniapp.utils.UrbanizationSessionUtils;
 import com.example.santoriniapp.utils.UrbanizationUtils;
 import com.example.santoriniapp.utils.inalambrikAddPhotoGallery.InalambrikAddPhotoGalleryItem;
 
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -32,7 +34,8 @@ public class PaymentActivityViewModelHelper
 {
     public static final String LOG_TAG = PaymentActivityViewModelHelper.class.getSimpleName();
 
-    public static PaymentActivityViewModelResponse getInitialLoadingStatus(String userId,String mode, Date mPaymentDate,int selectedMonthPositionSpiner, int selectedTypeCodePositionSpinner) {
+    public static PaymentActivityViewModelResponse getInitialLoadingStatus(String userId,String mode, Date mPaymentDate,
+                                                                           int selectedMonthPositionSpiner, int selectedTypeCodePositionSpinner,String monthCode) {
 
         PaymentActivityViewModelResponse response = new PaymentActivityViewModelResponse();
 
@@ -65,10 +68,9 @@ public class PaymentActivityViewModelHelper
         }
 
         response.paymentDateText = DateFunctions.getDDMMMYYYYHHMMSSDateString(mPaymentDate);
-        response.paymentDateMonthCode = payment.getPaymentmonth();
+        response.paymentDateMonthCode = monthCode.trim().isEmpty() ? payment.getPaymentmonth() : monthCode;
         response.paymentTypeCode = payment.getPaymenttypecode();
         response.paymentAmount   = payment.getPaymentamount();
-        response.showPrintReceipt = !payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_APPROVED);
         response.enablePhotAddButton = payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING);
         response.paymentStatus = payment.getPaymentstatus();
         response.paymentNumber = payment.getPaymentnumber();
@@ -79,14 +81,18 @@ public class PaymentActivityViewModelHelper
         response.errorMessage = "";
 
         //Load Payment Month and Payment Type Spinner Values
-        if(mode.equalsIgnoreCase("INSERT"))
+        if(mode.equalsIgnoreCase(UrbanizationConstants.PAYMENT_MODE_INSERT))
         {
             response.paymentTimeSpinnerPosition = selectedMonthPositionSpiner == -1 ? getPaymentDateRecordPosition(paymentDateRowSpinnerItemList, UrbanizationUtils.getTodayMonthRequestCode()) : 0;
             response.paymentTypeSpinnerPosition = selectedTypeCodePositionSpinner == -1 ? getPaymentTypeRecordPosition(paymentTypeList, UrbanizationConstants.PAYMENTTYPECODE_CASH) : 0;
         }
         else
         {
-            response.paymentTimeSpinnerPosition = getPaymentDateRecordPosition(paymentDateRowSpinnerItemList,payment.getPaymentmonth());
+            if(monthCode.trim().isEmpty())
+                response.paymentTimeSpinnerPosition = getPaymentDateRecordPosition(paymentDateRowSpinnerItemList, payment.getPaymentmonth());
+            else
+                response.paymentTimeSpinnerPosition = PaymentActivityViewModelHelper.getPaymentDateRecordPosition(paymentDateRowSpinnerItemList,monthCode);
+
             response.paymentTypeSpinnerPosition = getPaymentTypeRecordPosition(paymentTypeList, payment.getPaymenttypecode());
         }
 
@@ -108,6 +114,7 @@ public class PaymentActivityViewModelHelper
         // To indicate that the data loaded was from DB and make that those values are set initially in the form.
         response.loadDataFromDB = true;
         response.isDisplayMode = isDisplayMode;
+        response.monthCodeToBlock = monthCode;
         return  response;
     }
 
@@ -153,10 +160,20 @@ public class PaymentActivityViewModelHelper
             return currentResponse;
         }
 
+        //Check if paymentType requires to send photo
+        PaymentTypeRepository paymentTypeRepository = new PaymentTypeRepository();
+        boolean paymentTypeIsRequiredPhoto = paymentTypeRepository.getPaymentTypeRequiresPhoto(paymentToBeSaved.getPaymenttypecode());
+
+        if(paymentTypeIsRequiredPhoto && currentResponse.paymentPhotoList.size() <= 0)
+        {
+            currentResponse.errorMessage = "La forma de pago requiere capturar/adjuntar foto";
+            return currentResponse;
+        }
+
         // --------------------------------------------------------------------------------------------------------------
         // Saving in DB PAYMENT
         // --------------------------------------------------------------------------------------------------------------
-        paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_SENT);
+        paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_PENDING);
         paymentRepository.updatePaymentToDB(paymentToBeSaved);
 
         // --------------------------------------------------------------------------------------------------------------
@@ -170,8 +187,8 @@ public class PaymentActivityViewModelHelper
             {
                 String photoCompressedAsBase64 = ImageFunctions.getCompressed64Imagev2(item.photoPath());
                 if(photoCompressedAsBase64.trim().isEmpty()){
-                   response.errorMessage = "Una de las fotos no pudo ser comprimida. Por favor intente nuevamente.\n\nNOTA: Prospecto ha sido guardado como pendiente de envío." ;
-                    return response;
+                   currentResponse.errorMessage = "Una de las fotos no pudo ser comprimida. Por favor intente nuevamente.\n\nNOTA: Prospecto ha sido guardado como pendiente de envío." ;
+                    return currentResponse;
                 }
 
                 // Adding the Prospect Photo (compressed) to the Request.
@@ -189,41 +206,72 @@ public class PaymentActivityViewModelHelper
         // Update Current Prospect Status in the ViewModel.
         currentResponse.paymentStatus = paymentToBeSaved.getPaymentstatus();
 
-        /*
         // --------------------------------------------------------------------------------------------------------------
         // Sending to Server
         // --------------------------------------------------------------------------------------------------------------
-        ProspectDeviceToServerV3SDResponse wsResponse = sendProspectToServerThroughWS(context, currentResponse.prospectDate);
 
-        // If there was an error...
-        if(!wsResponse.getErrorMessage().trim().isEmpty()) {
-            currentResponse.errorMessage = wsResponse.getErrorMessage();
-            return currentResponse;
+
+        // -----------------------------------
+        // Set WS Request.
+        // -----------------------------------
+        PaymentRequest request = new PaymentRequest();
+        request.setUserLogin(UrbanizationSessionUtils.getLoggedLogin(context));
+        request.setUserPassword(UrbanizationSessionUtils.getLoggedPassword(context));
+        request.setPaymentDate(DateFunctions.getYYYYMMDDHHMMSSString(DateFunctions.toDate(paymentToBeSaved.getPaymentdate())));
+        request.setPaymentMonth(paymentToBeSaved.getPaymentmonth());
+        request.setPaymentTypeCode(paymentToBeSaved.getPaymenttypecode());
+        request.setPaymentAmount(paymentToBeSaved.getPaymentamount());
+        request.setPaymentMemo(paymentToBeSaved.getPaymentmemo());
+
+
+        try {
+            //  -----------------------------------------------------------------------------------
+            // Calling WS.
+            //  -----------------------------------------------------------------------------------
+            ApiInterface apiInterface = ServiceGenerator.createService(ApiInterface.class);
+            Call<PaymentResponse> call = apiInterface.paymentSendWS(request);
+
+            //  -----------------------------------------------------------------------------------
+            // Getting response.
+            //  -----------------------------------------------------------------------------------
+            PaymentResponse wsResponse = call.execute().body();
+
+            // If there is no response...
+            if(wsResponse==null) {
+                currentResponse.errorMessage = "\"No se pudo contactar Servidor. Por favor intentar nuevamente.";
+                currentResponse.isSendingPayment = false;
+                return currentResponse;
+            }
+
+            // If server returned an error...
+
+            if(!wsResponse.getErrorMessage().trim().isEmpty()) {
+                currentResponse.errorMessage = wsResponse.getErrorMessage().trim();
+                return currentResponse;
+            }
+
+            response.isPaymentSent = true;
+            response.monthCodeToBlock = paymentToBeSaved.getPaymentmonth();
+
+            int paymentNumber = wsResponse.getPaymentNumber();
+            int paymentReceiptNumber = wsResponse.getPaymentReceiptNumber();
+
+            //Update PaymentNumber and paymentStatus
+            paymentToBeSaved.setPaymentnumber(paymentNumber);
+            paymentToBeSaved.setPaymentreceiptnumber(paymentReceiptNumber);
+            paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_SENT);
+            paymentRepository.updatePaymentToDB(paymentToBeSaved);
+
+            response.paymentNumber = paymentNumber;
+            response.serverMessage = "Pago enviado correctamente.";
+
+            return response;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            currentResponse.errorMessage = "No se pudo contactar Servidor. Por favor intentar nuevamente.";
+            return  currentResponse;
         }
-
-        // ------------------------------------
-        // At this Step everything is FINE.
-        // Prospect is set as Sent
-        // ------------------------------------
-        prospect_class prospectRecord   = new prospect_class() ;
-        prospectRecord.prospectdate     = currentResponse.prospectDate;
-        prospectRecord.loadprospect() ;
-        prospectRecord.prospectstatus = ProspectUtils.PROSPECT_SENT_STATUS;
-        prospectRecord.updateprospect() ;
-        PedidosMovilesProvider.commit();
-
-        // Flag that indicated that the Prospect was created succesfully.
-        currentResponse.prospectSentSuccessfully = true;
-
-        // Mark as Display Mode to avoid edit.
-        currentResponse.isDisplayMode = true;
-
-        // Update Current Prospect Status in the ViewModel.
-        currentResponse.prospectStatus = prospectRecord.prospectstatus;
-        */
-        currentResponse.isPaymentSent = true;
-        return currentResponse;
-
     }
 
     private static Payment getPaymentClassFromView(Date paymentDate, PaymentActivityViewModelResponse currentResponse){
