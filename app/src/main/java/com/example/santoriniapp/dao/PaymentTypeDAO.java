@@ -27,6 +27,9 @@ public interface PaymentTypeDAO
     @Query("SELECT paymenttypedescription FROM paymenttype_table WHERE paymenttypecode = :paymentTypeCode")
     String getPaymentTypeDescription(String paymentTypeCode);
 
+    @Query("SELECT paymenttyperequiresphoto FROM paymenttype_table WHERE paymenttypecode = :paymentTypeCode")
+    int getPaymentTypeRequiresPhoto(String paymentTypeCode);
+
     @Update
     void updatePaymentType(PaymentType paymentType);
 

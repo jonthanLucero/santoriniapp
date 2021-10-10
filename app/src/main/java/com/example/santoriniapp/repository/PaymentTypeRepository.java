@@ -40,6 +40,11 @@ public class PaymentTypeRepository
         return mPaymentTypeDAO.getAllPaymentTypeList();
     }
 
+    public boolean getPaymentTypeRequiresPhoto(String paymentTypeCode)
+    {
+        return mPaymentTypeDAO.getPaymentTypeRequiresPhoto(paymentTypeCode) == 1;
+    }
+
     public void insertPaymentTypeToDB (PaymentType payment) {
         new insertPaymentTypeAsyncTask(mPaymentTypeDAO).execute(payment);
     }
