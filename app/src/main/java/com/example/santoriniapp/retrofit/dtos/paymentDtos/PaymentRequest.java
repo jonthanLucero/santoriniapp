@@ -34,6 +34,10 @@ public class PaymentRequest
     @Expose
     private String PaymentMemo;
 
+    @SerializedName("PaymentPhotoList")
+    @Expose
+    private String PaymentPhotoList;
+
 
     // ----------------------------------
     // Getters
@@ -67,6 +71,9 @@ public class PaymentRequest
         return PaymentMemo;
     }
 
+    public String getPaymentPhotoList() {
+        return PaymentPhotoList;
+    }
 
 
     // ----------------------------------
@@ -101,5 +108,6 @@ public class PaymentRequest
         PaymentMemo = paymentMemo;
     }
 
+    public void setPaymentPhotoList(String paymentPhotoList){PaymentPhotoList = paymentPhotoList;}
 
 }

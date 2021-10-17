@@ -1,6 +1,8 @@
 package com.example.santoriniapp.modules.payment.paymentheader;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.entity.PaymentPhoto;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentDateRowSpinnerItem;
@@ -10,6 +12,7 @@ import com.example.santoriniapp.repository.PaymentRepository;
 import com.example.santoriniapp.repository.PaymentTypeRepository;
 import com.example.santoriniapp.retrofit.ApiInterface;
 import com.example.santoriniapp.retrofit.ServiceGenerator;
+import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentPhotoSDT;
 import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentRequest;
 import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentResponse;
 import com.example.santoriniapp.utils.DateFunctions;
@@ -21,6 +24,7 @@ import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
 import com.example.santoriniapp.utils.UrbanizationSessionUtils;
 import com.example.santoriniapp.utils.UrbanizationUtils;
 import com.example.santoriniapp.utils.inalambrikAddPhotoGallery.InalambrikAddPhotoGalleryItem;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,14 +122,10 @@ public class PaymentActivityViewModelHelper
         return  response;
     }
 
-    public static PaymentActivityViewModelResponse sendPaymentToServer(Date payymentDate,PaymentActivityViewModelResponse currentResponse)
+    public static PaymentActivityViewModelResponse sendPaymentToServer(Date paymentDate,PaymentActivityViewModelResponse currentResponse)
     {
-        // -----------------------------------------------------------
-        // Convert what it is in the view to a prospect_class.
-        // -----------------------------------------------------------
         Payment oldPayment;
-        List<PaymentPhoto> oldPaymentPhotos;
-        Payment paymentToBeSaved = getPaymentClassFromView(payymentDate,currentResponse);
+        Payment paymentToBeSaved = getPaymentClassFromView(paymentDate,currentResponse);
 
         // -----------------------------------------------------------
         // Getting context.
@@ -142,11 +142,10 @@ public class PaymentActivityViewModelHelper
         }
 
         // ---------------------------------------------------------------
-        // Just in case - Checking that the prospect is not already SENT
+        // Just in case - Checking that the payment is not already SENT
         // ---------------------------------------------------------------
         PaymentRepository paymentRepository = new PaymentRepository();
-        PaymentPhotoRepository paymentPhotoRepository = new PaymentPhotoRepository();
-        oldPayment = paymentRepository.getPayment(payymentDate);
+        oldPayment = paymentRepository.getPayment(paymentDate);
 
         if(oldPayment == null) {
             currentResponse.errorMessage = "Ha ocurrido un error inesperado. Por favor cerrar el formulario y llenarlo nuevamente.";
@@ -169,36 +168,13 @@ public class PaymentActivityViewModelHelper
         }
 
         // --------------------------------------------------------------------------------------------------------------
-        // Saving in DB PAYMENT
+        // Saving in DB PAYMENT and PaymentPhotos
         // --------------------------------------------------------------------------------------------------------------
-        paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_PENDING);
-        paymentRepository.updatePaymentToDB(paymentToBeSaved);
+        PaymentActivityViewModelResponse resp = PaymentUtils.savePaymentWithPhotos(paymentToBeSaved,currentResponse.paymentPhotoList);
 
-        // --------------------------------------------------------------------------------------------------------------
-        // Saving in DB PAYMENT PHOTOS
-        // --------------------------------------------------------------------------------------------------------------
-        if(currentResponse.paymentPhotoList.size() > 0)
-        {
-            paymentPhotoRepository.deletePaymentPhotosOfPayment(payymentDate);
+        if(resp.paymentPhotoList.size() > 0)
+            currentResponse.paymentPhotoList = resp.paymentPhotoList;
 
-            for(InalambrikAddPhotoGalleryItem item : currentResponse.paymentPhotoList)
-            {
-                String photoCompressedAsBase64 = ImageFunctions.getCompressed64Imagev2(item.photoPath());
-                if(photoCompressedAsBase64.trim().isEmpty()){
-                   currentResponse.errorMessage = "Una de las fotos no pudo ser comprimida. Por favor intente nuevamente.\n\nNOTA: Prospecto ha sido guardado como pendiente de envío." ;
-                    return currentResponse;
-                }
-
-                // Adding the Prospect Photo (compressed) to the Request.
-                PaymentPhoto onePhoto = new PaymentPhoto();
-                onePhoto.setPaymentdate(NumericFunctions.toLong(payymentDate));
-                onePhoto.setPaymentphototitle(item.photoTitle().trim());
-                onePhoto.setPaymentphotodescription(item.photoDescription().trim());
-                onePhoto.setPaymentphotopath(item.photoPath().trim());
-                onePhoto.setPaymentphotobase64(photoCompressedAsBase64);
-                paymentPhotoRepository.insertPaymentPhotoToDB(onePhoto);
-            }
-        }
 
         // Update Current Prospect Status in the ViewModel.
         currentResponse.paymentStatus = paymentToBeSaved.getPaymentstatus();
@@ -220,6 +196,29 @@ public class PaymentActivityViewModelHelper
         request.setPaymentAmount(paymentToBeSaved.getPaymentamount());
         request.setPaymentMemo(paymentToBeSaved.getPaymentmemo());
 
+        // -----------------------------------
+        // Set Photo List from DB
+        // -----------------------------------
+        ArrayList<PaymentPhotoSDT> paymentPhotoSDTArrayList = new ArrayList<>();
+        PaymentPhotoSDT paymentPhotoSDT;
+        if(currentResponse.paymentPhotoList.size() > 0)
+        {
+            for(InalambrikAddPhotoGalleryItem photo : currentResponse.paymentPhotoList)
+            {
+                paymentPhotoSDT = new PaymentPhotoSDT();
+                paymentPhotoSDT.setPaymentDate(DateFunctions.getYYYYMMDDHHMMSSString(DateFunctions.toDate(paymentToBeSaved.getPaymentdate())));
+                paymentPhotoSDT.setPaymentPhotoTitle(photo.photoTitle().trim());
+                paymentPhotoSDT.setPaymentPhotoDescription(photo.photoDescription().trim());
+                paymentPhotoSDT.setPaymentPhotoBase64(photo.getPhotoBase64());
+                //paymentPhotoSDT.setPaymentPhotoBase64("");
+                paymentPhotoSDTArrayList.add(paymentPhotoSDT);
+
+                Log.d("LOG_TAG","Fotos=>"+new Gson().toJson(paymentPhotoSDT));
+            }
+        }
+
+        request.setPaymentPhotoList(new Gson().toJson(paymentPhotoSDTArrayList));
+        //request.setPaymentPhotoList("Prueba de fotos");
 
         try {
             //  -----------------------------------------------------------------------------------

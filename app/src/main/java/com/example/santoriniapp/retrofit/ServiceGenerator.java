@@ -22,6 +22,8 @@ public class ServiceGenerator
     private static Retrofit retrofit = null;
     private static Gson gson = new GsonBuilder().create();
     private static String BASE_API_URL = "http://10.0.2.2";
+    //private static String BASE_API_URL = "http://127.0.0.1";
+    //private static String BASE_API_URL = "http://192.168.100.1";
 
     public static final boolean IS_IN_PRODUCTION = false;
     public static final boolean IS_USING_PRIMARY_SERVERS_BY_DEFAULT = false; //pedidos.inalambrik.com.ec or 192.168.1.214 depending on the value

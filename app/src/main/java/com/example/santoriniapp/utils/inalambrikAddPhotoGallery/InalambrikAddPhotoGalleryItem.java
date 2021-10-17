@@ -5,6 +5,7 @@ public class InalambrikAddPhotoGalleryItem {
     private String photoTitle;
     private String photoDescription;
     private String photoPath;
+    private String photoBase64;
 
     private boolean isDisplayMode;
 
@@ -28,6 +29,16 @@ public class InalambrikAddPhotoGalleryItem {
 
     public String photoPath() {
         return photoPath;
+    }
+
+    public String getPhotoBase64()
+    {
+        return photoBase64;
+    }
+
+    public void setPhotoBase64(String base64)
+    {
+        photoBase64 = base64;
     }
 
     public boolean isDisplayMode(){ return isDisplayMode;}

@@ -1,10 +1,17 @@
 package com.example.santoriniapp.utils;
 
+import android.util.Log;
+
 import com.example.santoriniapp.entity.Payment;
+import com.example.santoriniapp.entity.PaymentPhoto;
 import com.example.santoriniapp.entity.PaymentType;
+import com.example.santoriniapp.modules.payment.paymentheader.PaymentActivityViewModelResponse;
 import com.example.santoriniapp.modules.payment.paymentheader.PaymentTypeItem;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentDateRowSpinnerItem;
+import com.example.santoriniapp.repository.PaymentPhotoRepository;
+import com.example.santoriniapp.repository.PaymentRepository;
 import com.example.santoriniapp.repository.PaymentTypeRepository;
+import com.example.santoriniapp.utils.inalambrikAddPhotoGallery.InalambrikAddPhotoGalleryItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +67,61 @@ public class PaymentUtils
             itemList.add(item);
         }
         return itemList;
+    }
+
+    public static PaymentActivityViewModelResponse savePaymentWithPhotos(Payment paymentToBeSaved, List<InalambrikAddPhotoGalleryItem> itemPhotoList)
+    {
+        PaymentActivityViewModelResponse currentResponse = new PaymentActivityViewModelResponse();
+
+        PaymentRepository paymentRepository = new PaymentRepository();
+        PaymentPhotoRepository paymentPhotoRepository = new PaymentPhotoRepository();
+
+        paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_PENDING);
+        paymentRepository.updatePaymentToDB(paymentToBeSaved);
+
+        // -----------------------------------------------------------------------------------------------
+        //  Saving the Photos.
+        // -----------------------------------------------------------------------------------------------
+        if(itemPhotoList.size() > 0)
+        {
+            List<PaymentPhoto> paymentPhotos;
+            paymentPhotoRepository.deletePaymentPhotosOfPayment(DateFunctions.toDate(paymentToBeSaved.getPaymentdate()));
+
+            paymentPhotos = paymentPhotoRepository.getAllPaymentPhotosOfPayment(DateFunctions.toDate(paymentToBeSaved.getPaymentdate()));
+            Log.d("LOG_TAG","AFTER DELETE PaymentPhotos=>"+paymentPhotos.size());
+
+            //For each paymentphoto and the insert again in DB
+            for(int i = 0; i < itemPhotoList.size();i++)
+            {
+                Long dateNow = DateFunctions.today().getTime();
+                InalambrikAddPhotoGalleryItem item = itemPhotoList.get(i);
+
+                String photoCompressedAsBase64 = ImageFunctions.getCompressed64Imagev2(item.photoPath());
+                if(photoCompressedAsBase64.trim().isEmpty()){
+                    currentResponse.errorMessage = "Una de las fotos no pudo ser comprimida. Por favor intente nuevamente.\n\nNOTA: Prospecto ha sido guardado como pendiente de envío." ;
+                    return currentResponse;
+                }
+
+                paymentPhotoRepository.insertPaymentPhotoToDB(new PaymentPhoto(paymentToBeSaved.getPaymentdate(),
+                        item.photoTitle().trim(),
+                        item.photoDescription().trim(),
+                        item.photoPath().trim(),
+                        photoCompressedAsBase64,
+                        dateNow,
+                        dateNow
+                        ));
+
+                //Save in memory
+                itemPhotoList.get(i).setPhotoBase64(photoCompressedAsBase64);
+            }
+
+            paymentPhotos = paymentPhotoRepository.getAllPaymentPhotosOfPayment(DateFunctions.toDate(paymentToBeSaved.getPaymentdate()));
+            Log.d("LOG_TAG","AFTER INSERT PaymentPhotos=>"+paymentPhotos.size());
+
+        }
+        currentResponse.errorMessage = "";
+        currentResponse.paymentPhotoList = itemPhotoList;
+        return currentResponse;
     }
 
 }

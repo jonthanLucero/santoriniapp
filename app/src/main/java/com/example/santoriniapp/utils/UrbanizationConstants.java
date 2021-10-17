@@ -11,7 +11,8 @@ public class UrbanizationConstants
 
     public static String FIRST_TIME = "FIRST_TIME";
 
-    public static String APP_LOCAL_URL = "10.0.2.2";
+    //public static String APP_LOCAL_URL = "10.0.2.2";
+    public static String APP_LOCAL_URL = "192.168.100.1";
 
     public static String PAYMENT_PENDING = "P";
     public static String PAYMENT_VOID = "X";

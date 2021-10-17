@@ -29,22 +29,24 @@ public class PaymentPhoto implements Serializable
     @ColumnInfo(name = "paymentphotobase64")
     private String paymentphotobase64;
 
+    @ColumnInfo(name = "paymentphotocreatedon")
+    private Long paymentphotocreatedon;
+
     @ColumnInfo(name = "paymentphotomodifiedon")
     private Long paymentphotomodifiedon;
 
-    public PaymentPhoto(Long paymentdate, String paymentphototitle, String paymentphotodescription, String paymentphotopath, String paymentphotobase64, Long paymentphotomodifiedon) {
+    public PaymentPhoto(Long paymentdate, String paymentphototitle, String paymentphotodescription, String paymentphotopath, String paymentphotobase64,
+                        Long paymentphotocreatedon,Long paymentphotomodifiedon) {
         this.paymentdate = paymentdate;
         this.paymentphototitle = paymentphototitle;
         this.paymentphotodescription = paymentphotodescription;
         this.paymentphotopath = paymentphotopath;
         this.paymentphotobase64 = paymentphotobase64;
+        this.paymentphotocreatedon = paymentphotocreatedon;
         this.paymentphotomodifiedon = paymentphotomodifiedon;
     }
 
-    public PaymentPhoto()
-    {
 
-    }
 
     public int get_id() {
         return _id;
@@ -65,6 +67,9 @@ public class PaymentPhoto implements Serializable
     public String getPaymentphototitle() {
         return paymentphototitle;
     }
+
+    public Long getPaymentphotocreatedon()
+    {return paymentphotocreatedon;}
 
     public void setPaymentphototitle(String paymentphototitle) {
         this.paymentphototitle = paymentphototitle;
