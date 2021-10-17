@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -23,8 +24,11 @@ import com.example.santoriniapp.modules.dashboard.DashboardMenuActivity;
 import com.example.santoriniapp.utils.UrbanizationConstants;
 import com.example.santoriniapp.utils.UrbanizationSessionUtils;
 import com.example.santoriniapp.utils.UrbanizationUtils;
+import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.List;
+
+import rx.functions.Action1;
 
 public class LoginActivity extends AppCompatActivity implements LifecycleOwner
 {
@@ -123,6 +127,23 @@ public class LoginActivity extends AppCompatActivity implements LifecycleOwner
                     mViewModel.loginToWS(user,password);
                 }
 
+            }
+        });
+
+        RxView.clicks(mBinding.passwordViewtoggle).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid)
+            {
+                if(mBinding.txtPassword == null) return;
+                if (mBinding.txtPassword.getTag().toString().equalsIgnoreCase("0")) {
+                    mBinding.txtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                    mBinding.passwordViewtoggle.setImageResource(R.drawable.ic_visibility);
+                    mBinding.txtPassword.setTag("1");
+                } else{
+                    mBinding.txtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD|InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                    mBinding.passwordViewtoggle.setImageResource(R.drawable.ic_visibility_off);
+                    mBinding.txtPassword.setTag("0");
+                }
             }
         });
     }
