@@ -36,21 +36,28 @@ public class Payment implements Serializable
 
     @ColumnInfo(name = "paymentnumber")
     private int paymentnumber;
+
     @ColumnInfo(name = "paymentreceiptnumber")
     private int paymentreceiptnumber;
+
     @ColumnInfo(name = "paymentamount")
     private double paymentamount;
+
     @ColumnInfo(name = "paymentstatus")
     private String paymentstatus;
+
     @ColumnInfo(name = "paymentmemo")
     private String paymentmemo;
+
+    @ColumnInfo(name = "paymentvoidmemo")
+    private String paymentvoidmemo;
 
 
     @ColumnInfo(name = "paymentmodifiedon")
     private Long paymentmodifiedon;
 
     public Payment(@NonNull String userid, @NonNull Long paymentdate,String paymentmonth,String paymenttypecode, int paymentnumber, int paymentreceiptnumber,
-                   double paymentamount, String paymentstatus, String paymentmemo,Long paymentmodifiedon) {
+                   double paymentamount, String paymentstatus, String paymentmemo,String paymentVoidMemo, Long paymentmodifiedon) {
         this.userid = userid;
         this.paymentdate = paymentdate;
         this.paymentmonth = paymentmonth;
@@ -60,6 +67,7 @@ public class Payment implements Serializable
         this.paymentamount = paymentamount;
         this.paymentstatus = paymentstatus;
         this.paymentmemo = paymentmemo;
+        this.paymentvoidmemo = paymentVoidMemo;
         this.paymentmodifiedon = paymentmodifiedon;
     }
 
@@ -161,5 +169,15 @@ public class Payment implements Serializable
 
     public Long getPaymentmodifiedon() {
         return paymentmodifiedon;
+    }
+
+    public String getPaymentvoidmemo()
+    {
+        return paymentvoidmemo;
+    }
+
+    public void setPaymentvoidmemo(String Paymentvoidmemo)
+    {
+        this.paymentvoidmemo = Paymentvoidmemo;
     }
 }

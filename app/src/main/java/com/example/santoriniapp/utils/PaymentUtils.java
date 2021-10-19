@@ -24,7 +24,7 @@ public class PaymentUtils
 
         return new Payment(userId,newDate,UrbanizationUtils.getTodayMonthRequestCode(),
                            UrbanizationConstants.PAYMENTTYPECODE_CASH,0,
-                0,0,UrbanizationConstants.PAYMENT_PENDING,"",newDate);
+                0,0,UrbanizationConstants.PAYMENT_PENDING,"","",newDate);
     }
 
     public static ArrayList<PaymentDateRowSpinnerItem> getPaymentDateRowSpinnerList(String calledFrom)

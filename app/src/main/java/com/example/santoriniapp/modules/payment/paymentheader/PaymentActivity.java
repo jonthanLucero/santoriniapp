@@ -127,6 +127,7 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
                                 mBinding.paymentAmountEditText.setText(StringFunctions.toString(response.paymentAmount));
 
                             mBinding.addPhotoGalleryControl.setDisplayMode(!response.isDisplayMode);
+
                             setupPaymentDatePickerSpinner(response.paymentListSpinnerList, response.paymentTimeSpinnerPosition);
                             setupPaymentTypePickerSpinner(response.paymentTypeListSpinnerList, response.paymentTypeSpinnerPosition);
                             mBinding.paymentCommentaryEdittext.setText(response.paymentCommentary);

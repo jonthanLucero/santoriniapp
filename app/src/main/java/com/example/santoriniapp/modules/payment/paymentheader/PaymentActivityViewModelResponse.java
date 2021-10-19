@@ -34,6 +34,7 @@ public class PaymentActivityViewModelResponse
     public boolean isSendingPaymentPhotos;
     public boolean loadDataFromDB;
     public String paymentCommentary;
+    public String paymentVoidCommentary;
     public boolean isPaymentSent;
     public String paymentSentNumber;
     public String monthCodeToBlock;
@@ -68,6 +69,7 @@ public class PaymentActivityViewModelResponse
         this.paymentCommentary      = "";
         this.isPaymentSent          = false;
         this.serverMessage          = "";
+        this.paymentVoidCommentary  = "";
     }
 
     //Methods
@@ -117,7 +119,7 @@ public class PaymentActivityViewModelResponse
         if(paymentIsPending())
             return "Pago pendiente";
         if(paymentIsVoid())
-            return "Pago Anulado";
+            return "Pago Anulado "+paymentVoidCommentary.trim();
         if(paymentIsSent())
             return "Pago Enviado";
         if(paymentIsApproved())

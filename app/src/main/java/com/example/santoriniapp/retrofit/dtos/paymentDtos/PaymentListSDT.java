@@ -37,6 +37,10 @@ public class PaymentListSDT
     @Expose
     private String PaymentMemo;
 
+    @SerializedName("PaymentVoidMemo")
+    @Expose
+    private String PaymentVoidMemo;
+
     // ---------------------------------------------------------------------
     //  Getters
     // ---------------------------------------------------------------------
@@ -58,6 +62,7 @@ public class PaymentListSDT
     public String getPaymentMemo() {
         return PaymentMemo;
     }
+    public String getPaymentVoidMemo(){return PaymentVoidMemo;}
 
     // ---------------------------------------------------------------------
     //  Setters
@@ -83,5 +88,10 @@ public class PaymentListSDT
     public void setPaymentNumber(int paymentNumber)
     {
         PaymentNumber = paymentNumber;
+    }
+
+    public void setPaymentVoidMemo(String paymentVoidMemo)
+    {
+        this.PaymentVoidMemo = paymentVoidMemo;
     }
 }

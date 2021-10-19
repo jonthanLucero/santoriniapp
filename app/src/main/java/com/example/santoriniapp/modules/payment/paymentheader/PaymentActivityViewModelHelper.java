@@ -81,7 +81,8 @@ public class PaymentActivityViewModelHelper
         response.paymentReceiptNumber = payment.getPaymentreceiptnumber();
         response.userId = payment.getUserid();
         response.paymentCommentary = payment.getPaymentmemo().trim();
-        response.isDisplayMode = payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING);
+        response.paymentVoidCommentary = payment.getPaymentvoidmemo().trim();
+        response.isDisplayMode = !payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING);
         response.errorMessage = "";
 
         //Load Payment Month and Payment Type Spinner Values
@@ -104,7 +105,8 @@ public class PaymentActivityViewModelHelper
         List<PaymentPhoto> paymentPhotoList = paymentPhotoRepository.getAllPaymentPhotosOfPayment(mPaymentDate);
         final boolean isDisplayMode = paymentPanelIsDisplayMode(payment);
 
-        if(paymentPhotoList != null && paymentPhotoList.size() > 0) {
+        if(paymentPhotoList != null && paymentPhotoList.size() > 0)
+        {
             // Load Saved Photos.
             response.paymentPhotoList = Observable.from(paymentPhotoList)
                     .map(new Func1<PaymentPhoto, InalambrikAddPhotoGalleryItem>() {
@@ -218,7 +220,6 @@ public class PaymentActivityViewModelHelper
         }
 
         request.setPaymentPhotoList(new Gson().toJson(paymentPhotoSDTArrayList));
-        //request.setPaymentPhotoList("Prueba de fotos");
 
         try {
             //  -----------------------------------------------------------------------------------
@@ -263,6 +264,11 @@ public class PaymentActivityViewModelHelper
             currentResponse.paymentNumber = paymentNumber;
             currentResponse.paymentStatus = UrbanizationConstants.PAYMENT_SENT;
             currentResponse.serverMessage = "Pago enviado correctamente.";
+
+            if(currentResponse.paymentPhotoList.size() > 0 && !currentResponse.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING)) {
+                for (int i = 0; i < currentResponse.paymentPhotoList.size(); i++)
+                    currentResponse.paymentPhotoList.get(i).setIsDisplayMode(true);
+            }
 
             return currentResponse;
 
@@ -315,6 +321,6 @@ public class PaymentActivityViewModelHelper
     }
 
     public static boolean paymentPanelIsDisplayMode(Payment payment){
-        return payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_SENT);
+        return !payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING);
     }
 }

@@ -184,6 +184,7 @@ public class PaymentListViewModelHelper
                 double paymentAmount = payment.getPaymentAmount();
                 String paymentStatus = payment.getPaymentStatus();
                 String paymentMemo = payment.getPaymentMemo();
+                String paymentVoidMemo = payment.getPaymentVoidMemo();
 
                 paymentDB = paymentRepository.getPayment(paymentDate);
 
@@ -199,6 +200,8 @@ public class PaymentListViewModelHelper
                         paymentDB.setPaymentstatus(paymentStatus);
                         if(!paymentMemo.trim().isEmpty())
                             paymentDB.setPaymentmemo(paymentMemo);
+                        if(!paymentVoidMemo.trim().isEmpty())
+                            paymentDB.setPaymentvoidmemo(paymentVoidMemo);
                         paymentRepository.updatePaymentToDB(paymentDB);
                     }
                 }
@@ -214,6 +217,7 @@ public class PaymentListViewModelHelper
                                                                     paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING)
                                                                             ? UrbanizationConstants.PAYMENT_SENT : paymentStatus,
                                                                     paymentMemo,
+                                                                    paymentVoidMemo,
                                                                     dateNow));
                 }
             }
