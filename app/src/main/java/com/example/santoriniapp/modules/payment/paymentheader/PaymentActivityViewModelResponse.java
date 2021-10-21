@@ -31,11 +31,13 @@ public class PaymentActivityViewModelResponse
     public List<InalambrikAddPhotoGalleryItem> paymentPhotoList;
     public int paymentTypeSpinnerPosition;
     public boolean isSendingPayment;
+    public boolean isSavingPayment;
     public boolean isSendingPaymentPhotos;
     public boolean loadDataFromDB;
     public String paymentCommentary;
     public String paymentVoidCommentary;
     public boolean isPaymentSent;
+    public boolean isPaymentDraft;
     public String paymentSentNumber;
     public String monthCodeToBlock;
     public String serverMessage;
@@ -68,8 +70,10 @@ public class PaymentActivityViewModelResponse
         this.loadDataFromDB         = false;
         this.paymentCommentary      = "";
         this.isPaymentSent          = false;
+        this.isSavingPayment        = false;
         this.serverMessage          = "";
         this.paymentVoidCommentary  = "";
+        this.isPaymentDraft         = false;
     }
 
     //Methods
@@ -105,19 +109,31 @@ public class PaymentActivityViewModelResponse
         return this.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_APPROVED);
     }
 
+    public boolean paymentIsDraft()
+    {
+        return this.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_DRAFT);
+    }
+
     public boolean showSavePaymentAction(){
-        return paymentIsPending();
+        return paymentIsPending() || paymentIsDraft();
     }
     public boolean showDeletePaymentAction(){
         return false;
     }
 
+    public boolean showSaveDraftPaymentAction(){
+        return paymentIsDraft() || paymentIsPending();
+    }
 
     //METHODS
     public String statusLabelText()
     {
         if(paymentIsPending())
             return "Pago pendiente";
+
+        if(paymentIsDraft())
+            return "Pago en Borrador";
+
         if(paymentIsVoid())
             return "Pago Anulado "+paymentVoidCommentary.trim();
         if(paymentIsSent())
@@ -130,7 +146,7 @@ public class PaymentActivityViewModelResponse
 
     public int statusLabelBackgroundColor()
     {
-        if(paymentIsPending())return pendingColor;
+        if(paymentIsPending() || paymentIsDraft())return pendingColor;
         if(paymentIsVoid())return voidColor;
         if(paymentIsSent())return sentColor;
         if(paymentIsApproved())return approvedColor;
@@ -144,7 +160,7 @@ public class PaymentActivityViewModelResponse
 
     public boolean showStatusLabel()
     {
-        return (paymentIsPending() || paymentIsVoid() || paymentIsSent() || paymentIsApproved()) && !isSendingPayment && !isPaymentSent;
+        return (paymentIsPending() || paymentIsVoid() || paymentIsSent() || paymentIsApproved() || paymentIsDraft()) && !isSendingPayment && !isPaymentSent;
     }
 
     public boolean showOnErrorMessage()

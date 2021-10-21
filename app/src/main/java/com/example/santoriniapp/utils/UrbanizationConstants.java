@@ -18,6 +18,7 @@ public class UrbanizationConstants
     public static String PAYMENT_VOID = "X";
     public static String PAYMENT_APPROVED = "A";
     public static String PAYMENT_SENT = "S";
+    public static String PAYMENT_DRAFT = "D";
 
     public static String PAYMENTTYPECODE_CASH = "EFE";
     public static String PAYMENTTYPECODE_TRANSFERENCE = "TRN";

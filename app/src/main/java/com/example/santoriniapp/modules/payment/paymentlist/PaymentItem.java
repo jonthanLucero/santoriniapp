@@ -80,6 +80,9 @@ public class PaymentItem
         if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_SENT))
             return "Enviado";
 
+        if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_DRAFT))
+            return "Borrador";
+
         return "Pendiente";
     }
 }

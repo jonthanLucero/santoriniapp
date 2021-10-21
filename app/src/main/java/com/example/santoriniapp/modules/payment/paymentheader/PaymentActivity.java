@@ -47,7 +47,7 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
 
     ActivityPaymentBinding mBinding;
     MenuItem mSavePaymentAction;
-    MenuItem mDeletePaymentAction;
+    MenuItem mSaveDraftAction;
 
     // First Load Flag.
     boolean firstLoad = false;
@@ -119,7 +119,10 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
                         //  Payment SENT successfully.
                         // ----------------------------------------l-------------------------------
                         if(response.isPaymentSent)
-                            showSuccessDialog(response.paymentNumber, response.serverMessage);
+                            showSuccessDialog(R.drawable.ic_material_ok_green,"Pago  #"+response.paymentNumber, response.serverMessage);
+
+                        if(response.isPaymentDraft)
+                            showSuccessDialog(R.drawable.ic_material_suggestion_orange,"Mensaje Sistema", response.serverMessage);
 
                         if(response.loadDataFromDB)
                         {
@@ -170,7 +173,7 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
     // -----------------------------------------------------------------------------------------------
     //  Methods for  Dialog fragment.
     // -----------------------------------------------------------------------------------------------
-    private void showSuccessDialog(int generatedNumber, String serverMessage){
+    private void showSuccessDialog(int icon, String title, String serverMessage){
         // If dialog is showing...
         if (processDialogFragment != null
                 && processDialogFragment.getDialog() != null
@@ -181,8 +184,8 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
         }
         else
         {
-            processDialogFragment = UrbanizationProcessEndPopupMessageDialogFragment.newInstanceWithInfoMessage(R.drawable.ic_material_ok_green,
-                        "Pago #"+generatedNumber,serverMessage,
+            processDialogFragment = UrbanizationProcessEndPopupMessageDialogFragment.newInstanceWithInfoMessage(icon,
+                        title,serverMessage,
                         serverMessage);
             processDialogFragment.show(getSupportFragmentManager(), processDialogFragmentTag);
         }
@@ -244,7 +247,7 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_payment_panel, menu);
         mSavePaymentAction             = menu.findItem(R.id.action_send_payment);
-        mDeletePaymentAction           = menu.findItem(R.id.action_delete_payment);
+        mSaveDraftAction               = menu.findItem(R.id.action_save_payment);
         return true;
     }
 
@@ -261,40 +264,27 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
             return true;
         }
 
-        if(itemId == R.id.action_delete_payment)
+        if(itemId == R.id.action_save_payment)
         {
-            //TODO delete payment;
+            saveDraftPayment();
             return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void checkMenuOptions(PaymentActivityViewModelResponse response)
-    {
-        if(response == null)return;
-        if(mSavePaymentAction == null)return;
-        if(mDeletePaymentAction == null)return;
-
-        mSavePaymentAction.setVisible(false);
-        mDeletePaymentAction.setVisible(false);
-        if(response.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING)) {
-            mSavePaymentAction.setVisible(true);
-            mDeletePaymentAction.setVisible(false);
-        }
-    }
-
     private void refreshMenuOptions() {
         //Check if one action menu is available
-        if (mSavePaymentAction == null || mBinding == null || mViewModel == null)
+        if (mSavePaymentAction == null || mSaveDraftAction == null || mBinding == null || mViewModel == null)
             return;
 
         // Setting Menu Actions label.
         PaymentActivityViewModelResponse currentResponse = mViewModel.getCurrentPanelResponse();
         boolean showSavePaymentAction   = currentResponse.showSavePaymentAction();
-        boolean showDeletePaymentAction = currentResponse.showDeletePaymentAction();
+        boolean showSaveDraftPaymentAction = currentResponse.showSaveDraftPaymentAction();
         mSavePaymentAction.setVisible(showSavePaymentAction);
-        mDeletePaymentAction.setVisible(showDeletePaymentAction);
+        mSaveDraftAction.setVisible(showSaveDraftPaymentAction);
 
     }
 
@@ -331,9 +321,50 @@ public class PaymentActivity extends AppCompatActivity implements UrbanizationPr
         });
     }
 
-    // -----------------------------------------------------------------------------------------------
-    //  Method to update/get values in the form and then try to send to server (through ViewModel).
-    // -----------------------------------------------------------------------------------------------
+    // -----------------------------
+    //  Method to save draft the payment
+    // -----------------------------
+    private void saveDraftPayment()
+    {
+        String paymentAmount = mBinding.paymentAmountEditText.getText().toString().trim();
+        double amount = 0;
+        try {
+            amount = Double.parseDouble(paymentAmount);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            amount = 0;
+        }
+
+        //Validate that is registered value to pay
+        if(amount == 0)
+            UrbanizationUtils.showMessage(this,"Favor ingrese el monto a pagar");
+        else
+        {
+            // Update Payment Fields.
+            try
+            {
+                // Get values in the Form and set it in the ViewModel
+                mViewModel.updatePaymentAmount(Double.parseDouble(paymentAmount));
+                mViewModel.setSelectedPaymentMonthPositionSpinner(mBinding.paymentmonth.getSelectedItemPosition());
+                mViewModel.setSelectedPaymentTypePositionSpinner(mBinding.paymenttype.getSelectedItemPosition());
+                mViewModel.updatePaymentCommentary(mBinding.paymentCommentaryEdittext.getText().toString().trim());
+                mViewModel.updatePaymentPhotos(mBinding.addPhotoGalleryControl.getFinalImageList());
+
+                // Send to Server
+                mViewModel.saveDraftPayment(mPaymentDate);
+            }catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(this,R.string.an_error_has_ocurred_please_try_again,Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    // -----------------------------
+    //  Method to send the payment
+    // -----------------------------
     private void sendPayment()
     {
         String paymentAmount = mBinding.paymentAmountEditText.getText().toString().trim();

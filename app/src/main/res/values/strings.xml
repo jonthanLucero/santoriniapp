@@ -44,6 +44,7 @@
     <string name="action_view_values">Ver Valores</string>
 
     <string name="delete">Eliminar</string>
+    <string name="save_draft">Guardar Borrador</string>
     <string name="save">Enviar</string>
     <string name="print_receipt">Imprimir Recibo</string>
     <string name="payment_field_attach_photo">Adjuntar Foto(s) (Opcional)</string>

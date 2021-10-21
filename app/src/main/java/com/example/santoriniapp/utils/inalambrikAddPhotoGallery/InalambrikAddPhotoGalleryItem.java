@@ -41,6 +41,11 @@ public class InalambrikAddPhotoGalleryItem {
         photoBase64 = base64;
     }
 
+    public void setIsDisplayMode(boolean displayMode)
+    {
+        isDisplayMode = displayMode;
+    }
+
     public boolean isDisplayMode(){ return isDisplayMode;}
 
     @Override

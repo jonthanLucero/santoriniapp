@@ -124,7 +124,9 @@ public class PaymentActivityViewModelHelper
         return  response;
     }
 
-    public static PaymentActivityViewModelResponse sendPaymentToServer(Date paymentDate,PaymentActivityViewModelResponse currentResponse)
+    public static PaymentActivityViewModelResponse sendPaymentToServer(Date paymentDate,
+                                                                       PaymentActivityViewModelResponse currentResponse,
+                                                                       boolean isSendPayment)
     {
         Payment oldPayment;
         Payment paymentToBeSaved = getPaymentClassFromView(paymentDate,currentResponse);
@@ -154,9 +156,12 @@ public class PaymentActivityViewModelHelper
             return currentResponse;
         }
 
-        if(oldPayment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_SENT)) {
-            currentResponse.errorMessage = "Pago ya enviado al servidor.";
-            return currentResponse;
+        if(isSendPayment)
+        {
+            if (oldPayment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_SENT)) {
+                currentResponse.errorMessage = "Pago ya enviado al servidor.";
+                return currentResponse;
+            }
         }
 
         //Check if paymentType requires to send photo
@@ -181,101 +186,122 @@ public class PaymentActivityViewModelHelper
         // Update Current Prospect Status in the ViewModel.
         currentResponse.paymentStatus = paymentToBeSaved.getPaymentstatus();
 
-        // --------------------------------------------------------------------------------------------------------------
-        // Sending to Server
-        // --------------------------------------------------------------------------------------------------------------
-
-
-        // -----------------------------------
-        // Set WS Request.
-        // -----------------------------------
-        PaymentRequest request = new PaymentRequest();
-        request.setUserLogin(UrbanizationSessionUtils.getLoggedLogin(context));
-        request.setUserPassword(UrbanizationSessionUtils.getLoggedPassword(context));
-        request.setPaymentDate(DateFunctions.getYYYYMMDDHHMMSSString(DateFunctions.toDate(paymentToBeSaved.getPaymentdate())));
-        request.setPaymentMonth(paymentToBeSaved.getPaymentmonth());
-        request.setPaymentTypeCode(paymentToBeSaved.getPaymenttypecode());
-        request.setPaymentAmount(paymentToBeSaved.getPaymentamount());
-        request.setPaymentMemo(paymentToBeSaved.getPaymentmemo());
-
-        // -----------------------------------
-        // Set Photo List from DB
-        // -----------------------------------
-        ArrayList<PaymentPhotoSDT> paymentPhotoSDTArrayList = new ArrayList<>();
-        PaymentPhotoSDT paymentPhotoSDT;
-        if(currentResponse.paymentPhotoList.size() > 0)
+        if(isSendPayment)
         {
-            for(InalambrikAddPhotoGalleryItem photo : currentResponse.paymentPhotoList)
+            // --------------------------------------------------------------------------------------------------------------
+            // Sending to Server
+            // --------------------------------------------------------------------------------------------------------------
+
+
+            // -----------------------------------
+            // Set WS Request.
+            // -----------------------------------
+            PaymentRequest request = new PaymentRequest();
+            request.setUserLogin(UrbanizationSessionUtils.getLoggedLogin(context));
+            request.setUserPassword(UrbanizationSessionUtils.getLoggedPassword(context));
+            request.setPaymentDate(DateFunctions.getYYYYMMDDHHMMSSString(DateFunctions.toDate(paymentToBeSaved.getPaymentdate())));
+            request.setPaymentMonth(paymentToBeSaved.getPaymentmonth());
+            request.setPaymentTypeCode(paymentToBeSaved.getPaymenttypecode());
+            request.setPaymentAmount(paymentToBeSaved.getPaymentamount());
+            request.setPaymentMemo(paymentToBeSaved.getPaymentmemo());
+
+            // -----------------------------------
+            // Set Photo List from DB
+            // -----------------------------------
+            ArrayList<PaymentPhotoSDT> paymentPhotoSDTArrayList = new ArrayList<>();
+            PaymentPhotoSDT paymentPhotoSDT;
+            if(currentResponse.paymentPhotoList.size() > 0)
             {
-                paymentPhotoSDT = new PaymentPhotoSDT();
-                paymentPhotoSDT.setPaymentDate(DateFunctions.getYYYYMMDDHHMMSSString(DateFunctions.toDate(paymentToBeSaved.getPaymentdate())));
-                paymentPhotoSDT.setPaymentPhotoTitle(photo.photoTitle().trim());
-                paymentPhotoSDT.setPaymentPhotoDescription(photo.photoDescription().trim());
-                paymentPhotoSDT.setPaymentPhotoBase64(photo.getPhotoBase64());
-                //paymentPhotoSDT.setPaymentPhotoBase64("");
-                paymentPhotoSDTArrayList.add(paymentPhotoSDT);
+                for(InalambrikAddPhotoGalleryItem photo : currentResponse.paymentPhotoList)
+                {
+                    paymentPhotoSDT = new PaymentPhotoSDT();
+                    paymentPhotoSDT.setPaymentDate(DateFunctions.getYYYYMMDDHHMMSSString(DateFunctions.toDate(paymentToBeSaved.getPaymentdate())));
+                    paymentPhotoSDT.setPaymentPhotoTitle(photo.photoTitle().trim());
+                    paymentPhotoSDT.setPaymentPhotoDescription(photo.photoDescription().trim());
+                    paymentPhotoSDT.setPaymentPhotoBase64(photo.getPhotoBase64());
+                    paymentPhotoSDTArrayList.add(paymentPhotoSDT);
 
-                Log.d("LOG_TAG","Fotos=>"+new Gson().toJson(paymentPhotoSDT));
+                    Log.d("LOG_TAG","Fotos=>"+new Gson().toJson(paymentPhotoSDT));
+                }
             }
+
+            request.setPaymentPhotoList(new Gson().toJson(paymentPhotoSDTArrayList));
+
+            try {
+                //  -----------------------------------------------------------------------------------
+                // Calling WS.
+                //  -----------------------------------------------------------------------------------
+                ApiInterface apiInterface = ServiceGenerator.createService(ApiInterface.class);
+                Call<PaymentResponse> call = apiInterface.paymentSendWS(request);
+
+                //  -----------------------------------------------------------------------------------
+                // Getting response.
+                //  -----------------------------------------------------------------------------------
+                PaymentResponse wsResponse = call.execute().body();
+
+                // If there is no response...
+                if(wsResponse==null) {
+                    currentResponse.errorMessage = "\"No se pudo contactar Servidor. Por favor intentar nuevamente.";
+                    currentResponse.isSendingPayment = false;
+                    return currentResponse;
+                }
+
+                // If server returned an error...
+
+                if(!wsResponse.getErrorMessage().trim().isEmpty()) {
+                    currentResponse.errorMessage = wsResponse.getErrorMessage().trim();
+                    return currentResponse;
+                }
+
+                currentResponse.isPaymentSent = true;
+                currentResponse.monthCodeToBlock = paymentToBeSaved.getPaymentmonth();
+
+                int paymentNumber = wsResponse.getPaymentNumber();
+                int paymentReceiptNumber = wsResponse.getPaymentReceiptNumber();
+
+                //Update PaymentNumber and paymentStatus
+                paymentToBeSaved.setPaymentnumber(paymentNumber);
+                paymentToBeSaved.setPaymentreceiptnumber(paymentReceiptNumber);
+                paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_SENT);
+                paymentRepository.updatePaymentToDB(paymentToBeSaved);
+
+                currentResponse.loadDataFromDB = true;
+                currentResponse.isDisplayMode = true;
+                currentResponse.paymentNumber = paymentNumber;
+                currentResponse.paymentStatus = UrbanizationConstants.PAYMENT_SENT;
+                currentResponse.serverMessage = "Pago enviado correctamente.";
+
+                if(currentResponse.paymentPhotoList.size() > 0 && !currentResponse.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING)) {
+                    for (int i = 0; i < currentResponse.paymentPhotoList.size(); i++)
+                        currentResponse.paymentPhotoList.get(i).setIsDisplayMode(true);
+                }
+
+                return currentResponse;
+
+            }catch (Exception e) {
+                e.printStackTrace();
+                currentResponse.errorMessage = "No se pudo contactar Servidor. Por favor intentar nuevamente.";
+                return  currentResponse;
+            }
+
         }
+        else
+        {
 
-        request.setPaymentPhotoList(new Gson().toJson(paymentPhotoSDTArrayList));
-
-        try {
-            //  -----------------------------------------------------------------------------------
-            // Calling WS.
-            //  -----------------------------------------------------------------------------------
-            ApiInterface apiInterface = ServiceGenerator.createService(ApiInterface.class);
-            Call<PaymentResponse> call = apiInterface.paymentSendWS(request);
-
-            //  -----------------------------------------------------------------------------------
-            // Getting response.
-            //  -----------------------------------------------------------------------------------
-            PaymentResponse wsResponse = call.execute().body();
-
-            // If there is no response...
-            if(wsResponse==null) {
-                currentResponse.errorMessage = "\"No se pudo contactar Servidor. Por favor intentar nuevamente.";
-                currentResponse.isSendingPayment = false;
-                return currentResponse;
-            }
-
-            // If server returned an error...
-
-            if(!wsResponse.getErrorMessage().trim().isEmpty()) {
-                currentResponse.errorMessage = wsResponse.getErrorMessage().trim();
-                return currentResponse;
-            }
-
-            currentResponse.isPaymentSent = true;
-            currentResponse.monthCodeToBlock = paymentToBeSaved.getPaymentmonth();
-
-            int paymentNumber = wsResponse.getPaymentNumber();
-            int paymentReceiptNumber = wsResponse.getPaymentReceiptNumber();
-
-            //Update PaymentNumber and paymentStatus
-            paymentToBeSaved.setPaymentnumber(paymentNumber);
-            paymentToBeSaved.setPaymentreceiptnumber(paymentReceiptNumber);
-            paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_SENT);
+            paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_DRAFT);
             paymentRepository.updatePaymentToDB(paymentToBeSaved);
 
             currentResponse.loadDataFromDB = true;
-            currentResponse.isDisplayMode = true;
-            currentResponse.paymentNumber = paymentNumber;
-            currentResponse.paymentStatus = UrbanizationConstants.PAYMENT_SENT;
-            currentResponse.serverMessage = "Pago enviado correctamente.";
+            currentResponse.isDisplayMode = false;
+            currentResponse.isPaymentDraft = true;
+            currentResponse.paymentStatus = UrbanizationConstants.PAYMENT_DRAFT;
+            currentResponse.serverMessage = "Pago guardado como borrador correctamente.";
 
-            if(currentResponse.paymentPhotoList.size() > 0 && !currentResponse.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING)) {
+            if(currentResponse.paymentPhotoList.size() > 0 && currentResponse.paymentStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_DRAFT)) {
                 for (int i = 0; i < currentResponse.paymentPhotoList.size(); i++)
-                    currentResponse.paymentPhotoList.get(i).setIsDisplayMode(true);
+                    currentResponse.paymentPhotoList.get(i).setIsDisplayMode(false);
             }
-
             return currentResponse;
-
-        }catch (Exception e) {
-            e.printStackTrace();
-            currentResponse.errorMessage = "No se pudo contactar Servidor. Por favor intentar nuevamente.";
-            return  currentResponse;
         }
     }
 
@@ -321,6 +347,7 @@ public class PaymentActivityViewModelHelper
     }
 
     public static boolean paymentPanelIsDisplayMode(Payment payment){
-        return !payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING);
+        return !(payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING) ||
+                payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_DRAFT));
     }
 }

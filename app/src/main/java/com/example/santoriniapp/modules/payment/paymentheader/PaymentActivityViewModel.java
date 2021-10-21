@@ -67,7 +67,7 @@ public class PaymentActivityViewModel extends ViewModel
     }
 
     // ----------------------------------------------------------------------------------
-    // Method that SENDS the pending agendas to SERVER...
+    // Method that SENDS the payment to SERVER...
     // ----------------------------------------------------------------------------------
     public void saveAndSendPaymentToServer(final Date paymentDate){
 
@@ -109,7 +109,7 @@ public class PaymentActivityViewModel extends ViewModel
                 new Func0<Observable<PaymentActivityViewModelResponse>>() {
                     @Override
                     public Observable<PaymentActivityViewModelResponse> call() {
-                        return Observable.just(PaymentActivityViewModelHelper.sendPaymentToServer(paymentDate,currentResponse));
+                        return Observable.just(PaymentActivityViewModelHelper.sendPaymentToServer(paymentDate,currentResponse,true));
                     }
                 })
                 .subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
@@ -132,6 +132,75 @@ public class PaymentActivityViewModel extends ViewModel
                     public void onNext(PaymentActivityViewModelResponse response) {
                         response.isSendingPayment      = false;
                         response.isSendingPaymentPhotos        = false;
+                        mPanelResponse.postValue(response);  // Trigger Observer in Activity.
+                    }
+                });
+    }
+
+    // ----------------------------------------------------------------------------------
+    // Method that save the payment as draft
+    // ----------------------------------------------------------------------------------
+    public void saveDraftPayment(final Date paymentDate){
+
+        // ----------------------------------------------------------
+        // Check if Current Response is available (Just-In-Case)
+        // ----------------------------------------------------------
+        if(mPanelResponse == null || mPanelResponse.getValue() == null){
+            PaymentActivityViewModelResponse currentResponse = new PaymentActivityViewModelResponse();
+            currentResponse.errorMessage = "Ha ocurrido un error. Por favor intente nuevamente.";
+            mPanelResponse.postValue(currentResponse);  // Trigger Observer in Activity.
+            return;
+        }
+
+        // ----------------------------------------------------------
+        // Getting Previous Response safely.
+        // ----------------------------------------------------------
+        final PaymentActivityViewModelResponse currentResponse = mPanelResponse.getValue();
+
+        // ----------------------------------------------------------
+        // If we are currently sending to server, then return...
+        // ----------------------------------------------------------
+        if(currentResponse.isSavingPayment){
+            mPanelResponse.postValue(currentResponse);
+            return;
+        }
+
+        // ----------------------------------------------------------
+        // Set Initial Load (and reset error message).
+        // ----------------------------------------------------------
+        currentResponse.isSavingPayment            = true;
+        currentResponse.errorMessage               = ""; // Empty Error Message.
+        mPanelResponse.postValue(currentResponse); // Trigger Observer in Activity.
+
+        // ----------------------------------------------------
+        // Began to load the data.
+        // ----------------------------------------------------
+        Observable.defer(
+                new Func0<Observable<PaymentActivityViewModelResponse>>() {
+                    @Override
+                    public Observable<PaymentActivityViewModelResponse> call() {
+                        return Observable.just(PaymentActivityViewModelHelper.sendPaymentToServer(paymentDate,currentResponse,false));
+                    }
+                })
+                .subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
+                .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
+                .subscribe(new Subscriber<PaymentActivityViewModelResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        PaymentActivityViewModelResponse response = new PaymentActivityViewModelResponse();
+                        response.isSavingPayment      = false;
+                        response.errorMessage           = "Ha ocurrido un error. Por favor intentar nuevamente. (*)";
+                        mPanelResponse.postValue(response);   // Trigger Observer in Activity.
+                    }
+
+                    @Override
+                    public void onNext(PaymentActivityViewModelResponse response) {
+                        response.isSavingPayment     = false;
                         mPanelResponse.postValue(response);  // Trigger Observer in Activity.
                     }
                 });
