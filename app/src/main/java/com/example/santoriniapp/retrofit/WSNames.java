@@ -2,7 +2,7 @@ package com.example.santoriniapp.retrofit;
 
 public class WSNames
 {
-    public static final String baseUrl = "urbanizationws/api/";
+    public static final String baseUrl = "/api/";
 
     // ------------------------------------------------
     // Retrofit WS URLs.

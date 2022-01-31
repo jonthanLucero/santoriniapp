@@ -105,7 +105,7 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
                 Payment payment = PaymentUtils.getNewPayment(mUserId);
                 mPaymentViewModel.insertPayment(payment);
                 startActivity(PaymentActivity.launchIntent(PaymentListActivity.this,mUserId,
-                        DateFunctions.toDate(payment.getPaymentdate()), UrbanizationConstants.PAYMENT_MODE_INSERT,""));
+                        DateFunctions.toDate(payment.getPaymentdate()), UrbanizationConstants.PAYMENT_MODE_INSERT,-1,""));
             }
         });
 
@@ -221,6 +221,6 @@ public class PaymentListActivity extends AppCompatActivity implements PaymentIte
     @Override
     public void onPaymentItemClick(PaymentItem payment) {
         startActivity(PaymentActivity.launchIntent(this,mUserId,payment.paymentDate,
-                UrbanizationConstants.PAYMENT_MODE_UPDATE,""));
+                UrbanizationConstants.PAYMENT_MODE_UPDATE,-1,""));
     }
 }

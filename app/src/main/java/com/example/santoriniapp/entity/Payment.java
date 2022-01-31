@@ -28,6 +28,9 @@ public class Payment implements Serializable
     @ColumnInfo(name = "paymentdate")
     private Long paymentdate;
 
+    @ColumnInfo(name = "paymentyear")
+    private int paymentyear;
+
     @ColumnInfo(name = "paymentmonth")
     private String paymentmonth;
 
@@ -56,10 +59,11 @@ public class Payment implements Serializable
     @ColumnInfo(name = "paymentmodifiedon")
     private Long paymentmodifiedon;
 
-    public Payment(@NonNull String userid, @NonNull Long paymentdate,String paymentmonth,String paymenttypecode, int paymentnumber, int paymentreceiptnumber,
+    public Payment(@NonNull String userid, @NonNull Long paymentdate,int paymentyear, String paymentmonth,String paymenttypecode, int paymentnumber, int paymentreceiptnumber,
                    double paymentamount, String paymentstatus, String paymentmemo,String paymentVoidMemo, Long paymentmodifiedon) {
         this.userid = userid;
         this.paymentdate = paymentdate;
+        this.paymentyear = paymentyear;
         this.paymentmonth = paymentmonth;
         this.paymenttypecode = paymenttypecode;
         this.paymentnumber = paymentnumber;
@@ -96,8 +100,16 @@ public class Payment implements Serializable
         return paymentdate;
     }
 
+    public int getPaymentyear() {
+        return paymentyear;
+    }
+
     public String getPaymentmonth() {
         return paymentmonth;
+    }
+
+    public void setPaymentyear(int paymentyear) {
+        this.paymentyear = paymentyear;
     }
 
     public void setPaymentmonth(String paymentmonth) {

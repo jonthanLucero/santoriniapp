@@ -24,25 +24,25 @@ public interface PaymentDAO
     Long insertPayment(Payment payment);
 
 
-    @Query("SELECT * FROM payment_table ORDER BY paymentdate desc")
-    LiveData<List<Payment>> getAllPayments();
+    @Query("SELECT * FROM payment_table where paymentstatus <> 'C' AND userid = :userId ORDER BY paymentdate desc")
+    LiveData<List<Payment>> getAllPayments(String userId);
 
-    @Query("SELECT * FROM payment_table ORDER BY paymentdate desc")
-    List<Payment> getAllPaymentList();
+    @Query("SELECT * FROM payment_table where paymentstatus <> 'C' AND userid = :userId  ORDER BY paymentdate desc")
+    List<Payment> getAllPaymentList(String userId);
 
 
     @TypeConverters(DateConverter.class)
-    @Query("SELECT * FROM payment_table WHERE paymentdate =:PaymentDate")
-    Payment getPayment(Date PaymentDate);
+    @Query("SELECT * FROM payment_table WHERE paymentdate =:PaymentDate AND userid = :userId ")
+    Payment getPayment(Date PaymentDate,String userId);
 
-    @Query("SELECT * FROM payment_table WHERE strftime('%m', paymentdate / 1000, 'unixepoch') =:month order by paymentdate desc")
-    List<Payment> getPaymentsFromMonth(String month);
+    @Query("SELECT * FROM payment_table WHERE userid = :userId AND strftime('%m', paymentdate / 1000, 'unixepoch') =:month order by paymentdate desc")
+    List<Payment> getPaymentsFromMonth(String month,String userId);
 
-    @Query("SELECT * FROM payment_table WHERE paymentmonth =:month order by paymentdate desc")
-    List<Payment> getPaymentsFromMonthCode(String month);
+    @Query("SELECT * FROM payment_table WHERE userid = :userId AND paymentstatus <> 'C' AND paymentmonth =:month order by paymentdate desc")
+    List<Payment> getPaymentsFromMonthCode(String month,String userId);
 
-    @Query("SELECT ifnull(sum(paymentamount),0) FROM payment_table WHERE  paymentmonth =:month")
-    Double getPaymentTotalFromMonthCode(String month);
+    @Query("SELECT ifnull(sum(paymentamount),0) FROM payment_table WHERE userid = :userId AND paymentmonth =:month")
+    Double getPaymentTotalFromMonthCode(String month,String userId);
 
 
     @Update

@@ -50,6 +50,11 @@ public class LoginRepository
         return mLoginDAO.getLogin(userId);
     }
 
+    public Login getLoginData(String userId)
+    {
+        return mLoginDAO.getLoginData(userId);
+    }
+
     public String getLoginName(String userId)
     {
         return mLoginDAO.getUserName(userId);

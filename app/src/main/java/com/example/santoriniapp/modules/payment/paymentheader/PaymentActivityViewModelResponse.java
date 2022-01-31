@@ -14,7 +14,9 @@ import java.util.List;
 public class PaymentActivityViewModelResponse
 {
     public String paymentDateText;
+    public int paymentYearSpinnerPosition;
     public int paymentTimeSpinnerPosition;
+    public int paymentDateYearCode;
     public String paymentDateMonthCode;
     public String paymentTypeCode;
     public double paymentAmount;
@@ -26,6 +28,7 @@ public class PaymentActivityViewModelResponse
     public boolean isDisplayMode;
     public String errorMessage;
     public String userName;
+    public ArrayList<Integer> paymentYearSpinnerList;
     public ArrayList<PaymentDateRowSpinnerItem> paymentListSpinnerList;
     public ArrayList<PaymentTypeItem> paymentTypeListSpinnerList;
     public List<InalambrikAddPhotoGalleryItem> paymentPhotoList;
@@ -38,6 +41,7 @@ public class PaymentActivityViewModelResponse
     public String paymentVoidCommentary;
     public boolean isPaymentSent;
     public boolean isPaymentDraft;
+    public boolean isPaymentDeleted;
     public String paymentSentNumber;
     public String monthCodeToBlock;
     public String serverMessage;
@@ -51,6 +55,7 @@ public class PaymentActivityViewModelResponse
     public PaymentActivityViewModelResponse()
     {
         this.paymentDateText        = "";
+        this.paymentDateYearCode    = 0;
         this.paymentDateMonthCode   = "";
         this.paymentTypeCode        = "";
         this.paymentAmount          = 0.0;
@@ -62,6 +67,7 @@ public class PaymentActivityViewModelResponse
         this.userName               = "";
         this.isDisplayMode          = false;
         this.errorMessage           = "";
+        this.paymentYearSpinnerList = new ArrayList<>();
         this.paymentListSpinnerList = new ArrayList<>();
         this.paymentTimeSpinnerPosition = 0;
         this.paymentPhotoList       = new ArrayList<>();
@@ -74,6 +80,7 @@ public class PaymentActivityViewModelResponse
         this.serverMessage          = "";
         this.paymentVoidCommentary  = "";
         this.isPaymentDraft         = false;
+        this.isPaymentDeleted       = false;
     }
 
     //Methods

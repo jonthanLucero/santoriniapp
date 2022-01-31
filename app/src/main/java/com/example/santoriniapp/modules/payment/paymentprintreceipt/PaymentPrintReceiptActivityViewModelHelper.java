@@ -27,7 +27,7 @@ public class PaymentPrintReceiptActivityViewModelHelper
 
         Payment payment;
         PaymentRepository paymentRepository = new PaymentRepository();
-        payment = paymentRepository.getPayment(mPaymentDate);
+        payment = paymentRepository.getPayment(mPaymentDate,userId);
         String errorMessage;
 
         if(payment == null)

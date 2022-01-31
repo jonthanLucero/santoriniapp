@@ -87,7 +87,8 @@ public class LoginActivity extends AppCompatActivity implements LifecycleOwner
 
                         // Checking if session is alive.
                         boolean isLoggedIn = UrbanizationSessionUtils.isLoggedIn(getApplicationContext());
-                        if(isLoggedIn && !response.isLoading)
+                        String userLogged = UrbanizationSessionUtils.getLoggedUser(getApplicationContext());
+                        if(isLoggedIn && !response.isLoading && !userLogged.trim().isEmpty())
                         {
                             String userId = UrbanizationSessionUtils.getLoggedUser(getApplicationContext());
                             DashboardMenuActivity.launch(LoginActivity.this,userId);
@@ -111,21 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LifecycleOwner
                 if(!errorMessage.trim().isEmpty())
                     UrbanizationUtils.showMessage(LoginActivity.this,errorMessage);
                 else
-                {
-                    /*
-                    mLoginViewModel.getLogin(user).observe(mLoginActivity, new Observer<Login>() {
-                        @Override
-                        public void onChanged(Login login)
-                        {
-                            if(login == null)
-                                Log.d("LOG_TAG","LOGINS Login es null");
-                            else
-                                Log.d("LOG_TAG","LOGINS login=>"+login.getUserlogin());
-                        }
-                    });
-                     */
                     mViewModel.loginToWS(user,password);
-                }
 
             }
         });
@@ -135,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LifecycleOwner
             public void call(Void aVoid)
             {
                 if(mBinding.txtPassword == null) return;
+                if(mBinding.passwordViewtoggle == null)return;
                 if (mBinding.txtPassword.getTag().toString().equalsIgnoreCase("0")) {
                     mBinding.txtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                     mBinding.passwordViewtoggle.setImageResource(R.drawable.ic_visibility);

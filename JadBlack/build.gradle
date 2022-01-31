@@ -36,8 +36,8 @@ dependencies {
     implementation group: 'com.koushikdutta.ion', name: 'ion', version: '2.1.6'
 
 
-    implementation files('../customLibs/ZSDK_ANDROID_API.jar')
-    implementation files('../customLibs/ZSDK_API2.jar')
+    //implementation files('../customLibs/ZSDK_ANDROID_API.jar')
+    //implementation files('../customLibs/ZSDK_API2.jar')
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'gun0912.ted:tedpermission:2.2.3'
 

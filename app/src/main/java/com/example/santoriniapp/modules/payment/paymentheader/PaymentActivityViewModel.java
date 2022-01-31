@@ -16,20 +16,22 @@ public class PaymentActivityViewModel extends ViewModel
 {
     private MutableLiveData<PaymentActivityViewModelResponse> mPanelResponse;
 
-    public LiveData<PaymentActivityViewModelResponse> getCurrentPaymentInformation(String userId,String mMode,Date paymentDate,String monthCode) {
+    public LiveData<PaymentActivityViewModelResponse> getCurrentPaymentInformation(String userId,String mMode,Date paymentDate,int yearCode,String monthCode) {
 
         // If the response is NULL, then load the INITIAL data...
         if (mPanelResponse == null)
         {
             mPanelResponse = new MutableLiveData<>();
-            loadPaymentInformation(userId,mMode,paymentDate,-1,-1,monthCode);
+            loadPaymentInformation(userId,mMode,paymentDate,-1,-1,-1,yearCode,monthCode);
         }
 
         return mPanelResponse;
     }
 
     private void loadPaymentInformation(final String userId,final String mMode,final Date mPaymentDate,
+                                        final int selectedYearPositionSpinner,
                                         final int selectedMonthPositionSpinner,final int selectedPaymentTypePositionSpinner,
+                                        final int yearCode,
                                         final String monthCode){
         final PaymentActivityViewModelResponse currentStatus = getCurrentPanelResponse();
 
@@ -39,7 +41,7 @@ public class PaymentActivityViewModel extends ViewModel
         Observable.defer(new Func0<Observable<PaymentActivityViewModelResponse>>() {
             @Override
             public Observable<PaymentActivityViewModelResponse> call()  {
-                return Observable.just(PaymentActivityViewModelHelper.getInitialLoadingStatus(userId,mMode,mPaymentDate, selectedMonthPositionSpinner,selectedPaymentTypePositionSpinner,monthCode));
+                return Observable.just(PaymentActivityViewModelHelper.getInitialLoadingStatus(userId,mMode,mPaymentDate,selectedYearPositionSpinner, selectedMonthPositionSpinner,selectedPaymentTypePositionSpinner,yearCode, monthCode));
             }
         }).subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
                 .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
@@ -206,6 +208,72 @@ public class PaymentActivityViewModel extends ViewModel
                 });
     }
 
+    public void deletePayment(final Date paymentDate){
+
+        // ----------------------------------------------------------
+        // Check if Current Response is available (Just-In-Case)
+        // ----------------------------------------------------------
+        if(mPanelResponse == null || mPanelResponse.getValue() == null){
+            PaymentActivityViewModelResponse currentResponse = new PaymentActivityViewModelResponse();
+            currentResponse.errorMessage = "Ha ocurrido un error. Por favor intente nuevamente.";
+            mPanelResponse.postValue(currentResponse);  // Trigger Observer in Activity.
+            return;
+        }
+
+        // ----------------------------------------------------------
+        // Getting Previous Response safely.
+        // ----------------------------------------------------------
+        final PaymentActivityViewModelResponse currentResponse = mPanelResponse.getValue();
+
+        // ----------------------------------------------------------
+        // If we are currently sending to server, then return...
+        // ----------------------------------------------------------
+        if(currentResponse.isSavingPayment){
+            mPanelResponse.postValue(currentResponse);
+            return;
+        }
+
+        // ----------------------------------------------------------
+        // Set Initial Load (and reset error message).
+        // ----------------------------------------------------------
+        currentResponse.isSavingPayment            = true;
+        currentResponse.errorMessage               = ""; // Empty Error Message.
+        mPanelResponse.postValue(currentResponse); // Trigger Observer in Activity.
+
+        // ----------------------------------------------------
+        // Began to load the data.
+        // ----------------------------------------------------
+        Observable.defer(
+                new Func0<Observable<PaymentActivityViewModelResponse>>() {
+                    @Override
+                    public Observable<PaymentActivityViewModelResponse> call() {
+                        return Observable.just(PaymentActivityViewModelHelper.deletePayment(paymentDate,currentResponse));
+                    }
+                })
+                .subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
+                .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
+                .subscribe(new Subscriber<PaymentActivityViewModelResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        PaymentActivityViewModelResponse response = new PaymentActivityViewModelResponse();
+                        response.isPaymentDeleted      = false;
+                        response.errorMessage           = "Ha ocurrido un error. Por favor intentar nuevamente. (*)";
+                        mPanelResponse.postValue(response);   // Trigger Observer in Activity.
+                    }
+
+                    @Override
+                    public void onNext(PaymentActivityViewModelResponse response) {
+                        response.isPaymentDeleted     = true;
+                        mPanelResponse.postValue(response);  // Trigger Observer in Activity.
+                    }
+                });
+    }
+
     public void resetErrorMessage(){
         if(mPanelResponse != null && mPanelResponse.getValue() != null)
             mPanelResponse.getValue().errorMessage = "";
@@ -216,6 +284,15 @@ public class PaymentActivityViewModel extends ViewModel
         if(mPanelResponse != null && mPanelResponse.getValue() != null)
             return mPanelResponse.getValue();
         return new PaymentActivityViewModelResponse();
+    }
+
+    public void setSelectedPaymentYearPositionSpinner(int selectedPosition) {
+        if(mPanelResponse != null && mPanelResponse.getValue() != null && mPanelResponse.getValue().paymentYearSpinnerPosition != selectedPosition)
+        {
+            mPanelResponse.getValue().paymentYearSpinnerPosition = selectedPosition;
+            mPanelResponse.getValue().paymentDateYearCode = mPanelResponse.getValue().paymentYearSpinnerList.get(selectedPosition);
+        }
+
     }
 
     public void setSelectedPaymentMonthPositionSpinner(int selectedPosition) {

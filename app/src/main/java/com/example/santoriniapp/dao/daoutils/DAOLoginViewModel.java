@@ -28,6 +28,11 @@ public class DAOLoginViewModel extends AndroidViewModel {
         return mRepository.getLogin(userId);
     }
 
+    public Login getLoginData(String userId)
+    {
+        return mRepository.getLoginData(userId);
+    }
+
     public String getLoginName(String userId)
     {
         return mRepository.getLoginName(userId);

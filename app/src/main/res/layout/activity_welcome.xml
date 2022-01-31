@@ -9,6 +9,18 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/action_menu_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="5dp"
+            android:padding="20dp"
+            android:text="Menu Principal" />
+
+        <Button
             android:id="@+id/action_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,6 +44,17 @@
             android:padding="20dp"
             android:text="Lista de Pagos" />
 
+        <Button
+            android:id="@+id/action_paymentlist_pending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="5dp"
+            android:padding="20dp"
+            android:text="Resumen de Pagos" />
     </LinearLayout>
 
 </layout>

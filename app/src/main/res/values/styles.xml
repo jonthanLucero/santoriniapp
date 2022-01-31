@@ -267,4 +267,25 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="InalambrikMaterialFormSideImageForOutlinedFields">
+        <item name="android:layout_width">25sp</item>
+        <item name="android:layout_height">25sp</item>
+        <item name="android:layout_marginEnd">15sp</item>
+        <item name="android:layout_marginRight">15sp</item>
+        <item name="android:layout_marginTop">@dimen/dimens_13sp</item>
+    </style>
+
+    <style name="InalambrikMaterialSpinnerLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/material_black_secondary</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+    </style>
+
+    <style name="Inalambrik.Material.Form.Spinner.GrayBackground" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:spinnerMode">dialog</item>
+    </style>
 </resources>

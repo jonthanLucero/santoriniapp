@@ -2,8 +2,11 @@ package com.example.santoriniapp.modules.login;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.entity.PaymentType;
 import com.example.santoriniapp.repository.LoginRepository;
+import com.example.santoriniapp.repository.PaymentRepository;
 import com.example.santoriniapp.repository.PaymentTypeRepository;
 import com.example.santoriniapp.retrofit.ApiInterface;
 import com.example.santoriniapp.retrofit.ServiceGenerator;
@@ -18,6 +21,8 @@ import com.example.santoriniapp.utils.UrbanizationUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 
 public class LoginViewModelHelper
@@ -83,7 +88,6 @@ public class LoginViewModelHelper
             UrbanizationSessionUtils.setLoggedLogin(context,userLogin);
             UrbanizationSessionUtils.setLoggedPassword(context,passwordLogin);
 
-
             //Delete login table then save the data
             loginRepository.deleteLoginsFromDB();
 
@@ -110,6 +114,19 @@ public class LoginViewModelHelper
                                 paymentType.getPaymentTypeName(),
                                 UrbanizationConstants.PAYMENTTYPESTATUS_ACTIVE,
                                 paymentType.getPaymentTypeRequiresPhoto() == 1,dateNow));
+            }
+
+            //Update as deleted the payment
+            PaymentRepository paymentRepository = new PaymentRepository();
+            List<Payment> paymentList = paymentRepository.getAllPaymentList(userId);
+            for(Payment payment : paymentList)
+            {
+                if(!payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING) &&
+                   !payment.getPaymentstatus().equalsIgnoreCase(UrbanizationConstants.PAYMENT_DRAFT))
+                {
+                    payment.setPaymentstatus(UrbanizationConstants.PAYMENT_DELETED);
+                    paymentRepository.updatePaymentToDB(payment);
+                }
             }
 
             return  mResponse;

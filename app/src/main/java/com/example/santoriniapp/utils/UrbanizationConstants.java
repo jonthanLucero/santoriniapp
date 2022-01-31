@@ -12,13 +12,17 @@ public class UrbanizationConstants
     public static String FIRST_TIME = "FIRST_TIME";
 
     //public static String APP_LOCAL_URL = "10.0.2.2";
-    public static String APP_LOCAL_URL = "192.168.100.1";
+    //public static String APP_LOCAL_URL = "192.168.100.124:8080";
+
+    //public static String APP_LOCAL_URL = "192.168.100.58:8080";
+    public static String APP_LOCAL_URL = "http://urbanidata.com";
 
     public static String PAYMENT_PENDING = "P";
     public static String PAYMENT_VOID = "X";
     public static String PAYMENT_APPROVED = "A";
     public static String PAYMENT_SENT = "S";
     public static String PAYMENT_DRAFT = "D";
+    public static String PAYMENT_DELETED = "C";
 
     public static String PAYMENTTYPECODE_CASH = "EFE";
     public static String PAYMENTTYPECODE_TRANSFERENCE = "TRN";

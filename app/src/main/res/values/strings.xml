@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SantoriniApp</string>
+    <string name="app_name">Urbanidata</string>
     <color name="orange_soft">#F9BE7C</color>
     <color name="orange_strong">#FF6F00</color>
     <color name="green_strong">#004D40</color>
@@ -7,17 +7,19 @@
 
     <color name="mainColor">#009688</color>
     <color name="OptionalColor">#00897B</color>
-    <color name="AccentColor">#4DD0E1</color>
+    <color name="AccentColor">#343a40</color>
 
     <string name="welcome">Bienvenido</string>
     <string name="dashboard_menu_text">Cargando Menu Principal...</string>
     <string name="top_icon">TOP ICON</string>
     <string name="email">Correo Electrónico</string>
-    <string name="password">Contraseña</string>
+    <string name="password">Ingresar contraseña</string>
     <string name="login">Ingresar</string>
     <string name="user">Usuario</string>
     <string name="forgot_password">Olvidó la contraseña?</string>
+    <string name="show_password">Mostrar Contraseña</string>
     <string name="santorini_title">Santorini App Urbanization</string>
+    <string name="developedby">Desarrollado por jothman 2021</string>
     <string name="or">O</string>
     <string name="entering">Ingresando al sistema... \nPor favor espere</string>
     <string name="sync_information">Sincronizando información del sistema... \nPor favor espere</string>
@@ -43,7 +45,8 @@
     <string name="action_enter_values">Ingresar Valores</string>
     <string name="action_view_values">Ver Valores</string>
 
-    <string name="delete">Eliminar</string>
+    <string name="action_confirm">Confirmar</string>
+    <string name="delete">Eliminar Pago</string>
     <string name="save_draft">Guardar Borrador</string>
     <string name="save">Enviar</string>
     <string name="print_receipt">Imprimir Recibo</string>
@@ -61,6 +64,7 @@
     <string name="payment_spinner_time_label">Período</string>
     <string name="no_records_found_press_to_register">No se encontraron datos. Presione el \"+\" para crear un nuevo pago.</string>
     <string name="payment_register_amount">Ingresar el monto a pagar.</string>
+    <string name="payment_register_year">Seleccione el año a pagar</string>
     <string name="payment_register_month">Seleccione el mes a pagar</string>
     <string name="payment_register_type">Seleccione el tipo de pago</string>
     <string name="action_print_values">Imprimir Recibo</string>

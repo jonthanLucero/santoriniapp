@@ -14,6 +14,7 @@ import com.example.santoriniapp.repository.PaymentTypeRepository;
 import com.example.santoriniapp.utils.inalambrikAddPhotoGallery.InalambrikAddPhotoGalleryItem;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PaymentUtils
@@ -22,9 +23,14 @@ public class PaymentUtils
     {
         Long newDate = NumericFunctions.toLong(DateFunctions.now());
 
-        return new Payment(userId,newDate,UrbanizationUtils.getTodayMonthRequestCode(),
+        return new Payment(userId,newDate,UrbanizationUtils.getTodayYear(), UrbanizationUtils.getTodayMonthRequestCode(),
                            UrbanizationConstants.PAYMENTTYPECODE_CASH,0,
                 0,0,UrbanizationConstants.PAYMENT_PENDING,"","",newDate);
+    }
+
+    public static Payment getPaymentInformation(Date paymentDate,String userId)
+    {
+        return new PaymentRepository().getPayment(paymentDate,userId);
     }
 
     public static ArrayList<PaymentDateRowSpinnerItem> getPaymentDateRowSpinnerList(String calledFrom)
@@ -47,6 +53,21 @@ public class PaymentUtils
         paymentDateRowSpinnerItemList.add(new PaymentDateRowSpinnerItem("11", "Noviembre"));
         paymentDateRowSpinnerItemList.add(new PaymentDateRowSpinnerItem("12", "Diciembre"));
         return paymentDateRowSpinnerItemList;
+    }
+
+    public static ArrayList<Integer> getPaymentYearItemList()
+    {
+        // Load Spinner
+        ArrayList<Integer> paymentYearItemList = new ArrayList<>();
+
+        paymentYearItemList.add(2016);
+        paymentYearItemList.add(2017);
+        paymentYearItemList.add(2018);
+        paymentYearItemList.add(2019);
+        paymentYearItemList.add(2020);
+        paymentYearItemList.add(2021);
+        paymentYearItemList.add(2022);
+        return paymentYearItemList;
     }
 
     public static ArrayList<PaymentTypeItem> getPaymentTypeSpinnerList()

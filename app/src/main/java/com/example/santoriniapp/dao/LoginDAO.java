@@ -25,6 +25,9 @@ public interface LoginDAO
     @Query("SELECT * FROM login_table WHERE userlogin =:UserLogin")
     LiveData<Login> getLogin(String UserLogin);
 
+    @Query("SELECT * FROM login_table WHERE userid =:userId")
+    Login getLoginData(String userId);
+
     @Query("SELECT username FROM login_table WHERE userid = :userId")
     String getUserName(String userId);
 

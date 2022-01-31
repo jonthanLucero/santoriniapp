@@ -8,6 +8,8 @@ import com.example.santoriniapp.dao.PaymentDAO;
 import com.example.santoriniapp.database.UrbanizationDatabase;
 import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
+import com.example.santoriniapp.utils.UrbanizationSessionUtils;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,8 @@ public class PaymentRepository
     public PaymentRepository(Application application) {
         UrbanizationDatabase db = UrbanizationDatabase.getDatabase(application);
         mPaymentDAO = db.paymentDAO();
-        mAllPayments = mPaymentDAO.getAllPayments();
+        String userId = UrbanizationSessionUtils.getLoggedUser(application);
+        mAllPayments = mPaymentDAO.getAllPayments(userId);
     }
 
     public PaymentRepository()
@@ -34,8 +37,8 @@ public class PaymentRepository
         return mAllPayments;
     }
 
-    public List<Payment> getAllPaymentList() {
-        return mPaymentDAO.getAllPaymentList();
+    public List<Payment> getAllPaymentList(String userId) {
+        return mPaymentDAO.getAllPaymentList(userId);
     }
 
     public void insertPaymentToDB (Payment payment) {
@@ -52,24 +55,24 @@ public class PaymentRepository
         new deleteAllPaymentsAsyncTask(mPaymentDAO).execute();
     }
 
-    public Payment getPayment(Date paymentDate)
+    public Payment getPayment(Date paymentDate,String userId)
     {
-        return mPaymentDAO.getPayment(paymentDate);
+        return mPaymentDAO.getPayment(paymentDate,userId);
     }
 
-    public List<Payment> getAllPaymentByMonth(String month)
+    public List<Payment> getAllPaymentByMonth(String month,String userId)
     {
-        return mPaymentDAO.getPaymentsFromMonth(month);
+        return mPaymentDAO.getPaymentsFromMonth(month,userId);
     }
 
-    public List<Payment> getAllPaymentByMonthCode(String monthCode)
+    public List<Payment> getAllPaymentByMonthCode(String monthCode,String userId)
     {
-        return mPaymentDAO.getPaymentsFromMonthCode(monthCode);
+        return mPaymentDAO.getPaymentsFromMonthCode(monthCode,userId);
     }
 
-    public Double getAllPaymentTotalFromMonthCode(String monthCode)
+    public Double getAllPaymentTotalFromMonthCode(String monthCode,String userId)
     {
-        return mPaymentDAO.getPaymentTotalFromMonthCode(monthCode);
+        return mPaymentDAO.getPaymentTotalFromMonthCode(monthCode,userId);
     }
 
     private static class insertPaymentAsyncTask extends AsyncTask<Payment, Void, Void> {

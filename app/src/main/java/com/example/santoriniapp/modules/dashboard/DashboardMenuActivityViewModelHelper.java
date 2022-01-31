@@ -2,7 +2,10 @@ package com.example.santoriniapp.modules.dashboard;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.example.santoriniapp.R;
+import com.example.santoriniapp.entity.Login;
 import com.example.santoriniapp.entity.PaymentType;
 import com.example.santoriniapp.modules.news.NewsListActivity;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentListActivity;
@@ -36,10 +39,25 @@ public class DashboardMenuActivityViewModelHelper
         // Init Response.
         DashboardMenuActivityViewModelResponse response = new DashboardMenuActivityViewModelResponse();
 
-        String userName,taxpayerId;
+        String userName,taxpayerId,userPhotoURL;
 
         //Get UserName
         LoginRepository loginRepository = new LoginRepository();
+        Login loginData = loginRepository.getLoginData(userId);
+        if(loginData == null)
+        {
+            userName = "N/A";
+            taxpayerId = "N/A";
+            userPhotoURL = "";
+        }
+        else
+        {
+            userName     = loginData.getUserlogin().trim().isEmpty() ? "N/A" : loginData.getUserlogin().trim();
+            taxpayerId   = loginData.getUsertaxpayerid().isEmpty() ? "N/A" : loginData.getUsertaxpayerid().trim();
+            userPhotoURL = loginData.getUserphotourl().isEmpty() ? "" : loginData.getUserphotourl().trim();
+        }
+
+        /*
         if(loginRepository.getLoginName(userId)== null)
             userName = "N/A";
         else
@@ -50,11 +68,16 @@ public class DashboardMenuActivityViewModelHelper
         else
             taxpayerId =  loginRepository.getLoginTaxPayerId(userId).trim().isEmpty() ? "N/A" : loginRepository.getLoginTaxPayerId(userId).trim();
 
+         */
+
+
+
         if(syncInformation)
             response.errorMessage = syncData();
 
-        response.userName = userName;
-        response.taxpayerId   = taxpayerId;
+        response.userName       = userName;
+        response.taxpayerId     = taxpayerId;
+        response.userPictureUrl = userPhotoURL;
 
         // Load the "options" list.
         response.itemList = getMenuItemList();
@@ -62,9 +85,13 @@ public class DashboardMenuActivityViewModelHelper
 
         // Get User Picture URL.
         //TODO VERIIFY USER FILE PHOTO
-        response.userPictureUrl = "";
+        //response.userPictureUrl = "";
+        /*
         if(!response.userPictureUrl.trim().isEmpty())
-            response.userPictureUrl = response.userPictureUrl.contains("pedidos.inalambrik.com.ec") ? "https://".concat(response.userPictureUrl.trim()) : "http://".concat(response.userPictureUrl.trim());
+            response.userPictureUrl = response.userPictureUrl.contains("pedidos.inalambrik.com.ec") ?
+            "https://".concat(response.userPictureUrl.trim()) : "http://".concat(response.userPictureUrl.trim());
+
+         */
 
         return response;
     }
@@ -168,6 +195,8 @@ public class DashboardMenuActivityViewModelHelper
             //Save all paymentTypes
             for(PaymentTypeListSDT paymentType : paymentTypeListCollectionSDT)
             {
+                Log.d(LOG_TAG,"paymentType=>"+paymentType.getPaymentTypeCode()+",requiresphoto=>"+paymentType.getPaymentTypeRequiresPhoto());
+
                 //Save paymenttype in db
                 paymentTypeRepository.insertPaymentTypeToDB(
                         new PaymentType(paymentType.getPaymentTypeCode(),

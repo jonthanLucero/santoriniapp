@@ -1,4 +1,4 @@
-package com.example.santoriniapp.modules.payment.paymentlist;
+ package com.example.santoriniapp.modules.payment.paymentlist;
 
 import android.content.Context;
 import android.util.Log;
@@ -71,9 +71,9 @@ public class PaymentListViewModelHelper
         PaymentRepository paymentRepository = new PaymentRepository();
 
         if(requestCode.equalsIgnoreCase("00"))
-            payments = paymentRepository.getAllPaymentList();
+            payments = paymentRepository.getAllPaymentList(userId);
         else
-            payments = paymentRepository.getAllPaymentByMonthCode(requestCode);
+            payments = paymentRepository.getAllPaymentByMonthCode(requestCode,userId);
 
         for(Payment p : payments)
             Log.d("LOG_TAG","PAYMENT ONE MONTH=>"+p.getPaymentdate());
@@ -177,6 +177,7 @@ public class PaymentListViewModelHelper
                 Date paymentDate = DateFunctions.stringToDateTime(payment.getPaymentDate());
                 long paymentDateLong = NumericFunctions.toLong(paymentDate);
 
+                int paymentYear     = payment.getPaymentYear();
                 String paymentMonth = payment.getPaymentMonth();
                 String paymentTypeCode = payment.getPaymentTypeCode();
                 int paymentNumber = payment.getPaymentNumber();
@@ -186,7 +187,7 @@ public class PaymentListViewModelHelper
                 String paymentMemo = payment.getPaymentMemo();
                 String paymentVoidMemo = payment.getPaymentVoidMemo();
 
-                paymentDB = paymentRepository.getPayment(paymentDate);
+                paymentDB = paymentRepository.getPayment(paymentDate,String.valueOf(userId));
 
                 boolean pagoExiste = paymentDB != null && paymentDB.getPaymentdate() > 0;
 
@@ -209,6 +210,7 @@ public class PaymentListViewModelHelper
                 {
                     paymentRepository.insertPaymentToDB(new Payment(String.valueOf(userId),
                                                                     paymentDateLong,
+                                                                    paymentYear,
                                                                     paymentMonth,
                                                                     paymentTypeCode,
                                                                     paymentNumber,

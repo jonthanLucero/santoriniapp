@@ -18,6 +18,10 @@ public class PaymentRequest
     @Expose
     private String PaymentDate;
 
+    @SerializedName("PaymentYear")
+    @Expose
+    private Integer PaymentYear;
+
     @SerializedName("PaymentMonth")
     @Expose
     private String PaymentMonth;
@@ -55,6 +59,10 @@ public class PaymentRequest
         return PaymentDate;
     }
 
+    public Integer getPaymentYear() {
+        return PaymentYear;
+    }
+
     public String getPaymentMonth() {
         return PaymentMonth;
     }
@@ -90,6 +98,10 @@ public class PaymentRequest
 
     public void setPaymentDate(String paymentDate) {
         PaymentDate = paymentDate;
+    }
+
+    public void setPaymentYear(Integer paymentYear) {
+        PaymentYear = paymentYear;
     }
 
     public void setPaymentMonth(String paymentMonth) {

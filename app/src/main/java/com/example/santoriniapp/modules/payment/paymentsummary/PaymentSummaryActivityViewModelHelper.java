@@ -7,12 +7,14 @@ import com.example.santoriniapp.entity.Payment;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentItem;
 import com.example.santoriniapp.repository.LoginRepository;
 import com.example.santoriniapp.repository.PaymentRepository;
+import com.example.santoriniapp.utils.DateFunctions;
 import com.example.santoriniapp.utils.StringFunctions;
 import com.example.santoriniapp.utils.UrbanizationConstants;
 import com.example.santoriniapp.utils.UrbanizationGlobalUtils;
 import com.example.santoriniapp.utils.UrbanizationUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PaymentSummaryActivityViewModelHelper
@@ -53,13 +55,11 @@ public class PaymentSummaryActivityViewModelHelper
             item = paymentList.get(i);
             monthCode= item.paymentMonthCodeToPay;
             summaryAmountTotal = item.paymentPendingTotal;
-            paymentAmountTotal = paymentRepository.getAllPaymentTotalFromMonthCode(monthCode);
+            paymentAmountTotal = paymentRepository.getAllPaymentTotalFromMonthCode(monthCode,userId);
             paymentList.get(i).paymentSentTotal = paymentAmountTotal;
-            /*
+
             if(paymentAmountTotal >= summaryAmountTotal)
                 paymentList.get(i).paymentMonthStatus = "S";
-                ++
-             */
         }
         response.paymentList = paymentList;
         return  response;
@@ -71,16 +71,19 @@ public class PaymentSummaryActivityViewModelHelper
         ArrayList<PaymentSummaryItem> paymentSummaryList = new ArrayList<>();
         PaymentSummaryItem item;
         String monthCode;
+        Date currentDate = DateFunctions.now();
+        int currentYear = DateFunctions.getYear(currentDate);
         for(int m = 1; m <= 12 ; m++)
         {
             monthCode = m < 10 ? "0"+m : ""+m;
             item = new PaymentSummaryItem();
             item.paymentMonthCodeToPay  = monthCode;
-            item.paymentMonthNameToPay  = UrbanizationUtils.getMonthName(monthCode);
+            item.paymentMonthNameToPay  = UrbanizationUtils.getMonthName(monthCode) +" - " +currentYear;
             item.paymentMonthStatus     = "P";
             item.paymentPendingTotal    = UrbanizationConstants.paymentMonthQuote;
             item.paymentSentTotal       = 0;
             item.showPaymentAction      = false;
+            item.paymentYearToPay       = currentYear;
             paymentSummaryList.add(item);
         }
         return paymentSummaryList;

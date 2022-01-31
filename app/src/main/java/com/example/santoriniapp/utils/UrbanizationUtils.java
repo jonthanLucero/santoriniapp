@@ -34,6 +34,13 @@ public class UrbanizationUtils
         return color;
     }
 
+    public static int getTodayYear()
+    {
+        Date date = DateFunctions.today();
+        int year = DateFunctions.getYear(date);
+        return year;
+    }
+
     public static String getTodayMonthRequestCode()
     {
         Date date = DateFunctions.today();

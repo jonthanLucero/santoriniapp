@@ -9,6 +9,10 @@ public class PaymentListSDT
     @Expose
     private String PaymentDate;
 
+    @SerializedName("PaymentYear")
+    @Expose
+    private Integer PaymentYear;
+
     @SerializedName("PaymentMonth")
     @Expose
     private String PaymentMonth;
@@ -47,6 +51,8 @@ public class PaymentListSDT
     public String getPaymentDate() {
         return PaymentDate;
     }
+
+    public Integer getPaymentYear(){return PaymentYear;}
     public String getPaymentMonth(){return PaymentMonth;}
     public String getPaymentTypeCode(){return PaymentTypeCode;}
     public Integer getPaymentNumber(){ return PaymentNumber;}

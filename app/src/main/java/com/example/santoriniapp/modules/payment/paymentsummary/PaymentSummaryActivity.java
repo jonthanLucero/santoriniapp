@@ -51,6 +51,11 @@ public class PaymentSummaryActivity extends AppCompatActivity implements Payment
         return intent;
     }
 
+    public static void launch(Context context, String userId) {
+        Intent intent = launchIntent(context, userId);
+        context.startActivity(intent);
+    }
+
     private void getParameters() {
         Bundle parms = getIntent().getBundleExtra(PARAMS);
         mUserId = parms.getString(USER_ID);
@@ -132,7 +137,7 @@ public class PaymentSummaryActivity extends AppCompatActivity implements Payment
             Payment payment = PaymentUtils.getNewPayment(mUserId);
             mPaymentViewModel.insertPayment(payment);
             startActivity(PaymentActivity.launchIntent(this,mUserId,DateFunctions.toDate(payment.getPaymentdate()),
-                    UrbanizationConstants.PAYMENT_MODE_INSERT_FROM_PAYMENT_LIST,item.paymentMonthCodeToPay));
+                    UrbanizationConstants.PAYMENT_MODE_INSERT_FROM_PAYMENT_LIST,item.paymentYearToPay,item.paymentMonthCodeToPay));
         }
     }
 }

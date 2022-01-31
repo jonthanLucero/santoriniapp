@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
         PaymentType.class,
         PaymentPhoto.class
 
-}, version = 1, exportSchema = false)
+}, version = 2, exportSchema = false)
 public abstract class UrbanizationDatabase extends RoomDatabase
 {
     public abstract LoginDAO loginDAO ();

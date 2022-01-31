@@ -7,6 +7,7 @@ import com.example.santoriniapp.utils.UrbanizationUtils;
 public class PaymentSummaryItem
 {
     // Main Variables.
+    public int paymentYearToPay;
     public String paymentMonthNameToPay;
     public String paymentMonthCodeToPay;
     public String paymentMonthStatus;
@@ -17,6 +18,7 @@ public class PaymentSummaryItem
 
     public PaymentSummaryItem()
     {
+        this.paymentYearToPay = 0;
         this.paymentMonthNameToPay = "";
         this.paymentMonthCodeToPay = "";
         this.paymentMonthStatus = "";

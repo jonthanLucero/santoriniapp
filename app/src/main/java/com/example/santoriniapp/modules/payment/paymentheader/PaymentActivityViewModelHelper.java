@@ -38,8 +38,8 @@ public class PaymentActivityViewModelHelper
 {
     public static final String LOG_TAG = PaymentActivityViewModelHelper.class.getSimpleName();
 
-    public static PaymentActivityViewModelResponse getInitialLoadingStatus(String userId,String mode, Date mPaymentDate,
-                                                                           int selectedMonthPositionSpiner, int selectedTypeCodePositionSpinner,String monthCode) {
+    public static PaymentActivityViewModelResponse getInitialLoadingStatus(String userId,String mode, Date mPaymentDate,int selectedYearPositionSpinner,
+                                                                           int selectedMonthPositionSpiner, int selectedTypeCodePositionSpinner,int yearCode,String monthCode) {
 
         PaymentActivityViewModelResponse response = new PaymentActivityViewModelResponse();
 
@@ -52,6 +52,9 @@ public class PaymentActivityViewModelHelper
             userName =  loginRepository.getLoginName(userId).trim().isEmpty() ? "N/A" : loginRepository.getLoginName(userId).trim();
         response.userName = userName;
 
+        ArrayList<Integer> paymentYearSpinnerItemList = PaymentUtils.getPaymentYearItemList();
+        response.paymentYearSpinnerList = paymentYearSpinnerItemList;
+
         ArrayList<PaymentDateRowSpinnerItem> paymentDateRowSpinnerItemList = PaymentUtils.getPaymentDateRowSpinnerList("PAYMENT");
         response.paymentListSpinnerList = paymentDateRowSpinnerItemList;
 
@@ -60,7 +63,7 @@ public class PaymentActivityViewModelHelper
 
         Payment payment;
         PaymentRepository paymentRepository = new PaymentRepository();
-        payment = paymentRepository.getPayment(mPaymentDate);
+        payment = paymentRepository.getPayment(mPaymentDate,userId);
         String errorMessage;
 
         if(payment == null)
@@ -72,6 +75,7 @@ public class PaymentActivityViewModelHelper
         }
 
         response.paymentDateText = DateFunctions.getDDMMMYYYYHHMMSSDateString(mPaymentDate);
+        response.paymentDateYearCode  = yearCode == -1 ? payment.getPaymentyear() : yearCode;
         response.paymentDateMonthCode = monthCode.trim().isEmpty() ? payment.getPaymentmonth() : monthCode;
         response.paymentTypeCode = payment.getPaymenttypecode();
         response.paymentAmount   = payment.getPaymentamount();
@@ -88,11 +92,17 @@ public class PaymentActivityViewModelHelper
         //Load Payment Month and Payment Type Spinner Values
         if(mode.equalsIgnoreCase(UrbanizationConstants.PAYMENT_MODE_INSERT))
         {
+            response.paymentYearSpinnerPosition = selectedYearPositionSpinner == -1 ? getPaymentYearRecordPosition(paymentYearSpinnerItemList,UrbanizationUtils.getTodayYear()) : 0;
             response.paymentTimeSpinnerPosition = selectedMonthPositionSpiner == -1 ? getPaymentDateRecordPosition(paymentDateRowSpinnerItemList, UrbanizationUtils.getTodayMonthRequestCode()) : 0;
             response.paymentTypeSpinnerPosition = selectedTypeCodePositionSpinner == -1 ? getPaymentTypeRecordPosition(paymentTypeList, UrbanizationConstants.PAYMENTTYPECODE_CASH) : 0;
         }
         else
         {
+            if(yearCode == -1)
+                response.paymentYearSpinnerPosition = getPaymentYearRecordPosition(paymentYearSpinnerItemList, payment.getPaymentyear());
+            else
+                response.paymentYearSpinnerPosition = PaymentActivityViewModelHelper.getPaymentYearRecordPosition(paymentYearSpinnerItemList,yearCode);
+
             if(monthCode.trim().isEmpty())
                 response.paymentTimeSpinnerPosition = getPaymentDateRecordPosition(paymentDateRowSpinnerItemList, payment.getPaymentmonth());
             else
@@ -149,7 +159,7 @@ public class PaymentActivityViewModelHelper
         // Just in case - Checking that the payment is not already SENT
         // ---------------------------------------------------------------
         PaymentRepository paymentRepository = new PaymentRepository();
-        oldPayment = paymentRepository.getPayment(paymentDate);
+        oldPayment = paymentRepository.getPayment(paymentDate,paymentToBeSaved.getUserid());
 
         if(oldPayment == null) {
             currentResponse.errorMessage = "Ha ocurrido un error inesperado. Por favor cerrar el formulario y llenarlo nuevamente.";
@@ -200,6 +210,7 @@ public class PaymentActivityViewModelHelper
             request.setUserLogin(UrbanizationSessionUtils.getLoggedLogin(context));
             request.setUserPassword(UrbanizationSessionUtils.getLoggedPassword(context));
             request.setPaymentDate(DateFunctions.getYYYYMMDDHHMMSSString(DateFunctions.toDate(paymentToBeSaved.getPaymentdate())));
+            request.setPaymentYear(paymentToBeSaved.getPaymentyear());
             request.setPaymentMonth(paymentToBeSaved.getPaymentmonth());
             request.setPaymentTypeCode(paymentToBeSaved.getPaymenttypecode());
             request.setPaymentAmount(paymentToBeSaved.getPaymentamount());
@@ -305,16 +316,56 @@ public class PaymentActivityViewModelHelper
         }
     }
 
+    public static PaymentActivityViewModelResponse deletePayment(Date paymentDate,
+                                                                       PaymentActivityViewModelResponse currentResponse)
+    {
+        Payment oldPayment;
+        Payment paymentToBeSaved = getPaymentClassFromView(paymentDate,currentResponse);
+
+        // -----------------------------------------------------------
+        // Getting context.
+        // -----------------------------------------------------------
+        Context context = UrbanizationGlobalUtils.getInstance();
+
+        // --------------------------------------------------------------------
+        // Very unlikely to happen - But it cant happen in any circumstances.
+        // It cant exist an empty date.
+        // --------------------------------------------------------------------
+        if(paymentToBeSaved == null) {
+            currentResponse.errorMessage = "Ha ocurrido un error inesperado. Por favor cerrar el formulario y llenarlo nuevamente.";
+            return currentResponse;
+        }
+
+        // ---------------------------------------------------------------
+        // Just in case - Checking that the payment is not already SENT
+        // ---------------------------------------------------------------
+        PaymentRepository paymentRepository = new PaymentRepository();
+        oldPayment = paymentRepository.getPayment(paymentDate,paymentToBeSaved.getUserid());
+
+        if(oldPayment == null) {
+            currentResponse.errorMessage = "Ha ocurrido un error inesperado. Por favor cerrar el formulario y llenarlo nuevamente.";
+            return currentResponse;
+        }
+
+        paymentToBeSaved.setPaymentstatus(UrbanizationConstants.PAYMENT_DELETED);
+        paymentRepository.updatePaymentToDB(paymentToBeSaved);
+
+        // Update Current Prospect Status in the ViewModel.
+        currentResponse.paymentStatus = paymentToBeSaved.getPaymentstatus();
+        return currentResponse;
+    }
+
     private static Payment getPaymentClassFromView(Date paymentDate, PaymentActivityViewModelResponse currentResponse){
 
         Payment payment;
         PaymentRepository paymentRepository = new PaymentRepository();
-        payment = paymentRepository.getPayment(paymentDate);
+        payment = paymentRepository.getPayment(paymentDate,currentResponse.userId);
 
         if(payment == null)
             return null;
 
         // Getting Basic Info.
+        payment.setPaymentyear(currentResponse.paymentDateYearCode);
         payment.setPaymentmonth(currentResponse.paymentDateMonthCode);
         payment.setPaymenttypecode(currentResponse.paymentTypeCode);
         payment.setPaymentAmount(currentResponse.paymentAmount);
@@ -323,6 +374,16 @@ public class PaymentActivityViewModelHelper
     }
 
 
+    public static int getPaymentYearRecordPosition(ArrayList<Integer> paymentYearSpinnerList, int year)
+    {
+        // Current PaymentList
+        for (int i = 0; i < paymentYearSpinnerList.size(); i++) {
+            Integer item = paymentYearSpinnerList.get(i);
+            if (item == year)
+                return i;
+        }
+        return -1;
+    }
 
     public static int getPaymentDateRecordPosition(ArrayList<PaymentDateRowSpinnerItem> paymentDateRowSpinnerItemList, String dateCode)
     {

@@ -29,7 +29,6 @@ public class LoginResponse
     @Expose
     private String PaymentTypeList;
 
-
     // ----------------------------------
     // Getters
     // ----------------------------------
@@ -75,7 +74,7 @@ public class LoginResponse
 
     public void setUserId(String userId) { UserId = userId; }
 
-    //public void setUserPhotoURL(String userPhotoURL) { UserPhotoURL = userPhotoURL; }
+    public void setUserPhotoURL(String userPhotoURL) { UserPhotoURL = userPhotoURL; }
 
     public void setUserTaxPayerId(String userTaxPayerId) { UserTaxPayerId = userTaxPayerId; }
 

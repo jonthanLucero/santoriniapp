@@ -50,7 +50,8 @@ public class PaymentItem
         if(paymentStatusText.trim().isEmpty())
             return  UrbanizationUtils.getColor("#808080");                                    //GRAY
 
-        if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_VOID))                  //RED
+        if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_VOID)||
+        paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_DELETED))                  //RED
             return UrbanizationUtils.getColor("#BE2A2A");
 
         if(paymentStatusText.equalsIgnoreCase(UrbanizationConstants.PAYMENT_APPROVED))              //GREEN
