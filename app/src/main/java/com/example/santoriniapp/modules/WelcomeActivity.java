@@ -21,7 +21,7 @@ import com.example.santoriniapp.entity.PaymentType;
 import com.example.santoriniapp.modules.dashboard.DashboardMenuActivity;
 import com.example.santoriniapp.modules.login.LoginActivity;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentListActivity;
-import com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryActivity;
+import com.example.santoriniapp.modules.aliquotelist.PaymentSummaryActivity;
 
 import java.util.List;
 
