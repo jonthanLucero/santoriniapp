@@ -5,11 +5,11 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryItem" />
+            type="com.example.santoriniapp.modules.aliquotelist.PaymentSummaryItem" />
 
         <variable
             name="listener"
-            type="com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryItemListener"/>
+            type="com.example.santoriniapp.modules.aliquotelist.PaymentSummaryItemListener"/>
     </data>
     <LinearLayout
         android:orientation="vertical"

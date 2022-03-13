@@ -5,13 +5,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryActivityViewModelResponse"/>
+            type="com.example.santoriniapp.modules.aliquotelist.PaymentSummaryActivityViewModelResponse"/>
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryActivity"
+        tools:context="com.example.santoriniapp.modules.aliquotelist.PaymentSummaryActivity"
         android:orientation="vertical">
 
         <!-- Toolbar -->
@@ -33,7 +33,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-            <!-- Loading Customer Invoices -->
+            <LinearLayout
+                android:id="@+id/no_content_found"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="40dp"
+                android:gravity="center"
+                app:visible="@{viewModel.showNoContentFound()}"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_error_56dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/no_records_found_payment_summary"
+                    android:gravity="center"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/action_download_payment_summary"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    style="@style/Urbanization.PrimaryButton.Borderless.Colored"
+                    android:text="ACTUALIZAR"
+                    />
+
+            </LinearLayout>
+
+            <!-- Loading Payment Summary -->
+            <LinearLayout
+                android:id="@+id/loading_from_ws_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="40dp"
+                android:gravity="center"
+                app:visible="@{viewModel.isLoading}"
+                android:background="@color/default_background"
+                android:visibility="visible">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/downloading_last_payment_summary_data"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/online_process_can_take_while"
+                    android:textSize="12sp"
+                    android:textColor="@color/material_black_hint"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Loading Payment Summary -->
             <LinearLayout
                 android:id="@+id/loading_payments_container"
                 android:layout_width="match_parent"

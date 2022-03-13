@@ -9,7 +9,7 @@ import com.example.santoriniapp.entity.Login;
 import com.example.santoriniapp.entity.PaymentType;
 import com.example.santoriniapp.modules.news.NewsListActivity;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentListActivity;
-import com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryActivity;
+import com.example.santoriniapp.modules.aliquotelist.PaymentSummaryActivity;
 import com.example.santoriniapp.modules.socialclub.SocialClubActivity;
 import com.example.santoriniapp.repository.LoginRepository;
 import com.example.santoriniapp.repository.PaymentTypeRepository;

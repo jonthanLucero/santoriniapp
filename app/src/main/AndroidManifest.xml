@@ -32,7 +32,7 @@
         <activity android:name=".modules.socialclub.SocialClubActivity" />
         <activity android:name=".modules.news.NewsListActivity" />
         <activity android:name=".modules.dashboard.DashboardMenuActivity" />
-        <activity android:name=".modules.payment.paymentsummary.PaymentSummaryActivity" />
+        <activity android:name=".modules.aliquotelist.PaymentSummaryActivity" />
         <activity android:name=".modules.payment.paymentprintreceipt.PaymentPrintReceiptActivity" />
         <activity android:name=".utils.urbanizationAddPhotoGallery.JadblackPhotoViewer" />
         <activity android:name=".modules.payment.paymentheader.PaymentActivity" />

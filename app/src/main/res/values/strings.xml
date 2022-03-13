@@ -72,6 +72,9 @@
     <string name="payment_register_amount_hint">$ 0.00 </string>
     <string name="payment_register_commentary">Concepto</string>
 
+    <string name="downloading_last_payment_summary_data">Descargando información de las alicuotas...</string>
+    <string name="no_records_found_payment_summary">No se encontraron datos. Por favor presione Actualizar para descargar las alicuotas.</string>
+
     <string name="inalambrik_add_photo_gallery_add_photo_dialog_title">Tomar/Adjuntar Foto</string>
     <string name="inalambrik_add_photo_gallery_title_label">Título (Opcional)</string>
     <string name="inalambrik_add_photo_gallery_description_label">Descripción (Opcional)</string>

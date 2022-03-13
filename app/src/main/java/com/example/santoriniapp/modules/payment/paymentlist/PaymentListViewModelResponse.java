@@ -35,7 +35,7 @@ public class PaymentListViewModelResponse
         return  !showContentFound()&&!isLoading;
     }
     public boolean showContentFound(){
-        return  (paymentList.size() >0)?true:false;
+        return paymentList.size() > 0;
     }
 
     public String userNameDescription()

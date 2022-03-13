@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.santoriniapp.R;
 import com.example.santoriniapp.modules.news.NewsListActivity;
 import com.example.santoriniapp.modules.payment.paymentlist.PaymentListActivity;
-import com.example.santoriniapp.modules.payment.paymentsummary.PaymentSummaryActivity;
+import com.example.santoriniapp.modules.aliquotelist.PaymentSummaryActivity;
 import com.example.santoriniapp.modules.socialclub.SocialClubActivity;
 import com.example.santoriniapp.utils.UrbanizationSessionUtils;
 

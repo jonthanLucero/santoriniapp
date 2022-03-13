@@ -39,7 +39,7 @@ public class PaymentPrintReceiptActivityViewModelHelper
         }
 
         response.paymentDateString = DateFunctions.getDDMMMYYYYHHMMSSDateString(mPaymentDate);
-        response.paymentNumberString = "# "+payment.getPaymentnumber();
+        response.paymentNumberString = "# 00"+payment.getPaymentnumber();
         response.paymentAmountString = StringFunctions.toMoneyString(payment.getPaymentamount());
         response.paymentCommentary   = payment.getPaymentmemo().trim();
         response.errorMessage = "";

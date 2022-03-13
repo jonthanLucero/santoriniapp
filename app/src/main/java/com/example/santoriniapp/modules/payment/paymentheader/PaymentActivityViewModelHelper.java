@@ -216,6 +216,7 @@ public class PaymentActivityViewModelHelper
             request.setPaymentAmount(paymentToBeSaved.getPaymentamount());
             request.setPaymentMemo(paymentToBeSaved.getPaymentmemo());
 
+
             // -----------------------------------
             // Set Photo List from DB
             // -----------------------------------
