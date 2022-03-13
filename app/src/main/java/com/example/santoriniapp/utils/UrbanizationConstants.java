@@ -31,11 +31,14 @@ public class UrbanizationConstants
 
     public static double paymentMonthQuote = 30;
 
-    public static String PAYMENT_MONTH_PENDING = "P";
-    public static String PAYMENT_MONTH_PAID = "C";
+    public static final String PAYMENT_MONTH_PENDING = "NP";
+    public static final String PAYMENT_MONTH_SENT = "E";
+    public static final String PAYMENT_MONTH_PAID = "P";
 
     public static String PAYMENT_MODE_INSERT = "INSERT";
     public static String PAYMENT_MODE_UPDATE = "UPDATE";
     public static String PAYMENT_MODE_INSERT_FROM_PAYMENT_LIST = "PAYMENT_MODE_INSERT_FROM_PAYMENT_LIST";
+
+    public static String ALIQUOTE_DELETE_STATUS = "X";
 
 }

@@ -20,4 +20,7 @@ public class WSNames
 
     // Payment Sync Information
     public static final String SyncPaymentInformationWS     = baseUrl + "PaymentSyncWS.php";
+
+    // Aliquote Sync Information
+    public static final String SyncAliquoteInformationWS     = baseUrl + "AliquoteSyncWS.php";
 }

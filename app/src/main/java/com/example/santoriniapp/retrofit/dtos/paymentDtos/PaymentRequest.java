@@ -83,7 +83,6 @@ public class PaymentRequest
         return PaymentPhotoList;
     }
 
-
     // ----------------------------------
     // Setters
     // ----------------------------------
@@ -108,6 +107,7 @@ public class PaymentRequest
         PaymentMonth = paymentMonth;
     }
 
+
     public void setPaymentTypeCode(String paymentTypeCode) {
         PaymentTypeCode = paymentTypeCode;
     }
@@ -121,5 +121,4 @@ public class PaymentRequest
     }
 
     public void setPaymentPhotoList(String paymentPhotoList){PaymentPhotoList = paymentPhotoList;}
-
 }

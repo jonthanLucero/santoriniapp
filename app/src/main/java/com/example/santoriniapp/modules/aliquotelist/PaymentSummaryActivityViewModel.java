@@ -1,4 +1,4 @@
-package com.example.santoriniapp.modules.payment.paymentsummary;
+package com.example.santoriniapp.modules.aliquotelist;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -20,13 +20,13 @@ public class PaymentSummaryActivityViewModel extends ViewModel
         if (mPanelResponse == null)
         {
             mPanelResponse = new MutableLiveData<>();
-            loadPaymentSummaryListInformation(userId);
+            loadPaymentSummaryListInformation(userId,false);
         }
 
         return mPanelResponse;
     }
 
-    private void loadPaymentSummaryListInformation(final String userId){
+    private void loadPaymentSummaryListInformation(final String userId,final boolean downloadWS){
         final PaymentSummaryActivityViewModelResponse currentStatus = getCurrentPanelResponse();
 
         PaymentSummaryActivityViewModelResponse initialStatus = new PaymentSummaryActivityViewModelResponse();
@@ -39,7 +39,7 @@ public class PaymentSummaryActivityViewModel extends ViewModel
         Observable.defer(new Func0<Observable<PaymentSummaryActivityViewModelResponse>>() {
             @Override
             public Observable<PaymentSummaryActivityViewModelResponse> call()  {
-                return Observable.just(PaymentSummaryActivityViewModelHelper.getPaymentSummaryList(userId));
+                return Observable.just(PaymentSummaryActivityViewModelHelper.getPaymentSummaryList(userId,downloadWS));
             }
         }).subscribeOn(Schedulers.io()) // Code BEFORE is called on background thread...
                 .observeOn(AndroidSchedulers.mainThread()) // Code AFTER is called on main thread...
@@ -72,8 +72,15 @@ public class PaymentSummaryActivityViewModel extends ViewModel
         return new PaymentSummaryActivityViewModelResponse();
     }
 
-    public void reloadPanels(String userId){
-        loadPaymentSummaryListInformation(userId);
+    // Method to force the reload of the panel (and fragments).
+    public void reloadPanels(String userId,boolean downloadFromWS){
+        loadPaymentSummaryListInformation(userId,downloadFromWS);
+    }
+
+    public boolean isDownloadingFromWS(){
+        if(mPanelResponse != null && mPanelResponse.getValue() != null)
+            return mPanelResponse.getValue().isDownloadingFromWS;
+        return false;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.santoriniapp.modules.payment.paymentsummary;
+package com.example.santoriniapp.modules.aliquotelist;
 
 import com.example.santoriniapp.utils.StringFunctions;
 import com.example.santoriniapp.utils.UrbanizationConstants;
@@ -32,18 +32,34 @@ public class PaymentSummaryItem
     //GREEN --> #3D9C60
     public int  paymentStatusBackgroundColor()
     {
-        if(paymentMonthStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_PENDING))         //RED
-            return UrbanizationUtils.getColor("#BE2A2A");
-        else
-            return UrbanizationUtils.getColor("#3D9C60");                               //GREEN
+        switch (paymentMonthStatus)
+        {
+            case UrbanizationConstants.PAYMENT_MONTH_PENDING:
+                return UrbanizationUtils.getColor("#BE2A2A");
+
+            case UrbanizationConstants.PAYMENT_MONTH_PAID:
+                return UrbanizationUtils.getColor("#3D9C60");
+
+            case UrbanizationConstants.PAYMENT_MONTH_SENT:
+                return UrbanizationUtils.getColor("#FF6F00");
+        }
+        return 0;
     }
 
     public String paymentStatusDescription()
     {
-        if(paymentMonthStatus.equalsIgnoreCase(UrbanizationConstants.PAYMENT_MONTH_PENDING))
-            return "Pendiente";
-        else
-            return "Aprobado";
+        switch (paymentMonthStatus)
+        {
+            case UrbanizationConstants.PAYMENT_MONTH_PENDING:
+                return "Pendiente";
+
+            case UrbanizationConstants.PAYMENT_MONTH_PAID:
+                return "Aprobado";
+
+            case UrbanizationConstants.PAYMENT_MONTH_SENT:
+                return "Enviado";
+        }
+        return "";
     }
 
     public String paymentPendingTotalText(){return StringFunctions.toMoneyString(paymentPendingTotal);}

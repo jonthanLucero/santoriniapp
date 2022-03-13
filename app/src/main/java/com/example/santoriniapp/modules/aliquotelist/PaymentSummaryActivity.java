@@ -1,4 +1,4 @@
-package com.example.santoriniapp.modules.payment.paymentsummary;
+package com.example.santoriniapp.modules.aliquotelist;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.santoriniapp.R;
@@ -21,8 +23,6 @@ import com.example.santoriniapp.modules.payment.paymentheader.PaymentActivity;
 import com.example.santoriniapp.utils.DateFunctions;
 import com.example.santoriniapp.utils.PaymentUtils;
 import com.example.santoriniapp.utils.UrbanizationConstants;
-
-import java.util.Date;
 
 public class PaymentSummaryActivity extends AppCompatActivity implements PaymentSummaryItemListener{
 
@@ -108,6 +108,20 @@ public class PaymentSummaryActivity extends AppCompatActivity implements Payment
                     }
                 });
 
+        mBinding.actionDownloadPaymentSummary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reload(true);
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_aliquote_list_panel, menu);
+        mRefreshAction             = menu.findItem(R.id.refresh_aliquote_from_ws);
+        return true;
     }
 
     @Override
@@ -117,16 +131,34 @@ public class PaymentSummaryActivity extends AppCompatActivity implements Payment
             onBackPressed();
             return true;
         }
+
+        if(itemId == R.id.refresh_aliquote_from_ws)
+        {
+            reload(true);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void reload(boolean downloadFromWS)
+    {
+        if(mViewModel == null) return;
+        if(mViewModel.isDownloadingFromWS()) {
+            Toast.makeText(this,"Por favor espere. Descarga en proceso...",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mViewModel.reloadPanels(mUserId,downloadFromWS);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(mViewModel == null)return;
-        mViewModel.reloadPanels(mUserId);
+        if(!firstLoad)
+           reload(false);
+        firstLoad = false;
     }
-
 
     @Override
     public void onPaymentPayClick(PaymentSummaryItem item) {

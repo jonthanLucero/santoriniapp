@@ -1,4 +1,4 @@
-package com.example.santoriniapp.modules.payment.paymentsummary;
+package com.example.santoriniapp.modules.aliquotelist;
 
 public interface PaymentSummaryItemListener
 {

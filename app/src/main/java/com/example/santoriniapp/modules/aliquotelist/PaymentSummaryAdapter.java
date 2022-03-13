@@ -1,4 +1,4 @@
-package com.example.santoriniapp.modules.payment.paymentsummary;
+package com.example.santoriniapp.modules.aliquotelist;
 
 import android.content.Context;
 import android.view.LayoutInflater;

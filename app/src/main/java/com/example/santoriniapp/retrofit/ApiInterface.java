@@ -1,5 +1,7 @@
 package com.example.santoriniapp.retrofit;
 
+import com.example.santoriniapp.retrofit.dtos.aliquoteListDtos.AliquoteListRequest;
+import com.example.santoriniapp.retrofit.dtos.aliquoteListDtos.AliquoteListResponse;
 import com.example.santoriniapp.retrofit.dtos.loginDtos.LoginRequest;
 import com.example.santoriniapp.retrofit.dtos.loginDtos.LoginResponse;
 import com.example.santoriniapp.retrofit.dtos.paymentDtos.PaymentRequest;
@@ -32,4 +34,7 @@ public interface ApiInterface
 
     @POST(WSNames.SyncPaymentInformationWS)
     Call<PaymentListResponse> syncPaymentInformationWS(@Body PaymentListRequest request);
+
+    @POST(WSNames.SyncAliquoteInformationWS)
+    Call<AliquoteListResponse> syncAliquoteInformationWS(@Body AliquoteListRequest request);
 }
